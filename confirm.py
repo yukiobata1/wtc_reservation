@@ -19,24 +19,15 @@ from selenium.common.exceptions import NoSuchElementException
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 original = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
 
-# 使用可(1)or不可(0)
-is_valid = [] 
 # 個人で利用する目的などで利用不可能な通し番号
 unused = [31, 259]
-
-def preprocess(df, unused):
-  # dfのnanを除外、使ってはならない番号も除外
-  unused_indices = np.where(df["通し番号"].isin(unused))
-  return df.dropna().drop(unused_indices[0])
-
-df = preprocess(original, unused)
+unused_indices = np.where(df["通し番号"].isin(unused))
 
 options = Options()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
 
 def check_available(userid: str, password: str, driver) -> int:
   # 使用不可→0を返す、使用可→1を返す
@@ -107,18 +98,27 @@ def check_available(userid: str, password: str, driver) -> int:
     # print("この番号は使用可能です。")
     return 1
 
-availability = []
+df = df.dropna()
 
 for index, row in tqdm(df.iterrows()):
+  # dfのnanを除外、使ってはならない番号も除外
   # 各番号についての利用可否確認
-  userid = row["ID"]
-  password = row["パスワード"]
-  availability.append(check_available(userid, password, driver))
+  
+  # 使用しないことがわかっている番号
+  if row["通し番号"] in unused:
+    availability.append(0)
+  # チェックする
+  else:
+    userid = row["ID"]
+    password = row["パスワード"]
+    availability.append(check_available(userid, password, driver))
+  
   print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
+
 df["利用可否(1:可, 0:不可)"] = availability
 
 # 作成したdataframeの保存
-current_date = date.today().strftime("%Y-%m-%d")
+current_date = date.today().strftime("%y-%m-%d-%h-%m-%s")
 
-file_path = os.path.join(DATA_BASE, f'所沢名義_{current_date}.xlsx')  # Replace 'data.xlsx' with your desired file path
+file_path = os.path.join(DATA_BASE, f'所沢名義_{current_date}.xlsx')
 df.to_excel(file_path, index=False)
