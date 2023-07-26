@@ -2,6 +2,17 @@ import pandas as pd
 import numpy as np
 import os
 
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+from selenium.common.exceptions import NoSuchElementException
+
+
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 original = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
 
@@ -21,15 +32,6 @@ df = preprocess(original, unused)
 #  # 通し番号i番の抽選　
 #  id = row["ID"]
 #  password = row["パスワード"]
-
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
 
  
 options = Options()
@@ -73,6 +75,27 @@ proceed_button.click()
 
 tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
 tokorozawa_park.click()
+# ここから確認用
+
+any_court = driver.find_element(By.XPATH, "//input[contains(@name,'rdo_SHISETU')]")
+any_court.click()
+
+ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
+ok_button.click()
+
+while 1:
+  try: 
+    available_court = driver.find_element(By.XPATH, "//input[contains(@name, 'chkComa')]")
+    available_court.click()
+    #実際に予約するわけではなく、登録停止の確認のため
+    reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
+    reservation_button.click()
+    break
+  
+  except NoSuchElementException:
+    next_day = driver.find_element(By.XPATH, "//input[contains(@value,  '次日')]")
+    next_day.click()
+
 
 for element in driver.find_elements(By.XPATH, "/html/body"):
   print(element.text)
