@@ -48,8 +48,8 @@ reservation_button = driver.find_element(By.XPATH, "//*[text()='施設の予約'
 reservation_button.click()
 
 # ログイン
-userid = "0000053374"
-password = "0729"
+userid = "0000095667"
+password = "0517"
 
 user_to_fill = driver.find_element(By.XPATH, "//input[@name='txtUserCD']")
 user_to_fill.send_keys(userid)
