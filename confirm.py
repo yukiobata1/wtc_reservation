@@ -71,7 +71,7 @@ western_area.click()
 proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
 proceed_button.click()
 
-tokorozawa_park = driver.find_element(By.XPATH, "//a[text()='所沢航空記念公園']")
+tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
 tokorozawa_park.click()
 
 for element in driver.find_elements(By.XPATH, "/html/body"):
