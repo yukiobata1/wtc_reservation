@@ -62,6 +62,9 @@ ok_button.click()
 select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
 select_by_place.click()
 
+for element in driver.find_elements(By.XPATH, "/html/body"):
+  print(element.text)
+
 western_area = driver.find_element(By.XPATH, "//a[text()=' 西部エリア ']")
 western_area.click()
 
