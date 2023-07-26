@@ -25,7 +25,6 @@ original = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート
 
 # 個人で利用する目的などで利用不可能な通し番号
 unused = [31, 259]
-unused_indices = np.where(df["通し番号"].isin(unused))
 
 options = Options()
 options.add_argument('--headless')
