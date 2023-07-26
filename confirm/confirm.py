@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
+import os
 
-original = pd.read_excel("/content/drive/MyDrive/埼玉県営テニスコート名義.xlsx", usecols="A:D", header=1)
+DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+original = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx", usecols="A:D", header=1)
 
 # 使用可(1)or不可(0)
 is_valid = [] 
