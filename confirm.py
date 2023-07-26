@@ -48,29 +48,30 @@ reservation_button.click()
 userid = "0000098557"
 password = "2118"
 
-user_to_fill = driver.find_element(By.XPATH, "/html/body/form/input[1]")
+user_to_fill = driver.find_element(By.XPATH, "//input[@name='txtUserCD']")
 user_to_fill.send_keys(userid)
 
-pass_to_fill = driver.find_element(By.XPATH, "/html/body/form/input[2]")
+pass_to_fill = driver.find_element(By.XPATH, "//input[@name='txtPassword']")
 pass_to_fill.send_keys(password)
 
-ok_button = driver.find_element(By.XPATH, "/html/body/form/input[3]")
+ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
 ok_button.click()
 
 # 所在地
 
-select_by_place = driver.find_element(By.XPATH, "/html/body/a[3]")
+select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
 select_by_place.click()
 
-western_area = driver.find_element(By.XPATH, "/html/body/form/a[1]")
+western_area = driver.find_element(By.XPATH, "//a[text()='西部エリア']")
 western_area.click()
 
-proceed_button = driver.find_element(By.XPATH, "/html/body/form/input[3]")
+proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
 proceed_button.click()
 
-tokorozawa_park = driver.find_element(By.XPATH, "/html/body/form/a[2]")
+tokorozawa_park = driver.find_element(By.XPATH, "//a[text()='所沢航空記念公園']")
 tokorozawa_park.click()
 
 for element in driver.find_elements(By.XPATH, "/html/body"):
   print(element.text)
+
 time.sleep(100)
