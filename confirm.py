@@ -111,10 +111,10 @@ availability = []
 
 for index, row in tqdm(df.iterrows()):
   # 各番号についての利用可否確認
-  userid = row["ID"]
+  userid = df["ID"]
   password = row["パスワード"]
   availability.append(check_available(userid, password, driver))
-  print(f"userid: {userid}, password: {password}, 利用可否: {availability[index]}")
+  print(f"  userid: {userid}, password: {password}, 利用可否: {availability[index]}")
 df["利用可否(1:可, 0:不可)"] = availability
 
 # 作成したdataframeの保存
