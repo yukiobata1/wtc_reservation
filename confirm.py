@@ -112,4 +112,5 @@ for index, row in df.iterrows():
   userid = row["ID"]
   password = row["パスワード"]
   availability.append(check_available(userid, password, driver))
+  print(f"userid: {userid}, password: {password}, 利用可否: {availability[index]}")
 df["利用可否(1:可, 0:不可)"] = availability
