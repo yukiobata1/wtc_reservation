@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import os
 import sys
+from tqdm import tqdm
+from datetime import date
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -37,7 +39,7 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 
 
 def check_available(userid: str, password: str, driver) -> int:
-  # 使用不可→1を返す、使用可→0を返す
+  # 使用不可→0を返す、使用可→1を返す
   
   # 予約ボタンクリック
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
@@ -76,7 +78,7 @@ def check_available(userid: str, password: str, driver) -> int:
   # 有効期限切れ
   try:
     driver.find_element(By.XPATH, "//form[contains(text(),  '利用者の有効期限が切れています')]")
-    return 1
+    return 0
     sys.exit()
   except NoSuchElementException:
     pass
@@ -100,17 +102,23 @@ def check_available(userid: str, password: str, driver) -> int:
   try:
     driver.find_element(By.XPATH, "//form[contains(text(),  '利用停止のため、予約することができません。')]")
     # print("この番号は利用停止中です。")
-    return 1
+    return 0
   except NoSuchElementException:
     # print("この番号は使用可能です。")
-    return 0
+    return 1
 
 availability = []
 
-for index, row in df.iterrows():
-  # 通し番号i番の抽選　
+for index, row in tqdm(df.iterrows()):
+  # 各番号についての利用可否確認
   userid = row["ID"]
   password = row["パスワード"]
   availability.append(check_available(userid, password, driver))
   print(f"userid: {userid}, password: {password}, 利用可否: {availability[index]}")
 df["利用可否(1:可, 0:不可)"] = availability
+
+# 作成したdataframeの保存
+current_date = date.today().strftime("%Y-%m-%d")
+
+file_path = os.path.join(DATA_BASE, f'所沢名義_{current_date}.xlsx')  # Replace 'data.xlsx' with your desired file path
+df.to_excel(file_path, index=False)
