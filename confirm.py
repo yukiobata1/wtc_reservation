@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import sys
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -83,6 +84,14 @@ any_court.click()
 ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
 ok_button.click()
 
+# 有効期限切れ
+try:
+  driver.find_element(By.XPATH, "//form[contains(text(),  '利用者の有効期限が切れています')]")
+  print("この番号は有効期限が切れています。")
+  sys.exit()
+except NoSuchElementException:
+  pass
+
 while 1:
   try: 
     available_court = driver.find_element(By.XPATH, "//input[contains(@name, 'chkComa')]")
@@ -96,8 +105,13 @@ while 1:
     next_day = driver.find_element(By.XPATH, "//input[contains(@value,  '次日')]")
     next_day.click()
 
+# 利用停止の確認
+try:
+  driver.find_element(By.XPATH, "//form[contains(text(),  '利用停止のため、予約することができません。')]")
+  print("この番号は利用停止中です。")
+except NoSuchElementException:
+  print("この番号は使用可能です。")
+#for element in driver.find_elements(By.XPATH, "/html/body"):
+#  print(element.text)
 
-for element in driver.find_elements(By.XPATH, "/html/body"):
-  print(element.text)
-
-time.sleep(100)
+#time.sleep(100)
