@@ -4,6 +4,7 @@ import os
 import sys
 from tqdm import tqdm
 from datetime import date
+import utils
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -15,6 +16,9 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.common.exceptions import NoSuchElementException
 
+if check_schedule() == 0:
+  print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
+  exit(0)
 
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 original = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
@@ -97,17 +101,18 @@ def check_available(userid: str, password: str, driver) -> int:
   except NoSuchElementException:
     # print("この番号は使用可能です。")
     return 1
-
+    
+# 空の行を除去
 df = df.dropna()
 
 for index, row in tqdm(df.iterrows()):
-  # dfのnanを除外、使ってはならない番号も除外
   # 各番号についての利用可否確認
   
-  # 使用しないことがわかっている番号
+  # 利用不可能な番号はスキップ
   if row["通し番号"] in unused:
     availability.append(0)
-  # チェックする
+  
+  # 番号が利用できるかチェック
   else:
     userid = row["ID"]
     password = row["パスワード"]
