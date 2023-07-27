@@ -117,8 +117,6 @@ for index, row in tqdm(df.iterrows()):
     password = row["パスワード"]
     availability.append(check_available(userid, password, driver))
   
-  print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
-
 df["利用可否(1:可, 0:不可)"] = availability
 available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
 
