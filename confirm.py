@@ -120,9 +120,10 @@ for index, row in tqdm(df.iterrows()):
   print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
 
 df["利用可否(1:可, 0:不可)"] = availability
+available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
 
 # 作成したdataframeの保存
-current_date = date.today().strftime("%y-%m-%d-%h-%m-%s")
+current_date = date.today().strftime("%m/%d")
 
-file_path = os.path.join(DATA_BASE, f'所沢名義_{current_date}.xlsx')
+file_path = os.path.join(DATA_BASE, f'[自動生成{current_date}]-埼玉県営利用可名義.xlsx')
 df.to_excel(file_path, index=False)
