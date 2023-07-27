@@ -12,7 +12,11 @@ def save_to_excel(df, file_name):
     ws = wb.active
 
     # Set the title and apply formatting
-    title = "埼玉県営テニスコート名義"
+    timezone_utc_plus_9 = pytz.timezone('Asia/Tokyo')
+    time_scraped = datetime.now(timezone_utc_plus_9)
+    str_time_scraped = time_scraped.strftime('%m/%d/%y/%H:%M')
+    title = f"埼玉県営テニスコート名義 {str_time_scraped}取得"
+    
     ws['A1'] = title
     title_font = Font(size=14, bold=True)
     ws['A1'].font = title_font
@@ -46,7 +50,7 @@ def check_schedule():
     
     # 日本の時刻
     timezone_utc_plus_9 = pytz.timezone('Asia/Tokyo')
-    currrent_time = timezone_utc_plus_9 = pytz.timezone('Asia/Tokyo')
+    currrent_time = datetime.now(timezone_utc_plus_9)
     
 # 毎週金曜日のスケジュール
     friday_schedule = {'day_of_week': 4, 'start_time': '03:00', 'end_time': '03:30'}
