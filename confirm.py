@@ -126,4 +126,4 @@ available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
 current_date = date.today().strftime("%m/%d")
 
 file_path = os.path.join(DATA_BASE, f'[自動生成{current_date}]-埼玉県営利用可名義.xlsx')
-df.to_excel(file_path, index=False)
+utils.save_to_excel(available_df, file_path)
