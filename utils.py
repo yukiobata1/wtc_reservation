@@ -1,5 +1,46 @@
 from datetime import datetime, timedelta
 import pytz
+import pandas as pd
+from openpyxl import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font, Alignment
+
+def save_to_excel(df, file_name):
+    # Create a workbook and worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Set the title and apply formatting
+    title = "埼玉県営テニスコート名義"
+    ws['A1'] = title
+    title_font = Font(size=14, bold=True)
+    ws['A1'].font = title_font
+
+    # Write the DataFrame to the worksheet
+    for row in dataframe_to_rows(df, index=False, header=True):
+        ws.append(row)
+
+    # Set column width for better readability
+    column_widths = [15, 20, 20, 15, 20]
+    for i, width in enumerate(column_widths, start=1):
+        col_letter = get_column_letter(i)
+        ws.column_dimensions[col_letter].width = width
+      
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=2, max_col=4):
+        for cell in row:
+            cell.alignment = Alignment(horizontal='left')
+
+    # Write the total number of rows at the bottom
+    total_rows = len(df) + 4  # Add 4 for the two additional rows
+    ws.cell(row=total_rows-1, column=1, value="利用可名義数:")
+    ws.cell(row=total_rows-1, column=2, value=len(df))
+
+    ws.cell(row=total_rows, column=1, value="総票数:")
+    ws.cell(row=total_rows, column=2, value=len(df)*4)
+
+    # Save the Excel file
+    wb.save(file_name)
 
 def check_schedule():
     
