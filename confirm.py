@@ -2,9 +2,11 @@ import pandas as pd
 import numpy as np
 import os
 import sys
+import utils
+import time
+from flask import Flask
 from tqdm import tqdm
 from datetime import date
-import utils
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -13,8 +15,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 from selenium.common.exceptions import NoSuchElementException
+
+DEBUG = True
+if DEBUG == TRUE:
+  N_COL_READ = 5
+else:
+  N_COL_READ = 1000
 
 if utils.check_schedule_within_30_minutes()==0:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
@@ -105,6 +112,9 @@ def check_available(userid: str, password: str, driver) -> int:
 df = df.dropna()
 
 for index, row in tqdm(df.iterrows()):
+  # デバッグ時には5行のみ読む
+  if index > (N_COL_READ):
+    break
   # 各番号についての利用可否確認
   
   # 利用不可能な番号はスキップ
@@ -116,12 +126,27 @@ for index, row in tqdm(df.iterrows()):
     userid = row["ID"]
     password = row["パスワード"]
     availability.append(check_available(userid, password, driver))
-  
-df["利用可否(1:可, 0:不可)"] = availability
-available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
+
+if DEBUG == True:
+  n_append = len(df) - len(availability)
+  availability = availability + [0 for i in range(n_append)]
+# df["利用可否(1:可, 0:不可)"] = availability
+# available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
 
 # 作成したdataframeの保存
-current_date = date.today().strftime("%m/%d")
+#current_date = date.today().strftime("%m/%d")
 
-file_path = os.path.join(DATA_BASE, f'[自動生成{current_date}]-埼玉県営利用可名義.xlsx')
-utils.save_to_excel(available_df, file_path)
+# file_path = os.path.join(DATA_BASE, f'[自動生成{current_date}]-埼玉県営利用可名義.xlsx')
+# utils.save_to_excel(available_df, file_path)
+
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello_world():
+    """Example Hello World route."""
+    name = os.environ.get("NAME", "World")
+    return f"Hello {name}!"
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
