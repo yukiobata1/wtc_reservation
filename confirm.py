@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.common.exceptions import NoSuchElementException
 
-if utils.check_schedule_within_30_minutes()==0:
+if utils.check_schedule_within_30_minutes()==1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
 
