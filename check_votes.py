@@ -72,7 +72,7 @@ for court in court_list:
   for i, child in enumerate(children):
     print(f"{i=}")
     try:
-      print(f"{inspect.getmembers(child)}")
+      print(f"{child.get_attribute("textContent")}")
     except:
       pass
 
