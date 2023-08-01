@@ -70,7 +70,8 @@ for court in court_list:
   children = driver.find_elements(By.XPATH, '/html/body/form/*')
   for i, child in enumerate(children):
     print(f"{i=}")
-    print(f"{child.textContent=}")
+    try:
+      print(f"{child.textContent=}")
 
 
 #   while 1:
