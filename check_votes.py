@@ -16,14 +16,10 @@ from selenium.common.exceptions import NoSuchElementException
 
 # デバッグ用
 DEBUG = False
-debug_list = [259, 260, 261]
 
 if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
-
-DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-df = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
 
 # 個人で利用する目的などで利用不可能な通し番号
 unused = [31,]
@@ -34,7 +30,7 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-def check_available(userid: str, password: str, driver) -> int:
+def check_n_votes(userid: str, password: str, driver) -> int:
   # 各コートの抽選数を検索
   
   # 空き状況
@@ -134,3 +130,4 @@ def check_available(userid: str, password: str, driver) -> int:
 
 # file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
 # utils.save_to_excel(available_df, file_path)
+check_n_votes()
