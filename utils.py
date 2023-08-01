@@ -14,7 +14,7 @@ def save_to_excel(df, file_name):
     # Set the title and apply formatting
     timezone_utc_plus_9 = pytz.timezone('Asia/Tokyo')
     time_scraped = datetime.now(timezone_utc_plus_9)
-    str_time_scraped = time_scraped.strftime('%m/%d/%y/%H:%M')
+    str_time_scraped = time_scraped.strftime('%m月%d日 %H:%M')
     title = f"埼玉県営テニスコート名義 {str_time_scraped}取得"
     
     ws['A1'] = title

@@ -16,15 +16,19 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.common.exceptions import NoSuchElementException
 
-if utils.check_schedule_within_30_minutes()==1:
+# デバッグ用
+DEBUG = False
+debug_list = [259, 260, 261]
+
+if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
 
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-original = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
+df = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
 
 # 個人で利用する目的などで利用不可能な通し番号
-unused = [31, 259]
+unused = [31,]
 
 options = Options()
 options.add_argument('--headless')
@@ -48,9 +52,14 @@ def check_available(userid: str, password: str, driver) -> int:
   
   ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
   ok_button.click()
-  
+
+  try:
+    ID_password_unmatch = driver.find_element(By.XPATH, "//form[contains(text(),'ＩＤ又はパスワードに誤りがあります')]")
+    return 0
+  except NoSuchElementException:
+    pass
+
   # 所在地
-  
   select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
   select_by_place.click()
   
@@ -73,7 +82,6 @@ def check_available(userid: str, password: str, driver) -> int:
   try:
     driver.find_element(By.XPATH, "//form[contains(text(),  '利用者の有効期限が切れています')]")
     return 0
-    sys.exit()
   except NoSuchElementException:
     pass
   
@@ -103,25 +111,32 @@ def check_available(userid: str, password: str, driver) -> int:
     
 # 空の行を除去
 df = df.dropna()
+availability = []
 
 for index, row in tqdm(df.iterrows()):
   # 各番号についての利用可否確認
-  
+
+  # デバッグ時はdebug_list内の番号のみ
+  if DEBUG == True:
+    if row["通し番号"] not in debug_list:
+      availability.append(0)
+      continue
   # 利用不可能な番号はスキップ
   if row["通し番号"] in unused:
     availability.append(0)
-  
   # 番号が利用できるかチェック
   else:
     userid = row["ID"]
     password = row["パスワード"]
     availability.append(check_available(userid, password, driver))
   
+  print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
+
 df["利用可否(1:可, 0:不可)"] = availability
 available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
 
 # 作成したdataframeの保存
-current_date = date.today().strftime("%m/%d")
+current_date = date.today().strftime("[%m-%d]")
 
-file_path = os.path.join(DATA_BASE, f'[自動生成{current_date}]-埼玉県営利用可名義.xlsx')
+file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
 utils.save_to_excel(available_df, file_path)
