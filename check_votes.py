@@ -35,27 +35,12 @@ options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 def check_available(userid: str, password: str, driver) -> int:
-  # 使用不可→0を返す、使用可→1を返す
+  # 各コートの抽選数を検索
   
-  # 予約ボタンクリック
+  # 空き状況
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
-  reservation_button = driver.find_element(By.XPATH, "//*[text()='施設の予約']")
-  reservation_button.click()
-  
-  user_to_fill = driver.find_element(By.XPATH, "//input[@name='txtUserCD']")
-  user_to_fill.send_keys(userid)
-  
-  pass_to_fill = driver.find_element(By.XPATH, "//input[@name='txtPassword']")
-  pass_to_fill.send_keys(password)
-  
-  ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
-  ok_button.click()
-
-  try:
-    ID_password_unmatch = driver.find_element(By.XPATH, "//form[contains(text(),'ＩＤ又はパスワードに誤りがあります')]")
-    return 0
-  except NoSuchElementException:
-    pass
+  vacancy_button = driver.find_element(By.XPATH, "//a[contains(text(),'施設の空き状況')]")
+  vacancy_button.click()
 
   # 所在地
   select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
@@ -69,12 +54,24 @@ def check_available(userid: str, password: str, driver) -> int:
   
   tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
   tokorozawa_park.click()
-  # ここから確認用
-  any_court = driver.find_element(By.XPATH, "//input[contains(@name,'rdo_SHISETU')]")
-  any_court.click()
-  
-  ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
-  ok_button.click()
+
+  court_list = [
+    '第１テニスコート第１クレーコート',
+    '第１テニスコート第２クレーコート',
+    '第１テニスコート第３人工芝コート',
+    '第１テニスコート第４人工芝コート',
+    '第１テニスコート第５人工芝コート',
+    '第１テニスコート第６人工芝コート',
+    '第１テニスコート第７人工芝コート',
+    '第１テニスコート第８人工芝コート',
+    '第１テニスコート第９人工芝コート',
+    '第１テニスコート第１０人工芝コート',
+    '第２テニスコート第１１人工芝コート',
+    '第２テニスコート第１２人工芝コート'
+  ]
+
+  for court in court_list:
+    
   
   # 有効期限切れ
   try:
