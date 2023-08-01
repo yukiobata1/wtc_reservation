@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.common.exceptions import NoSuchElementException
 
-# デバッグ用か
+# デバッグ用
 DEBUG = False
 debug_list = [259, 260, 261]
 
