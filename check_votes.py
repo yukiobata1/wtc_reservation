@@ -6,6 +6,7 @@ from tqdm import tqdm
 from datetime import date
 import utils
 import time
+import inspect
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -71,7 +72,7 @@ for court in court_list:
   for i, child in enumerate(children):
     print(f"{i=}")
     try:
-      print(f"{getmembers(child)}")
+      print(f"{inspect.getmembers(child)}")
     except:
       pass
 
