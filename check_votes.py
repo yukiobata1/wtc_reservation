@@ -68,7 +68,7 @@ court_list = [
 for court in court_list:
   # 各コートについて抽選数確認　
   form = driver.find_element(By.XPATH, "//form")
-  children = form.firnd_elements(By.XPATH, '*')
+  children = form.find_elements(By.XPATH, '*')
   for child in children:
     print("\nChild Element")
     print(child.get_attribute('outerHTML'))
