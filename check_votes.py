@@ -72,6 +72,8 @@ for court in court_list:
     print(f"{i=}")
     try:
       print(f"{child.textContent=}")
+    except:
+      pass
 
 
 #   while 1:
