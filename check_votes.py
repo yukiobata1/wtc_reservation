@@ -71,7 +71,7 @@ for court in court_list:
   for i, child in enumerate(children):
     print(f"{i=}")
     try:
-      print(f"{child.textContent=}")
+      print(f"{child.getmembers()=}")
     except:
       pass
 
