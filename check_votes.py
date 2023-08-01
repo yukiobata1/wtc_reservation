@@ -68,13 +68,14 @@ court_list = [
 
 for court in court_list:
   # 各コートについて抽選数確認　
-  children = driver.find_elements(By.XPATH, '/html/body/form/*')
-  for i, child in enumerate(children):
-    print(f"{i=}")
-    try:
-      print(f"{child.getText()")
-    except:
-      pass
+  child = driver.find_element(By.XPATH, '/html/body/form')
+  child.getText()
+  # for i, child in enumerate(children):
+  #   print(f"{i=}")
+  #   try:
+  #     print(f"{child.getText()")
+  #   except:
+  #     pass
 
 
 #   while 1:
