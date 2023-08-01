@@ -30,66 +30,65 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-def check_n_votes(userid: str, password: str, driver) -> int:
-  # 各コートの抽選数を検索
-  
-  # 空き状況
-  driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
-  vacancy_button = driver.find_element(By.XPATH, "//a[contains(text(),'施設の空き状況')]")
-  vacancy_button.click()
+# 各コートの抽選数を検索
 
-  # 所在地
-  select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
-  select_by_place.click()
-  
-  western_area = driver.find_element(By.XPATH, "//a[contains(text(),'西部エリア')]")
-  western_area.click()
-  
-  proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
-  proceed_button.click()
-  
-  tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
-  tokorozawa_park.click()
+# 空き状況
+driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
+vacancy_button = driver.find_element(By.XPATH, "//a[contains(text(),'施設の空き状況')]")
+vacancy_button.click()
 
-  court_list = [
-    '第１テニスコート第１クレーコート',
-    '第１テニスコート第２クレーコート',
-    '第１テニスコート第３人工芝コート',
-    '第１テニスコート第４人工芝コート',
-    '第１テニスコート第５人工芝コート',
-    '第１テニスコート第６人工芝コート',
-    '第１テニスコート第７人工芝コート',
-    '第１テニスコート第８人工芝コート',
-    '第１テニスコート第９人工芝コート',
-    '第１テニスコート第１０人工芝コート',
-    '第２テニスコート第１１人工芝コート',
-    '第２テニスコート第１２人工芝コート'
-  ]
+# 所在地
+select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
+select_by_place.click()
 
-  for court in court_list:
-    # 各コートについて抽選数確認　
-    form = driver.find_element(By.XPATH, "//form")
-    children = form.firnd_elements(By.XPATH, '*')
-    for child in children:
-      print("\nChild Element")
-      print(child.get_attribute('outerHTML'))
-    
-  
+western_area = driver.find_element(By.XPATH, "//a[contains(text(),'西部エリア')]")
+western_area.click()
+
+proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
+proceed_button.click()
+
+tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
+tokorozawa_park.click()
+
+court_list = [
+'第１テニスコート第１クレーコート',
+'第１テニスコート第２クレーコート',
+'第１テニスコート第３人工芝コート',
+'第１テニスコート第４人工芝コート',
+'第１テニスコート第５人工芝コート',
+'第１テニスコート第６人工芝コート',
+'第１テニスコート第７人工芝コート',
+'第１テニスコート第８人工芝コート',
+'第１テニスコート第９人工芝コート',
+'第１テニスコート第１０人工芝コート',
+'第２テニスコート第１１人工芝コート',
+'第２テニスコート第１２人工芝コート'
+]
+
+for court in court_list:
+  # 各コートについて抽選数確認　
+  form = driver.find_element(By.XPATH, "//form")
+  children = form.firnd_elements(By.XPATH, '*')
+  for child in children:
+    print("\nChild Element")
+    print(child.get_attribute('outerHTML'))
+
+
 #   while 1:
 #     try: 
 #       available_court = driver.find_element(By.XPATH, "//input[contains(@name, 'chkComa')]")
 #       available_court.click()
-      
+
 #       #実際に予約するわけではなく、登録停止の確認のため
 #       reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
 #       reservation_button.click()
 #       break
-    
+
 #     except NoSuchElementException:
 #       # 次の日に遷移
 #       next_day = driver.find_element(By.XPATH, "//input[contains(@value,  '次日')]")
 #       next_day.click()
-  
+
 #   # 利用停止の確認
 #   try:
 #     driver.find_element(By.XPATH, "//form[contains(text(),  '利用停止のため、予約することができません。')]")
@@ -98,7 +97,7 @@ def check_n_votes(userid: str, password: str, driver) -> int:
 #   except NoSuchElementException:
 #     # print("この番号は使用可能です。")
 #     return 1
-    
+
 # # 空の行を除去
 # df = df.dropna()
 # availability = []
@@ -130,4 +129,4 @@ def check_n_votes(userid: str, password: str, driver) -> int:
 
 # file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
 # utils.save_to_excel(available_df, file_path)
-check_n_votes()
+
