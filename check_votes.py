@@ -73,7 +73,7 @@ for court in court_list:
   for i, child in enumerate(form):
     print(f"{i=}")
     try:
-      print(f"{child.getText()"})
+      print(f"{child.getText()}")
     except:
       pass
 
