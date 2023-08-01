@@ -72,7 +72,7 @@ for court in court_list:
   for i, child in enumerate(children):
     print(f"{i=}")
     try:
-      print(f"{child.get_attribute('textContent')}")
+      print(f"{child.getText()")
     except:
       pass
 
