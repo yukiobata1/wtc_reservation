@@ -130,7 +130,9 @@ for court in court_list:
     next_day_button.click()
 
     next_month_date += datetime.timedelta(days=1)
-
+   
+    to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
+    to_menu.click()
   
 
 
