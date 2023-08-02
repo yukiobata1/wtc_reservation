@@ -141,7 +141,7 @@ for i, court in enumerate(court_list):
         
         # 結果に抽選数を追加
         start_time = target_time_range[:5]
-        result[court][str_date][start_time] = lottery_count
+        result[i][str_date][start_time] = lottery_count
       
       except NoSuchElementException:
         # 抽選数が見当たらないとき、その時間帯は使用不可
