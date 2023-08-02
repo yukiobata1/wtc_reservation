@@ -99,7 +99,7 @@ for court in court_list:
   show_votes.click()
 
   # デバッグ用
-  all_elements = driver.find_element(By.XPATH, "//*[text()]")
+  all_elements = driver.find_elements(By.XPATH, "//*[text()]")
 
   # Print the text content of each element
   for element in all_elements:
