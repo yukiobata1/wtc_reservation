@@ -147,7 +147,7 @@ for i, court in enumerate(court_list):
         # 抽選数が見当たらないとき、その時間帯は使用不可
         xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
-        result[i][str_date][start_time] = "n"
+        result[i][str_date][start_time] = "unavailable"
     
     # 次の日に
     next_day_button = driver.find_element(By.XPATH, '//input[contains(@value,"次日")]')
