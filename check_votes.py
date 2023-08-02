@@ -129,6 +129,8 @@ for i, court in enumerate(court_list):
     ]
 
     for target_time_range in target_time_ranges:
+      # 辞書のキー取得 
+      start_time = target_time_range[:5]
       # 抽選可能の場合
       try:
         # 抽選数を取得
@@ -140,7 +142,6 @@ for i, court in enumerate(court_list):
         print(f"{target_time_range}:{lottery_count}")
         
         # 結果に抽選数を追加
-        start_time = target_time_range[:5]
         result[i][str_date][start_time] = lottery_count
       
       except NoSuchElementException:
