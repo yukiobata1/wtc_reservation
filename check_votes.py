@@ -37,7 +37,7 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 # 空き状況
 driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
-result = defaultdict({})
+result = defaultdict(dict)
 
 court_list = [
 '第１テニスコート第１クレーコート',
