@@ -38,6 +38,8 @@ driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
 # result = defaultdict(dict)
 result = dict()
+with open("sample_file.json", "w") as file:
+    json.dump(result, file)
 
 court_list = [
 '第１テニスコート第１クレーコート',
