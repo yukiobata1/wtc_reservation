@@ -7,6 +7,7 @@ import datetime
 import utils
 import time
 import inspect
+import defaultdict
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -36,6 +37,8 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 # 空き状況
 driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
+result = defaultdict({})
+
 court_list = [
 '第１テニスコート第１クレーコート',
 '第１テニスコート第２クレーコート',
@@ -50,6 +53,15 @@ court_list = [
 '第２テニスコート第１１人工芝コート',
 '第２テニスコート第１２人工芝コート'
 ]
+
+weekday_correspondence = {
+  0: "月曜日",
+  1: "火曜日",
+  2: "水曜日",
+  3: "木曜日",
+  4: "金曜日",
+  5: "土曜日",
+  6: "日曜日",}
 
 for court in court_list:
   # 各コートについて抽選数確認
@@ -100,13 +112,12 @@ for court in court_list:
   # 申請数表示
   show_votes = driver.find_element(By.XPATH, "//input[@value='申請数表示']")
   show_votes.click()
-
-  # Find the element with text content "08:30-10:30" (assuming "a" is a WebElement)
   
   # 1日-月末の各日についてループ
   next_month = next_month_date.month
   while (next_month_date.month == next_month):
-    print(f"{next_month_date.day=}")
+    str_date = next_month_date.strftime("%Y-%m")
+    print(f"{str_date}")
     target_time_ranges = [
     "06:30-08:30", "08:30-10:30", "10:30-12:30",
     "12:30-14:30", "14:30-16:30", "16:30-18:30"
@@ -121,6 +132,8 @@ for court in court_list:
         lottery_count_text = next_element.text.strip()
         lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
         print(f"{target_time_range}:{lottery_count}")
+
+        result[court][str_date][target_time_range] = lottery_count
       except NoSuchElementException:
         xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
@@ -134,7 +147,7 @@ for court in court_list:
   to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
   to_menu.click()
   
-
+# 得た投票をどのように表に直すか
 
   # # デバッグ用
   # all_elements = driver.find_elements(By.XPATH, "//*[text()]")
