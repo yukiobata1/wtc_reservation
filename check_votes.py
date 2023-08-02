@@ -107,9 +107,8 @@ for court in court_list:
   for target_time_range in target_time_ranges:
     # 抽選可能の場合
     try:
-      next_element = driver.find_element(By.XPATH,
-      f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time_range}")]]'
-      )
+      xpath_expression = f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time_range}")]]'
+      next_element = driver.find_element(By.XPATH, xpath_expression)
       lottery_count_text = next_element.text.strip()
       print(lottery_count_text)
       lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
