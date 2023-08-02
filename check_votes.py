@@ -128,30 +128,35 @@ for court in court_list:
     for target_time_range in target_time_ranges:
       # 抽選可能の場合
       try:
+        # 抽選数を取得
         xpath_expression = f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time_range}")]]'
-      
         next_element = driver.find_element(By.XPATH, xpath_expression)
         lottery_count_text = next_element.text.strip()
         lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
         print(f"{target_time_range}:{lottery_count}")
         
-
+        # 結果に抽選数を追加
         result[court][str_date][target_time_range] = lottery_count
+      
       except NoSuchElementException:
+        # 抽選数が見当たらないとき、その時間帯は使用不可
         xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
         print(f"{target_time_range}:休")
     
+    # 次の日に
     next_day_button = driver.find_element(By.XPATH, '//input[contains(@value,"次日")]')
     next_day_button.click()
 
     next_month_date += datetime.timedelta(days=1)
      
+  # メニューに戻って、別のコートに対するものを取得
   to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
   to_menu.click()
   
 # 得た投票をどのように表に直すか
-
+with open("sample_file.json", "w") as file:
+    json.dump(result, file)
   # # デバッグ用
   # all_elements = driver.find_elements(By.XPATH, "//*[text()]")
 
