@@ -68,7 +68,38 @@ court_list = [
 
 for court in court_list:
   # 各コートについて抽選数確認　
-  form = driver.find_elements(By.XPATH, '/html/body/form/*')
+　# Calculate current date and next month's date
+  next_month_date = current_date.replace(day=1) + datetime.timedelta(days=32)
+  next_month_date = next_month_date.replace(day=1)
+
+  year_input = driver.find_element(By.NAME, 'selYear')
+  month_input = driver.find_element(By.NAME, 'selMonth')
+  day_input = driver.find_element(By.NAME, 'selDay')
+  
+  year_input.clear()
+  year_input.send_keys(str(next_month_date.year))  # Set the year value
+  
+  month_input.clear()
+  month_input.send_keys(str(next_month_date.month))  # Set the month value
+  
+  day_input.clear()
+  day_input.send_keys(str(next_month_date.day))  # Set the day value
+
+  target_text = court
+  xpath_expression = f"//input[@type='RADIO'][following-sibling::text()[1][contains(., '{target_text}')]]"
+  radio_button = driver.find_element_by_xpath(xpath_expression)
+  radio_button.click()
+
+  # 翌月1日のページに遷移
+  submit_button = driver.find_element(By.XPATH, "//input[contains(@value, 'ＯＫ')]")
+  submit_button.click()
+
+  # 申請数表示
+  show_votes = driver.find_element(By.XPATH, "//input[@value='申請数表示']")
+  show_votes.click()
+
+  # 
+
   # child.getText()
   for i, child in enumerate(form):
     print(f"{i=}")
