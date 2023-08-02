@@ -113,6 +113,8 @@ for court in court_list:
       lottery_count_text = next_element.text.strip()
       lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
       print(f"The lottery count after {target_time_range} is: {lottery_count}")
+    except:
+      print(f"{target_time_range=}")
 
 
   # デバッグ用
