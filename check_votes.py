@@ -122,6 +122,10 @@ for court in court_list:
         xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
         print(f"{target_time_range}:休")
+    
+    next_day_button = driver.find_element(By.XPATH, '//input[contains(@value,"次日")]')
+    next_day_button.click()
+    
     next_month_date += datetime.timedelta(days=1)
 
   
