@@ -7,7 +7,6 @@ import datetime
 import utils
 import time
 import inspect
-from collections import defaultdict
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -37,7 +36,8 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 # 空き状況
 driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
-result = defaultdict(dict)
+# result = defaultdict(dict)
+result = dict()
 
 court_list = [
 '第１テニスコート第１クレーコート',
@@ -64,6 +64,7 @@ weekday_correspondence = {
   6: "日曜日",}
 
 for court in court_list:
+  result[court] = dict()
   # 各コートについて抽選数確認
   vacancy_button = driver.find_element(By.XPATH, "//a[contains(text(),'施設の空き状況')]")
   vacancy_button.click()
@@ -118,6 +119,7 @@ for court in court_list:
   while (next_month_date.month == next_month):
     str_date = next_month_date.strftime("%Y-%m")
     print(f"{str_date}")
+    result[court][str_date] = dict()
     target_time_ranges = [
     "06:30-08:30", "08:30-10:30", "10:30-12:30",
     "12:30-14:30", "14:30-16:30", "16:30-18:30"
@@ -132,6 +134,7 @@ for court in court_list:
         lottery_count_text = next_element.text.strip()
         lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
         print(f"{target_time_range}:{lottery_count}")
+        
 
         result[court][str_date][target_time_range] = lottery_count
       except NoSuchElementException:
