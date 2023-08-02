@@ -103,6 +103,7 @@ for court in court_list:
   # 1日-月末の各日についてループ
   next_month = next_month_date.month
   while (next_month_date.month == next_month):
+    print(f"{next_month_date.day=}")
     target_time_ranges = [
     "06:30-08:30", "08:30-10:30", "10:30-12:30",
     "12:30-14:30", "14:30-16:30", "16:30-18:30"
@@ -115,9 +116,8 @@ for court in court_list:
       
         next_element = driver.find_element(By.XPATH, xpath_expression)
         lottery_count_text = next_element.text.strip()
-        print(lottery_count_text)
         lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
-        print(f"The lottery count after {target_time_range} is: {lottery_count}")
+        print(f"{target_time_range}:{lottery_count}")
       except NoSuchElementException:
         xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
