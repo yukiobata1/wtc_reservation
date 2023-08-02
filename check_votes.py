@@ -99,12 +99,22 @@ for court in court_list:
   show_votes.click()
 
   # Find the element with text content "08:30-10:30" (assuming "a" is a WebElement)
-  a = driver.find_element(By.XPATH, '//text()[contains(., "08:30-10:30")]')
 
-  # Find the following sibling element with the blue font color
-  following_element = driver.find_element(By.XPATH, 
-    f"{a}/following-sibling::*[self::font[@color='Blue']]"
-  )
+  target_time_ranges = [
+    "06:30-08:30", "08:30-10:30", "10:30-12:30",
+    "12:30-14:30", "14:30-16:30", "16:30-18:30"
+  ]
+  for target_time_range in target_time_ranges:
+    # 抽選可能の場合
+    try:
+      next_element = driver.find_element(By.XPATH,
+      f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time}")]]'
+      )
+      lottery_count_text = next_element.text.strip()
+      lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
+      print(f"The lottery count after {target_time_range} is: {lottery_count}")
+
+
   # デバッグ用
   all_elements = driver.find_elements(By.XPATH, "//*[text()]")
 
