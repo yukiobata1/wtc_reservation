@@ -108,22 +108,23 @@ for court in court_list:
     # 抽選可能の場合
     try:
       next_element = driver.find_element(By.XPATH,
-      f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time}")]]'
+      f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time_range}")]]'
       )
       lottery_count_text = next_element.text.strip()
       print(lottery_count_text)
       lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
       print(f"The lottery count after {target_time_range} is: {lottery_count}")
-    except:
+    except Exception as e:
+      print(f"{e=}")
       print(f"{target_time_range=}")
 
 
-  # デバッグ用
-  all_elements = driver.find_elements(By.XPATH, "//*[text()]")
+  # # デバッグ用
+  # all_elements = driver.find_elements(By.XPATH, "//*[text()]")
 
-  # Print the text content of each element
-  for element in all_elements:
-      print(element.text)
+  # # Print the text content of each element
+  # for element in all_elements:
+  #     print(element.text)
 
 
 #   while 1:
