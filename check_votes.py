@@ -98,7 +98,12 @@ for court in court_list:
   show_votes = driver.find_element(By.XPATH, "//input[@value='申請数表示']")
   show_votes.click()
 
-  # 
+  # デバッグ用
+  all_elements = driver.find_element(By.XPATH, "//*[text()]")
+
+  # Print the text content of each element
+  for element in all_elements:
+      print(element.text)
 
   # child.getText()
   for i, child in enumerate(form):
