@@ -101,8 +101,8 @@ for court in court_list:
   # Find the element with text content "08:30-10:30" (assuming "a" is a WebElement)
   
   # 1日-月末の各日についてループ
-  next_month = next_month.month
-  while (next_month.month == next_month):
+  next_month = next_month_date.month
+  while (next_month_date.month == next_month):
     target_time_ranges = [
     "06:30-08:30", "08:30-10:30", "10:30-12:30",
     "12:30-14:30", "14:30-16:30", "16:30-18:30"
@@ -122,6 +122,7 @@ for court in court_list:
         xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
         print(f"{target_time_range}:休")
+    next_month_date += datetime.timedelta(days=1)
 
   
 
