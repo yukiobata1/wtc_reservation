@@ -35,21 +35,6 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 
 # 空き状況
 driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
-vacancy_button = driver.find_element(By.XPATH, "//a[contains(text(),'施設の空き状況')]")
-vacancy_button.click()
-
-# 所在地
-select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索']")
-select_by_place.click()
-
-western_area = driver.find_element(By.XPATH, "//a[contains(text(),'西部エリア')]")
-western_area.click()
-
-proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
-proceed_button.click()
-
-tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
-tokorozawa_park.click()
 
 court_list = [
 '第１テニスコート第１クレーコート',
@@ -68,6 +53,23 @@ court_list = [
 
 for court in court_list:
   # 各コートについて抽選数確認
+  vacancy_button = driver.find_element(By.XPATH, "//a[contains(text(),'施設の空き状況')]")
+  vacancy_button.click()
+
+  # 所在地
+  select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索']")
+  select_by_place.click()
+
+  western_area = driver.find_element(By.XPATH, "//a[contains(text(),'西部エリア')]")
+  western_area.click()
+
+  proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
+  proceed_button.click()
+
+  tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
+  tokorozawa_park.click()
+
+  # 来月1日のdatetimeオブジェクトを取得
   current_date = datetime.date.today()
   next_month_date = current_date.replace(day=1) + datetime.timedelta(days=32)
   next_month_date = next_month_date.replace(day=1)
@@ -84,7 +86,8 @@ for court in court_list:
   
   day_input.clear()
   day_input.send_keys(str(next_month_date.day))  # Set the day value
-
+  
+  # 各コート選択
   target_text = court
   xpath_expression = f"//input[@type='RADIO'][following-sibling::text()[1][contains(., '{target_text}')]]"
   radio_button = driver.find_element(By.XPATH, xpath_expression)
@@ -125,7 +128,7 @@ for court in court_list:
     
     next_day_button = driver.find_element(By.XPATH, '//input[contains(@value,"次日")]')
     next_day_button.click()
-    
+
     next_month_date += datetime.timedelta(days=1)
 
   
