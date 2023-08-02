@@ -98,20 +98,19 @@ for court in court_list:
   show_votes = driver.find_element(By.XPATH, "//input[@value='申請数表示']")
   show_votes.click()
 
+  # Find the element with text content "08:30-10:30" (assuming "a" is a WebElement)
+  a = driver.find_element(By.XPATH, '//text()[contains(., "08:30-10:30")]')
+
+  # Find the following sibling element with the blue font color
+  following_element = driver.find_element(By.XPATH, 
+    f"{a}/following-sibling::*[self::font[@color='Blue']]"
+  )
   # デバッグ用
   all_elements = driver.find_elements(By.XPATH, "//*[text()]")
 
   # Print the text content of each element
   for element in all_elements:
       print(element.text)
-
-  # child.getText()
-  for i, child in enumerate(form):
-    print(f"{i=}")
-    try:
-      print(f"{child.getText()}")
-    except:
-      pass
 
 
 #   while 1:
