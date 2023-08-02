@@ -7,7 +7,7 @@ import datetime
 import utils
 import time
 import inspect
-import defaultdict
+from collections import defaultdict
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
