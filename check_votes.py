@@ -66,8 +66,8 @@ weekday_correspondence = {
   5: "土曜日",
   6: "日曜日",}
 
-for court in court_list:
-  result[court] = dict()
+for i, court in enumerate(court_list):
+  result[i] = dict()
   # 各コートについて抽選数確認
   vacancy_button = driver.find_element(By.XPATH, "//a[contains(text(),'施設の空き状況')]")
   vacancy_button.click()
@@ -120,9 +120,9 @@ for court in court_list:
   # 1日-月末の各日についてループ
   next_month = next_month_date.month
   while (next_month_date.month == next_month):
-    str_date = next_month_date.strftime("%Y-%m")
+    str_date = next_month_date.strftime("%m-%d")
     print(f"{str_date}")
-    result[court][str_date] = dict()
+    result[i][str_date] = dict()
     target_time_ranges = [
     "06:30-08:30", "08:30-10:30", "10:30-12:30",
     "12:30-14:30", "14:30-16:30", "16:30-18:30"
@@ -134,12 +134,14 @@ for court in court_list:
         # 抽選数を取得
         xpath_expression = f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
+
         lottery_count_text = next_element.text.strip()
         lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
         print(f"{target_time_range}:{lottery_count}")
         
         # 結果に抽選数を追加
-        result[court][str_date][target_time_range] = lottery_count
+        start_time = target_time_range[:5]
+        result[court][str_date][start_time] = lottery_count
       
       except NoSuchElementException:
         # 抽選数が見当たらないとき、その時間帯は使用不可
