@@ -87,7 +87,7 @@ for court in court_list:
 
   target_text = court
   xpath_expression = f"//input[@type='RADIO'][following-sibling::text()[1][contains(., '{target_text}')]]"
-  radio_button = driver.find_element_by_xpath(xpath_expression)
+  radio_button = driver.find_element(By.XPATH, xpath_expression)
   radio_button.click()
 
   # 翌月1日のページに遷移
