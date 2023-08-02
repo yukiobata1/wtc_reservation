@@ -67,7 +67,8 @@ court_list = [
 ]
 
 for court in court_list:
-  # 各コートについて抽選数確認　
+  # 各コートについて抽選数確認
+  current_date = datetime.date.today()
   next_month_date = current_date.replace(day=1) + datetime.timedelta(days=32)
   next_month_date = next_month_date.replace(day=1)
 
