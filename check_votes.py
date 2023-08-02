@@ -119,7 +119,7 @@ for court in court_list:
         lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
         print(f"The lottery count after {target_time_range} is: {lottery_count}")
       except NoSuchElementException:
-        xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}}")]]'
+        xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
         next_element = driver.find_element(By.XPATH, xpath_expression)
         print(f"{target_time_range}:休")
 
