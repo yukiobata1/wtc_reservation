@@ -111,6 +111,7 @@ for court in court_list:
       f'//font[@color="Blue"][preceding::text()[1][contains(., "{target_time}")]]'
       )
       lottery_count_text = next_element.text.strip()
+      print(lottery_count_text)
       lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
       print(f"The lottery count after {target_time_range} is: {lottery_count}")
     except:
