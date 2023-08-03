@@ -4,7 +4,7 @@ import pandas as pd
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.utils import get_column_letter
-from openpyxl.styles import Font, Alignment
+from openpyxl.styles import Font, Alignment, Border, Side
 
 def save_to_excel(df, file_name):
     # Create a workbook and worksheet
@@ -23,10 +23,10 @@ def save_to_excel(df, file_name):
 
     # Write the DataFrame to the worksheet
     for row in dataframe_to_rows(df, index=False, header=True):
-        ws.append(row)
+        ws.append(row[:-1])
 
     # Set column width for better readability
-    column_widths = [15, 20, 20, 15, 20]
+    column_widths = [15, 20, 20, 15]
     for i, width in enumerate(column_widths, start=1):
         col_letter = get_column_letter(i)
         ws.column_dimensions[col_letter].width = width
