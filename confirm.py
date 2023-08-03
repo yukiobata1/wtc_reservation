@@ -34,7 +34,7 @@ options = Options()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+driver = webdriver.Chrome(service=Service(), options=options)
 
 def check_available(userid: str, password: str, driver) -> int:
   # 使用不可→0を返す、使用可→1を返す
