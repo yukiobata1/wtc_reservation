@@ -3,7 +3,7 @@ import numpy as np
 import os
 import sys
 from tqdm import tqdm
-import datetime
+import datetime from 
 import utils
 import time
 import inspect
@@ -162,7 +162,7 @@ for i, court in enumerate(court_list):
   to_menu.click()
   
 
-current_date = date.today().strftime("[%m-%d]")
+current_date = datetime.date.today().strftime("[%m-%d]")
 
 file_path = os.path.join(DATA_BASE, f'投票数{current_date}.xlsx')
 utils.save_votes(result, file_path)
