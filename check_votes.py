@@ -162,6 +162,7 @@ for i, court in enumerate(court_list):
   to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
   to_menu.click()
 
+DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 current_date = datetime.date.today().strftime("_%m月%d日%H時")
 file_path = os.path.join(DATA_BASE, f'投票数{current_date}.xlsx')
 utils.save_votes(result, file_path)
