@@ -89,3 +89,45 @@ def check_single_schedule(current_time, schedule):
             return True
 
     return False
+
+def save_votes(data):
+  date_dict = create_date_dict(data)
+  thin_border = Border(left=Side(style='thin'),
+                     right=Side(style='thin'),
+                     top=Side(style='thin'),
+                     bottom=Side(style='thin'))
+
+  # Create a workbook and worksheet
+  wb = Workbook()
+  ws = wb.active
+
+  # Set the title and apply formatting
+  title = "埼玉県営コート: 票数"
+  ws['A1'] = title
+  title_font = Font(size=14, bold=True)
+  ws['A1'].font = title_font
+
+  count = 0
+  for i, (date, courts) in enumerate(date_dict.items()):
+    # set border to each cell
+    for row in ws[f'B{2+i*16}:G{2+i*16+12}']:
+      for cell in row:
+        cell.border = thin_border
+    ws.cell(row=2+i*16, column=2, value= f"{date}")
+    # create header
+    start_times = ['08:30', '10:30', '12:30', '14:30'] 
+    for j, value in enumerate(start_times):
+      ws.cell(row=2+i*16, column=2+j+1, value= f"{value}")
+
+    # write rows
+    for j, court in enumerate(courts):
+      ws.cell(row=2+i*16+(j+1), column=2, value= f"{j+1}番")
+      ws.cell(row=2+i*16+(j+1), column=2+len(court), value= f"{j+1}番")
+      for k, vote in enumerate(court[1:]):
+        if vote=="unavailable":
+          vote = "休"
+        ws.cell(row=2+i*16+(j+1), column=2+(k+1), value= f"{vote}")
+    
+
+    # Save the Excel file
+    wb.save("votes.xlsx")
