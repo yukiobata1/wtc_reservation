@@ -163,7 +163,9 @@ for i, court in enumerate(court_list):
   to_menu.click()
 
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-current_date = datetime.date.today().strftime("_%m月%d日%H時")
+from datetime import timedelta, timezone
+tz = timezone(timedelta(hours=+9), 'Asia/Tokyo')
+datetime.datetime.now(tz).strftime("_%m月%d日%H時")
 file_path = os.path.join(DATA_BASE, f'投票数{current_date}.xlsx')
 utils.save_votes(result, file_path)
 
@@ -178,5 +180,5 @@ for court, value in data_copy.items():
         data_copy[court][date][time] = 1 if number == 0 else number*3 
   
 
-file_path = os.path.join(DATA_BASE, f'票の割り振り_たたき台{current_date}.xlsx')
+file_path = os.path.join(DATA_BASE, f'たたき台{current_date}.xlsx')
 utils.save_votes(data_copy, file_path)
