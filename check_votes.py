@@ -165,7 +165,7 @@ for i, court in enumerate(court_list):
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 from datetime import timedelta, timezone
 tz = timezone(timedelta(hours=+9), 'Asia/Tokyo')
-datetime.datetime.now(tz).strftime("_%m月%d日%H時")
+current_date = datetime.datetime.now(tz).strftime("_%m月%d日%H時")
 file_path = os.path.join(DATA_BASE, f'投票数{current_date}.xlsx')
 utils.save_votes(result, file_path)
 
