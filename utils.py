@@ -106,7 +106,7 @@ def create_date_dict(data):
             rows_dict[date].append([int(court)+1] + [times[time] for time in columns])
     return rows_dict
 
-def save_votes(data):
+def save_votes(data, file_path):
     date_dict = create_date_dict(data)
     thin_border = Border(left=Side(style='thin'),
                      right=Side(style='thin'),
@@ -144,4 +144,4 @@ def save_votes(data):
                 ws.cell(row=2+i*16+(j+1), column=2+(k+1), value= f"{vote}")
 
     # Save the Excel file
-    wb.save("votes.xlsx")
+    wb.save(file_path)
