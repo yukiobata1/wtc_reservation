@@ -158,7 +158,7 @@ for i, court in enumerate(court_list):
 
     next_month_date += datetime.timedelta(days=1)
      
-  # メニューに戻って、別のコートに対するものを取得
+  # メニューに戻って、別のコートの票数を取得
   to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
   to_menu.click()
 
@@ -167,3 +167,16 @@ current_date = datetime.date.today().strftime("_%m月%d日%H時")
 file_path = os.path.join(DATA_BASE, f'投票数{current_date}.xlsx')
 utils.save_votes(result, file_path)
 
+# たたき台の作成
+data_copy = result.copy()
+for court, value in data_copy.items():
+  for date, times in value.items():
+    for time, number in times.items():
+      if number == "unavailable":
+        continue
+      else:
+        data_copy[court][date][time] = 1 if number == 0 else number*3 
+  
+
+file_path = os.path.join(DATA_BASE, f'票の割り振り_たたき台{current_date}.xlsx')
+utils.save_votes(data_copy, file_path)
