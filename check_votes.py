@@ -140,9 +140,7 @@ for i, court in enumerate(court_list):
         next_element = driver.find_element(By.XPATH, xpath_expression)
 
         lottery_count_text = next_element.text.strip()
-        lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])
-        print(f"{target_time_range}:{lottery_count}")
-        
+        lottery_count = int(lottery_count_text.split('<')[-1].strip('>').split(';')[-1])        
         # 結果に抽選数を追加
         result[i][str_date][start_time] = lottery_count
       
