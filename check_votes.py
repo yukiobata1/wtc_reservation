@@ -160,70 +160,9 @@ for i, court in enumerate(court_list):
   to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
   to_menu.click()
   
-# 得た投票をどのように表に直すか
-with open("sample_file.json", "w") as file:
-    json.dump(result, file)
-  # # デバッグ用
-  # all_elements = driver.find_elements(By.XPATH, "//*[text()]")
 
-  # # Print the text content of each element
-  # for element in all_elements:
-  #     print(element.text)
+current_date = date.today().strftime("[%m-%d]")
 
-
-#   while 1:
-#     try: 
-#       available_court = driver.find_element(By.XPATH, "//input[contains(@name, 'chkComa')]")
-#       available_court.click()
-
-#       #実際に予約するわけではなく、登録停止の確認のため
-#       reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
-#       reservation_button.click()
-#       break
-
-#     except NoSuchElementException:
-#       # 次の日に遷移
-#       next_day = driver.find_element(By.XPATH, "//input[contains(@value,  '次日')]")
-#       next_day.click()
-
-#   # 利用停止の確認
-#   try:
-#     driver.find_element(By.XPATH, "//form[contains(text(),  '利用停止のため、予約することができません。')]")
-#     # print("この番号は利用停止中です。")
-#     return 0
-#   except NoSuchElementException:
-#     # print("この番号は使用可能です。")
-#     return 1
-
-# # 空の行を除去
-# df = df.dropna()
-# availability = []
-
-# for index, row in tqdm(df.iterrows()):
-#   # 各番号についての利用可否確認
-
-#   # デバッグ時はdebug_list内の番号のみ
-#   if DEBUG == True:
-#     if row["通し番号"] not in debug_list:
-#       availability.append(0)
-#       continue
-#   # 利用不可能な番号はスキップ
-#   if row["通し番号"] in unused:
-#     availability.append(0)
-#   # 番号が利用できるかチェック
-#   else:
-#     userid = row["ID"]
-#     password = row["パスワード"]
-#     availability.append(check_available(userid, password, driver))
-  
-#   print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
-
-# df["利用可否(1:可, 0:不可)"] = availability
-# available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
-
-# # 作成したdataframeの保存
-# current_date = date.today().strftime("[%m-%d]")
-
-# file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
-# utils.save_to_excel(available_df, file_path)
+file_path = os.path.join(DATA_BASE, f'投票数{current_date}.xlsx')
+utils.save_votes(result, file_path)
 
