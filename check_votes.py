@@ -3,7 +3,7 @@ import numpy as np
 import os
 import sys
 from tqdm import tqdm
-import datetime from 
+import datetime
 import utils
 import time
 import inspect
