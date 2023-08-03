@@ -128,7 +128,7 @@ def save_votes(data, file_path):
         # set border to each cell
         for row in ws[f'B{2+i*16}:G{2+i*16+12}']:
             for cell in row:
-            cell.border = thin_border
+                cell.border = thin_border
         ws.cell(row=2+i*16, column=2, value= f"{date}")
         # create header
         start_times = ['08:30', '10:30', '12:30', '14:30'] 
