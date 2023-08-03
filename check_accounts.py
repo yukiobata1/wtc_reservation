@@ -136,7 +136,7 @@ df["利用可否(1:可, 0:不可)"] = availability
 available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
 
 # 作成したdataframeの保存
-current_date = date.today().strftime("[%m-%d]")
+current_date = date.today().strftime("[m月%d日]")
 
 file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
 utils.save_to_excel(available_df, file_path)
