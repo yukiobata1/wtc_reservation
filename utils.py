@@ -126,23 +126,23 @@ def save_votes(data, file_path):
     count = 0
     for i, (date, courts) in enumerate(date_dict.items()):
         # set border to each cell
-        for row in ws[f'B{2+i*16}:G{2+i*16+12}']:
+        for row in ws[f'B{1+i*16}:G{1+i*16+12}']:
             for cell in row:
                 cell.border = thin_border
-        ws.cell(row=2+i*16, column=2, value= f"{date}")
+        ws.cell(row=1+i*16, column=2, value= f"{date}")
         # create header
         start_times = ['08:30', '10:30', '12:30', '14:30'] 
         for j, value in enumerate(start_times):
-            ws.cell(row=2+i*16, column=2+j+1, value= f"{value}")
+            ws.cell(row=1+i*16, column=2+j+1, value= f"{value}")
 
         # write number of votes for each day
         for j, court in enumerate(courts):
-            ws.cell(row=2+i*16+(j+1), column=2, value= f"{j+1}番")
-            ws.cell(row=2+i*16+(j+1), column=2+len(court), value= f"{j+1}番")
+            ws.cell(row=1+i*16+(j+1), column=2, value= f"{j+1}番")
+            ws.cell(row=1+i*16+(j+1), column=2+len(court), value= f"{j+1}番")
             for k, vote in enumerate(court[1:]):
                 if vote=="unavailable":
                     vote = "休"
-                ws.cell(row=2+i*16+(j+1), column=2+(k+1), value= f"{vote}")
+                ws.cell(row=1+i*16+(j+1), column=2+(k+1), value= f"{vote}")
 
     # Save the Excel file
     wb.save(file_path)
