@@ -17,15 +17,41 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 
 # デバッグ用
-DEBUG = False
-debug_list = [259, 260, 261]
+DEBUG = True
 
 if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
 
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-df = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
+accounts = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
+# 空の行を除去
+accounts = accounts.dropna()
+
+# 各コート選択
+  court_list = [
+  '第１テニスコート第１クレーコート',
+  '第１テニスコート第２クレーコート',
+  '第１テニスコート第３人工芝コート',
+  '第１テニスコート第４人工芝コート',
+  '第１テニスコート第５人工芝コート',
+  '第１テニスコート第６人工芝コート',
+  '第１テニスコート第７人工芝コート',
+  '第１テニスコート第８人工芝コート',
+  '第１テニスコート第９人工芝コート',
+  '第１テニスコート第１０人工芝コート',
+  '第２テニスコート第１１人工芝コート',
+  '第２テニスコート第１２人工芝コート'
+  ]
+
+time_conversion = {
+  "6:30": "06:30-08:30",
+  "8:30": "08:30-10:30",
+  "10:30": "10:30-12:30", 
+  "12:30": "12:30-14:30", 
+  "14:30": "14:30-16:30",
+  "16:30": "16:30-18:30",
+}
 
 # 個人で利用する目的などで利用不可能な通し番号
 unused = [31,]
@@ -36,7 +62,7 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
 
-def check_available(userid: str, password: str, driver) -> int:
+def single_vote(date, time, court, account, userid, userid):
   # 使用不可→0を返す、使用可→1を返す
   
   # 予約ボタンクリック
@@ -53,12 +79,6 @@ def check_available(userid: str, password: str, driver) -> int:
   ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
   ok_button.click()
 
-  try:
-    ID_password_unmatch = driver.find_element(By.XPATH, "//form[contains(text(),'ＩＤ又はパスワードに誤りがあります')]")
-    return 0
-  except NoSuchElementException:
-    pass
-
   # 所在地
   select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
   select_by_place.click()
@@ -71,72 +91,72 @@ def check_available(userid: str, password: str, driver) -> int:
   
   tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
   tokorozawa_park.click()
-  # ここから確認用
+  
   any_court = driver.find_element(By.XPATH, "//input[contains(@name,'rdo_SHISETU')]")
   any_court.click()
   
   ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
   ok_button.click()
+
+  # 来月の年数取得
+  current_date = datetime.date.today()
+  next_month_date = current_date.replace(day=1) + datetime.timedelta(days=32)
+  next_month_date = next_month_date.replace(day=1)
+
+  # 日時指定
+  date = datetime.strptime(date, "%m-%d")
   
-  # 有効期限切れ
-  try:
-    driver.find_element(By.XPATH, "//form[contains(text(),  '利用者の有効期限が切れています')]")
-    return 0
-  except NoSuchElementException:
-    pass
+  year_input = driver.find_element(By.NAME, 'selYear')
+  month_input = driver.find_element(By.NAME, 'selMonth')
+  day_input = driver.find_element(By.NAME, 'selDay')
   
-  while 1:
-    try: 
-      available_court = driver.find_element(By.XPATH, "//input[contains(@name, 'chkComa')]")
-      available_court.click()
-      
-      #実際に予約するわけではなく、登録停止の確認のため
-      reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
-      reservation_button.click()
-      break
-    
-    except NoSuchElementException:
-      # 次の日に遷移
-      next_day = driver.find_element(By.XPATH, "//input[contains(@value,  '次日')]")
-      next_day.click()
+  year_input.clear()
+  year_input.send_keys(str(next_month_date.year))  # Set the year value
   
-  # 利用停止の確認
-  try:
-    driver.find_element(By.XPATH, "//form[contains(text(),  '利用停止のため、予約することができません。')]")
-    # print("この番号は利用停止中です。")
-    return 0
-  except NoSuchElementException:
-    # print("この番号は使用可能です。")
-    return 1
-    
-# 空の行を除去
-df = df.dropna()
-availability = []
-
-for index, row in tqdm(df.iterrows()):
-  # 各番号についての利用可否確認
-
-  # デバッグ時はdebug_list内の番号のみ
-  if DEBUG == True:
-    if row["通し番号"] not in debug_list:
-      availability.append(0)
-      continue
-  # 利用不可能な番号はスキップ
-  if row["通し番号"] in unused:
-    availability.append(0)
-  # 番号が利用できるかチェック
-  else:
-    userid = row["ID"]
-    password = row["パスワード"]
-    availability.append(check_available(userid, password, driver))
+  month_input.clear()
+  month_input.send_keys(str(date.month))  # Set the month value
   
-  print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
+  day_input.clear()
+  day_input.send_keys(str(date.day))  # Set the day value
 
-df["利用可否(1:可, 0:不可)"] = availability
-available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
+  # コートを指定
+  target_text = court_list[court]
+  xpath_expression = f"//input[@type='RADIO'][following-sibling::text()[1][contains(., '{target_text}')]]"
+  radio_button = driver.find_element(By.XPATH, xpath_expression)
+  radio_button.click()
 
-# 作成したdataframeの保存
-current_date = date.today().strftime("[m月%d日]")
+  submit_button = driver.find_element(By.XPATH, "//input[contains(@value, 'ＯＫ')]")
+  submit_button.click()
 
-file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
-utils.save_to_excel(available_df, file_path)
+  xpath_expression = f"//input[@name='chkComa'][following-sibling::text()[1][contains(., '{time_conversion[time]}')]][following-sibling::font[@color='Blue']]"
+  time_check = driver.find_element(By.XPATH, xpath_expression)
+  time_check.click()
+  
+  reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
+  reservation_button.click()
+
+  # 確認画面
+  proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
+  proceed_button.click()
+
+  # 正しく遷移できているか確認
+  # 日付
+  date_exp = date.strftime("%m/%d")
+  driver.find_element(By.XPATH, f"//text()[contains(., '{date_exp}')]")
+  # 時間
+  start_time, end_time = time_conversion[time].split("-")
+  driver.find_element(By.XPATH, f"//text()[contains(., '{start_time}')]")
+  driver.find_element(By.XPATH, f"//text()[contains(., '{end_time}')]")
+  # コート
+  driver.find_element(By.XPATH, f"//text()[contains(., '{court_list[court]}')]")
+
+  # 予約実行
+  if DEBUG==False:
+    driver.find_element(By.XPATH, f"//input[contains(@value, '予約実行')]")
+
+  # メニューに戻って、別のコートの票数を取得
+  to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
+  to_menu.click()
+
+if __name__ == "__main__":
+  
