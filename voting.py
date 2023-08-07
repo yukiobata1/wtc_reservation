@@ -177,7 +177,7 @@ if __name__ == "__main__":
     import time
     time.sleep(100)
     print(f"{used_votes=}")
-    print(f"{vote_dest=})
+    print(f"{vote_dest=}")
   
   except FileNotFoundError:
     print("remain votes doesn't exist")
