@@ -143,6 +143,10 @@ def single_vote(date, time, court, userid, password):
   if DEBUG==False:
     driver.find_element(By.XPATH, f"//input[contains(@value, '予約実行')]")
 
+  page_source = driver.page_source
+  # Print all the text in the page
+  print(page_source)
+  
   # メニューに戻って、別のコートの票数を取得
   to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
   to_menu.click()
@@ -158,9 +162,12 @@ for i, row in tqdm(vote_dest.iterrows()):
   user = accounts[accounts["通し番号"] == row.account]
   userid = user["ID"].iloc[0]
   password = user["パスワード"].iloc[0]
-  print(f"{date, time, court, user, userid, password=}")
+  print(f"{date, time, court, userid, password=}")
   
+  # 投票
   single_vote(date=date, time=time, court=court, userid=userid, password=password)
+  
   used_votes[row.account] += 1
+  # 使用された票を記録
   remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
   remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
