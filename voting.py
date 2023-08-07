@@ -160,8 +160,8 @@ def single_vote(date, time, court, userid, password):
 
 if __name__ == "__main__":
   vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
-  voted = 4 - df["残り票数"]
   used_votes = defaultdict(lambda: 0)
+  # 再開
   try:
     ramain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
     s = 0
