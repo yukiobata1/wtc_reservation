@@ -102,7 +102,7 @@ def single_vote(date, time, court, userid, password):
   next_month_date = next_month_date.replace(day=1)
 
   # 日時指定
-  date = datetime.datetime.strptime("%m-%d")
+  date = datetime.datetime.strptime(date, "%m-%d")
   
   year_input = driver.find_element(By.NAME, 'selYear')
   month_input = driver.find_element(By.NAME, 'selMonth')
@@ -167,7 +167,7 @@ for i, row in tqdm(vote_dest.iterrows()):
   user = accounts[accounts["通し番号"] == row.account]
   userid = user["ID"].iloc[0]
   password = user["パスワード"].iloc[0]
-
+  print(f"{date, time, court, user, userid, password=}")
   
   single_vote(date=date, time=time, court=court, userid=userid, password=password)
   used_votes[row.account] += 1
