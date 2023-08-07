@@ -102,7 +102,7 @@ def single_vote(date, time, court, userid, password):
   next_month_date = next_month_date.replace(day=1)
 
   # 日時指定
-  date = date.strptime("%m-%d")
+  date = datetime.strptime("%m-%d")
   print(date)
   
   year_input = driver.find_element(By.NAME, 'selYear')
