@@ -135,14 +135,21 @@ def single_vote(date, time, court, userid, password):
   # 正しく遷移できているか確認
   # 日付
   date_exp = date.strftime("%m/%d")
-  driver.find_element(By.XPATH, f"//text()[contains(., '{date_exp}')]")
+  WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{date_exp}')]"))
+    )
   # 時間
   start_time, end_time = time_conversion[time].split("-")
-  driver.find_element(By.XPATH, f"//text()[contains(., '{start_time}')]")
-  driver.find_element(By.XPATH, f"//text()[contains(., '{end_time}')]")
+  WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{start_time}')]"))
+    )
+  WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{end_time}')]"))
+    )
   # コート
-  driver.find_element(By.XPATH, f"//text()[contains(., '{court_list[court]}')]")
-
+  WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{court_list[court]}')]"))
+    )
   # 予約実行
   if DEBUG==False:
     driver.find_element(By.XPATH, f"//input[contains(@value, '予約実行')]")
