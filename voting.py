@@ -141,9 +141,14 @@ def single_vote(date, time, court, userid, password):
   WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{date_exp}')]"))
     )
+
+  confirm_button = driver.find_element(By.XPATH, f"//input[contains(@value, '予約確認')]")
+  confirm_button.click()
+  
   # 予約実行
   if DEBUG==False:
-    driver.find_element(By.XPATH, f"//input[contains(@value, '予約実行')]")
+    reserve_button = driver.find_element(By.XPATH, f"//input[contains(@value, '予約実行')]")
+    reserve_button.click()
 
   page_source = driver.page_source
   # Print all the text in the page
