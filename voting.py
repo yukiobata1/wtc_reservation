@@ -127,6 +127,9 @@ def single_vote(date, time, court, userid, password):
   submit_button = driver.find_element(By.XPATH, "//input[contains(@value, 'ＯＫ')]")
   submit_button.click()
 
+  import time
+  time.sleep(100)
+
   xpath_expression = f"//input[@name='chkComa'][following-sibling::text()[1][contains(., '{time_conversion[time]}')]][following-sibling::font[@color='Blue']]"
   time_check = driver.find_element(By.XPATH, xpath_expression)
   time_check.click()
