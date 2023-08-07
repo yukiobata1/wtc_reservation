@@ -89,12 +89,10 @@ def single_vote(date, time, court, userid, password):
   
   tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
   tokorozawa_park.click()
-  
-  any_court = driver.find_element(By.XPATH, "//input[contains(@name,'rdo_SHISETU')]")
-  any_court.click()
-  
-  ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
-  ok_button.click()
+
+
+  import time
+  time.sleep(10)
 
   # 来月の年数取得
   current_date = datetime.date.today()
@@ -103,6 +101,9 @@ def single_vote(date, time, court, userid, password):
 
   # 日時指定
   date = datetime.datetime.strptime(date, "%m-%d")
+
+  import time
+  time.sleep(10)
 
   print(f"{driver.find_element(By.XPATH, '//title').text=}")
   year_input = driver.find_element(By.NAME, 'selYear')
@@ -126,9 +127,6 @@ def single_vote(date, time, court, userid, password):
 
   submit_button = driver.find_element(By.XPATH, "//input[contains(@value, 'ＯＫ')]")
   submit_button.click()
-
-  import time
-  time.sleep(100)
 
   xpath_expression = f"//input[@name='chkComa'][following-sibling::text()[1][contains(., '{time_conversion[time]}')]][following-sibling::font[@color='Blue']]"
   time_check = driver.find_element(By.XPATH, xpath_expression)
