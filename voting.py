@@ -193,6 +193,8 @@ if __name__ == "__main__":
 
     # 投票
     # single_vote(date=date, time=time, court=court, userid=userid, password=password)
+    import time
+    time.sleep(0.8)
 
     used_votes[row.account] += 1
     # 使用された票を記録
