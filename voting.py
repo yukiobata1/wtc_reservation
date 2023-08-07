@@ -176,7 +176,7 @@ if __name__ == "__main__":
       used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"].iloc[0])
     print(f"{used_votes=}")
     print(f"{vote_dest=}")
-    # time.sleep(100)
+    time.sleep(100)
   
   except FileNotFoundError:
     print("remain votes doesn't exist")
