@@ -62,7 +62,7 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
 
-def single_vote(date, time, court, account, userid, userid):
+def single_vote(date, time, court, userid, password):
   # 使用不可→0を返す、使用可→1を返す
   
   # 予約ボタンクリック
@@ -159,4 +159,12 @@ def single_vote(date, time, court, account, userid, userid):
   to_menu.click()
 
 if __name__ == "__main__":
-  
+  vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+  for i, row in vote_dest.iterrows():
+    date = row.date
+    time = row.time
+    court = row.court
+    user = accounts[accounts["通し番号"] == row.account]
+    userid = user["ID"].iloc[0]
+    password = user["パスワード"].iloc[0]
+    print(f"{date, time, court, userid, password=}")
