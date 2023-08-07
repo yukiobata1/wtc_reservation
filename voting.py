@@ -174,10 +174,10 @@ if __name__ == "__main__":
 
     for number in remain_votes["通し番号"]:
       used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"].iloc[0])
-    import time
-    print(f"{used_votes=}")
-    print(f"{vote_dest=}")
-    time.sleep(100)
+    # import time
+    # print(f"{used_votes=}")
+    # print(f"{vote_dest=}")
+    # time.sleep(100)
   
   except FileNotFoundError:
     print("remain votes doesn't exist")
@@ -192,9 +192,9 @@ if __name__ == "__main__":
     print(f"{date, time, court, userid, password=}")
 
     # 投票
-    single_vote(date=date, time=time, court=court, userid=userid, password=password)
+    # single_vote(date=date, time=time, court=court, userid=userid, password=password)
 
     used_votes[row.account] += 1
     # 使用された票を記録
     remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
-    remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+    # remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
