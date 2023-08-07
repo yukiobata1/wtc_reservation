@@ -69,9 +69,11 @@ def single_vote(date, time, court, userid, password):
   reservation_button.click()
   
   user_to_fill = driver.find_element(By.XPATH, "//input[@name='txtUserCD']")
+  user_to_fill.clear()
   user_to_fill.send_keys(userid)
   
   pass_to_fill = driver.find_element(By.XPATH, "//input[@name='txtPassword']")
+  pass_to_fill.clear()
   pass_to_fill.send_keys(password)
   
   ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
