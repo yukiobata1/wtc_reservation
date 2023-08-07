@@ -25,7 +25,8 @@ if utils.check_schedule_within_30_minutes() == 1:
   exit(0)
 
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-accounts = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
+file_path = glob(path.join(DATA_BASE, "埼玉県営利用可名義*.xlsx"))
+accounts = pd.read_excel(file_path,usecols="A:D", header=1)
 # 空の行を除去
 accounts = accounts.dropna()
 
