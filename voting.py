@@ -3,7 +3,7 @@ import numpy as np
 import os
 import sys
 from tqdm import tqdm
-from datetime import date
+import datetime
 import utils
 from collections import defaultdict
 
