@@ -5,6 +5,7 @@ import sys
 from tqdm import tqdm
 from datetime import date
 import utils
+from collections import defaultdict
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -63,7 +64,7 @@ options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
 
 def single_vote(date, time, court, userid, password):
-  # 使用不可→0を返す、使用可→1を返す
+  # 与えられた予約を実行
   
   # 予約ボタンクリック
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
@@ -160,11 +161,18 @@ def single_vote(date, time, court, userid, password):
 
 if __name__ == "__main__":
   vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
-  for i, row in vote_dest.iterrows():
-    date = row.date
-    time = row.time
-    court = row.court
-    user = accounts[accounts["通し番号"] == row.account]
-    userid = user["ID"].iloc[0]
-    password = user["パスワード"].iloc[0]
-    print(f"{date, time, court, userid, password=}")
+
+used_votes = defaultdict(lambda: 0)
+for i, row in vote_dest.iterrows():
+  date = row.date
+  time = row.time
+  court = row.court
+  user = accounts[accounts["通し番号"] == row.account]
+  userid = user["ID"].iloc[0]
+  password = user["パスワード"].iloc[0]
+
+  
+  single_vote(date=date, time=time, court=court, userid=userid, password=password)
+  used_votes[row.account] += 1
+  remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-a[idx] for idx in list(accounts["通し番号"])]})
+  remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
