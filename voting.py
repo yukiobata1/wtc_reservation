@@ -60,11 +60,11 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
 
+# 予約ボタンクリック
+driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
+
 def single_vote(date, time, court, userid, password):
   # 与えられた予約を実行
-  
-  # 予約ボタンクリック
-  driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
   reservation_button = driver.find_element(By.XPATH, "//*[text()='施設の予約']")
   reservation_button.click()
   
@@ -103,6 +103,8 @@ def single_vote(date, time, court, userid, password):
 
   # 日時指定
   date = datetime.datetime.strptime(date, "%m-%d")
+
+  print(f"{driver.gettitle()=}")
   
   year_input = driver.find_element(By.NAME, 'selYear')
   month_input = driver.find_element(By.NAME, 'selMonth')
