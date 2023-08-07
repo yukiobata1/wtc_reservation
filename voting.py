@@ -30,7 +30,7 @@ accounts = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート
 accounts = accounts.dropna()
 
 # 各コート選択
-  court_list = [
+court_list = [
   '第１テニスコート第１クレーコート',
   '第１テニスコート第２クレーコート',
   '第１テニスコート第３人工芝コート',
@@ -43,7 +43,7 @@ accounts = accounts.dropna()
   '第１テニスコート第１０人工芝コート',
   '第２テニスコート第１１人工芝コート',
   '第２テニスコート第１２人工芝コート'
-  ]
+]
 
 time_conversion = {
   "6:30": "06:30-08:30",
@@ -53,9 +53,6 @@ time_conversion = {
   "14:30": "14:30-16:30",
   "16:30": "16:30-18:30",
 }
-
-# 個人で利用する目的などで利用不可能な通し番号
-unused = [31,]
 
 options = Options()
 options.add_argument('--headless')
