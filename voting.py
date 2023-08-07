@@ -98,7 +98,6 @@ def single_vote(date, time, court, userid, password):
   # 日時指定
   date = datetime.datetime.strptime(date, "%m-%d")
 
-  print(f"{driver.find_element(By.XPATH, '//title').text=}")
   year_input = driver.find_element(By.NAME, 'selYear')
   month_input = driver.find_element(By.NAME, 'selMonth')
   day_input = driver.find_element(By.NAME, 'selDay')
@@ -137,19 +136,6 @@ def single_vote(date, time, court, userid, password):
   date_exp = date.strftime("%m/%d")
   WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{date_exp}')]"))
-    )
-  # 時間
-  # start_time, end_time = time_conversion[time].split("-")
-  # print(f"{start_time, end_time=}")
-  # WebDriverWait(driver, 10).until(
-  #      EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{start_time}')]"))
-  #  )
-  #WebDriverWait(driver, 10).until(
-  #      EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{end_time}')]"))
-  #  )
-  # コート
-  WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{court_list[court]}')]"))
     )
   # 予約実行
   if DEBUG==False:
