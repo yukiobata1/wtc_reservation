@@ -104,8 +104,7 @@ def single_vote(date, time, court, userid, password):
   # 日時指定
   date = datetime.datetime.strptime(date, "%m-%d")
 
-  print(f"{driver.getTitle()=}")
-  
+  print(f"{driver.find_element(By.XPATH, '//title').text=}")
   year_input = driver.find_element(By.NAME, 'selYear')
   month_input = driver.find_element(By.NAME, 'selMonth')
   day_input = driver.find_element(By.NAME, 'selDay')
