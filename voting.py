@@ -163,9 +163,9 @@ if __name__ == "__main__":
   used_votes = defaultdict(lambda: 0)
   # 再開
   try:
-    ramain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+    remain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
     s = 0
-    voted = 4 - ramain_votes["残り票数"]
+    voted = 4 - remain_votes["残り票数"]
     while any(list(voted > 0)):
       s += len(voted[voted > 0])
       voted[voted > 0] -= 1
