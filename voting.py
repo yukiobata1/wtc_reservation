@@ -140,6 +140,7 @@ def single_vote(date, time, court, userid, password):
     )
   # 時間
   start_time, end_time = time_conversion[time].split("-")
+  print(f"{start_time, end_time=}")
   WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{start_time}')]"))
     )
