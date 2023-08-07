@@ -160,21 +160,41 @@ def single_vote(date, time, court, userid, password):
 
 if __name__ == "__main__":
   vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+  voted = 4 - df["残り票数"]
+  used_votes = defaultdict(lambda: 0)
+  try:
+    ramain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+    s = 0
+    voted = 4 - ramain_votes["残り票数"]
+    while any(list(voted > 0)):
+      s += len(voted[voted > 0])
+      voted[voted > 0] -= 1
+    
+    vote_dest = vote_dest.iloc[s:, :]
 
-used_votes = defaultdict(lambda: 0)
-for i, row in tqdm(vote_dest.iterrows()):
-  date = row.date
-  time = row.time
-  court = row.court
-  user = accounts[accounts["通し番号"] == row.account]
-  userid = user["ID"].iloc[0]
-  password = user["パスワード"].iloc[0]
-  print(f"{date, time, court, userid, password=}")
+    for number in remain_votes["通し番号"]:
+      used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"])
+    import time
+    time.sleep(100)
+    print(f"{used_votes=}")
+    print(f"{vote_dest=})
   
-  # 投票
-  single_vote(date=date, time=time, court=court, userid=userid, password=password)
-  
-  used_votes[row.account] += 1
-  # 使用された票を記録
-  remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
-  remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+  except FileNotFoundError:
+    print("remain votes doesn't exist")
+
+  for i, row in tqdm(vote_dest.iterrows()):
+    date = row.date
+    time = row.time
+    court = row.court
+    user = accounts[accounts["通し番号"] == row.account]
+    userid = user["ID"].iloc[0]
+    password = user["パスワード"].iloc[0]
+    print(f"{date, time, court, userid, password=}")
+
+    # 投票
+    single_vote(date=date, time=time, court=court, userid=userid, password=password)
+
+    used_votes[row.account] += 1
+    # 使用された票を記録
+    remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
+    remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
