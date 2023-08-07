@@ -160,5 +160,5 @@ for i, row in tqdm(vote_dest.iterrows()):
   
   single_vote(date=date, time=time, court=court, userid=userid, password=password)
   used_votes[row.account] += 1
-  remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-a[idx] for idx in list(accounts["通し番号"])]})
+  remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
   remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
