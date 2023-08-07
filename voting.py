@@ -90,10 +90,6 @@ def single_vote(date, time, court, userid, password):
   tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
   tokorozawa_park.click()
 
-
-  import time
-  time.sleep(10)
-
   # 来月の年数取得
   current_date = datetime.date.today()
   next_month_date = current_date.replace(day=1) + datetime.timedelta(days=32)
@@ -101,9 +97,6 @@ def single_vote(date, time, court, userid, password):
 
   # 日時指定
   date = datetime.datetime.strptime(date, "%m-%d")
-
-  import time
-  time.sleep(10)
 
   print(f"{driver.find_element(By.XPATH, '//title').text=}")
   year_input = driver.find_element(By.NAME, 'selYear')
