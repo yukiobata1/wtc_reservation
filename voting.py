@@ -139,14 +139,14 @@ def single_vote(date, time, court, userid, password):
         EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{date_exp}')]"))
     )
   # 時間
-  start_time, end_time = time_conversion[time].split("-")
-  print(f"{start_time, end_time=}")
-  WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{start_time}')]"))
-    )
-  WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{end_time}')]"))
-    )
+  # start_time, end_time = time_conversion[time].split("-")
+  # print(f"{start_time, end_time=}")
+  # WebDriverWait(driver, 10).until(
+  #      EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{start_time}')]"))
+  #  )
+  #WebDriverWait(driver, 10).until(
+  #      EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{end_time}')]"))
+  #  )
   # コート
   WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{court_list[court]}')]"))
