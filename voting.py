@@ -102,7 +102,8 @@ def single_vote(date, time, court, userid, password):
   next_month_date = next_month_date.replace(day=1)
 
   # 日時指定
-  date = datetime.strptime(date, "%m-%d")
+  date = date.strptime("%m-%d")
+  print(date)
   
   year_input = driver.find_element(By.NAME, 'selYear')
   month_input = driver.find_element(By.NAME, 'selMonth')
@@ -160,7 +161,7 @@ if __name__ == "__main__":
   vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
 
 used_votes = defaultdict(lambda: 0)
-for i, row in vote_dest.iterrows():
+for i, row in tqdm(vote_dest.iterrows()):
   date = row.date
   time = row.time
   court = row.court
