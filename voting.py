@@ -199,7 +199,6 @@ if __name__ == "__main__":
     userid = user["ID"].iloc[0]
     password = user["パスワード"].iloc[0]
     print(f"{date, time, court, userid, password=}")
-    logging.info(f'{date, time, court, userid, password=}')
 
     n_try = 5
     count = 0
