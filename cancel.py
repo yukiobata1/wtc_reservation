@@ -80,9 +80,9 @@ def single_cancel(userid: str, password: str):
   if len(reservation) == 0:
     logging.error(f"No existing reservation for no.{userid}")
     
-  for el in reservation:
+  for i, el in enumerate(reservation):
     import time
-    el.click()
+    driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO']")[i].click()
     time.sleep(3)
     
     cancel_button = driver.find_element(By.XPATH, "//input[contains(@value, '取消')]")
