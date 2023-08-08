@@ -32,12 +32,6 @@ accounts = pd.read_excel(file_path,usecols="A:D", header=1)
 # 空の行を除去
 accounts = accounts.dropna()
 
-options = Options()
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome(service=Service(), options=options)
-
 # def select_element(element):
 #   if not element.isSelected():
 #     element.click()
@@ -45,7 +39,11 @@ driver = webdriver.Chrome(service=Service(), options=options)
 
 def single_cancel(userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す
-  
+  options = Options()
+  options.add_argument('--headless')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-dev-shm-usage')
+  driver = webdriver.Chrome(service=Service(), options=options)
   # 予約ボタンクリック
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
   for_cancel = driver.find_element(By.XPATH, "//a[contains(text(), '予約の確認／取消')]")
@@ -106,6 +104,7 @@ def single_cancel(userid: str, password: str):
   # print(f"{password=}")
 
 def multi_cancel(df):
+  print(f"{df=}")
   for i, row in df.iterrows():
     id = row["ID"]
     password = row["パスワード"]
