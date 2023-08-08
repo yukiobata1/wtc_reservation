@@ -246,5 +246,5 @@ if __name__ == "__main__":
   p = Pool(16)
   import numpy as np
   vote_dests = np.array_split(vote_dest, 16)
-  result = p.map(multi_vote, vote_dests)
+  p.map(multi_vote, vote_dests)
         
