@@ -32,7 +32,7 @@ accounts = pd.read_excel(file_path,usecols="A:D", header=1)
 accounts = accounts.dropna()
 
 options = Options()
-options.add_argument('--headless')
+# options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
