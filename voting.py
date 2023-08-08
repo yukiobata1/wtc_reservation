@@ -130,7 +130,12 @@ def single_vote(date, time, court, userid, password):
   xpath_expression = f"//input[@name='chkComa'][following-sibling::text()[1][contains(., '{time_conversion[time]}')]][following-sibling::font[@color='Blue']]"
   time_check = driver.find_element(By.XPATH, xpath_expression)
   time_check.click()
+
   
+
+  WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//input[contains(@value,  '予約する')]"))
+    )
   reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
   reservation_button.click()
 
