@@ -7,7 +7,7 @@ import datetime
 import utils
 from collections import defaultdict
 import logging
-logging.basicConfig(filename='voting.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='voting.log', encoding='utf-8', level=logging.ERROR)
 
 import glob
 from selenium import webdriver
@@ -217,6 +217,6 @@ if __name__ == "__main__":
         count += 1
         driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
-      logging.info(f'{date, time, court, userid, password=}')
-      logging.info(f'Had error on this account, skip this.')
+    logging.error(f'{date, time, court, userid, password=}')
+    logging.error(f'Had error on this account, skip this.')
         
