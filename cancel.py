@@ -72,7 +72,7 @@ def single_cancel(userid: str, password: str):
   proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
   proceed_button.click()
 
-  reservation = driver.find_element(By.XPATH, "//input[@name='rdoYoyakuNO']")
+  # reservation = driver.find_element(By.XPATH, "//input[@name='rdoYoyakuNO']")
   # # select all the stuff
   # [select_element(el) for el in all_reservation] 
 
