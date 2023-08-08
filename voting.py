@@ -252,7 +252,7 @@ if __name__ == "__main__":
     for value in used_row:
       shared_used_row.append(value)
     lock = manager.Lock()
-    args = [zip(vote_dests, [shared_used_row] * 16, [lock]*16)]
+    args = list(zip(vote_dests, [shared_used_row] * 16, [lock]*16))
     p.starmap(multi_vote, args)
 
     # Close the pool and wait for the processes to finish
