@@ -139,8 +139,6 @@ def single_vote(date, time, court, userid, password):
   reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
   reservation_button.click()
 
-  driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
-
   #todo
   # try:
     # driver.find_element(By.XPATH, "//form[contains(text(), '施設窓口までお問い合わせください。')]")
