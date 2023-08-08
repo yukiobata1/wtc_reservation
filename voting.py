@@ -7,7 +7,6 @@ import datetime
 import utils
 from collections import defaultdict
 import logging
-from multiprocessing import Pool, Manager
 logging.basicConfig(filename='voting.log', encoding='utf-8', level=logging.ERROR)
 
 import glob
@@ -22,7 +21,7 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 
 # デバッグ用
-DEBUG = False
+DEBUG = True
 
 if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
@@ -176,86 +175,51 @@ def single_vote(date, time, court, userid, password):
 if __name__ == "__main__":
   vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
   used_votes = defaultdict(lambda: 0)
-  # 再開用, すでに抽選した行のインデックス
-  try:
-    used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
-  except FileNotFoundError:
-    print("No used_row found")
-    used_row = set()
-    to_save = pd.DataFrame({"used_row": used_row})
-    to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
-    
-  
   # 再開
-  # try:
-  #   remain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
-  #   s = 0
-  #   voted = 4 - remain_votes["残り票数"]
-  #   while any(list(voted > 0)):
-  #     s += len(voted[voted > 0])
-  #     voted[voted > 0] -= 1
+  try:
+    remain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+    s = 0
+    voted = 4 - remain_votes["残り票数"]
+    while any(list(voted > 0)):
+      s += len(voted[voted > 0])
+      voted[voted > 0] -= 1
     
-  #   vote_dest = vote_dest.iloc[s:, :]
+    vote_dest = vote_dest.iloc[s:, :]
 
-  #   for number in remain_votes["通し番号"]:
-  #     used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"].iloc[0])
-  #   print(f"{used_votes=}")
-  #   print(f"{vote_dest=}")
-  #   time.sleep(10)
+    for number in remain_votes["通し番号"]:
+      used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"].iloc[0])
+    print(f"{used_votes=}")
+    print(f"{vote_dest=}")
+    time.sleep(10)
   
-  # except FileNotFoundError:
-  #   print("remain votes doesn't exist")
-  def multi_vote(vote_dest, shared_used_row, lock):
-    # for multiprocessing
-    for i, row in vote_dest.iterrows():
-      if i in shared_used_row:
-        # すでにした抽選は飛ばす。
-        continue
-      date = row.date
-      time = row.time
-      court = row.court
-      user = accounts[accounts["通し番号"] == row.account]
-      userid = user["ID"].iloc[0]
-      password = user["パスワード"].iloc[0]
-      print(f"{date, time, court, userid, password=}")
-  
-      n_try = 4
-      count = 0
-      while count < n_try:
-        # 投票
-        # 不安定なので、複数回
-        try:
-          # single_vote(date=date, time=time, court=court, userid=userid, password=password)
-          # used_votes[row.account] += 1
-          # 使用された票を記録
-          # remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
-          # remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+  except FileNotFoundError:
+    print("remain votes doesn't exist")
 
-          with lock:
-            shared_used_row.append(i)
-          print(shared_used_row)
-          to_save = pd.DataFrame({"used_row": shared_used_row})
-          to_save.to_csv(os.path.join(DATA_BASE, "row.csv"), index=False)
-          break
-        except Exception as e:
-          print(e)
-          count += 1
-  
-        logging.error(f'{date, time, court, userid, password=}')
-        logging.error(f'Had error on this account, skip this.')
-        
-  p = Pool(16)
-  import numpy as np
-  vote_dests = np.array_split(vote_dest, 16)
-  # 共有された使用済み列
-  manager = Manager()
-  shared_used_row = manager.list(list(used_row))
-  lock = manager.Lock()
-  args = list(zip(vote_dests, [shared_used_row] * 16, [lock]*16))
-  p.starmap(multi_vote, args)
+  for i, row in tqdm(vote_dest.iterrows()):
+    date = row.date
+    time = row.time
+    court = row.court
+    user = accounts[accounts["通し番号"] == row.account]
+    userid = user["ID"].iloc[0]
+    password = user["パスワード"].iloc[0]
+    print(f"{date, time, court, userid, password=}")
 
-  # Close the pool and wait for the processes to finish
-  p.close()
-  p.join()
+    n_try = 4
+    count = 0
+    while count < n_try:
+      # 投票
+      # 不安定なので、複数回
+      try:
+        single_vote(date=date, time=time, court=court, userid=userid, password=password)
+        used_votes[row.account] += 1
+        # 使用された票を記録
+        remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
+        remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+        break
+      except Exception as e:
+        print(e)
+        count += 1
 
+      logging.error(f'{date, time, court, userid, password=}')
+      logging.error(f'Had error on this account, skip this.')
         
