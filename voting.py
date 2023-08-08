@@ -179,7 +179,7 @@ if __name__ == "__main__":
   # 再開用, すでに抽選した行のインデックス
   try:
     used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
-  except:
+  except FileNotFoundError:
     print("No used_row found")
     used_row = set()
     to_save = pd.DataFrame(used_row, columns=["used_row"])
