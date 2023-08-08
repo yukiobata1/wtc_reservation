@@ -32,7 +32,7 @@ accounts = pd.read_excel(file_path,usecols="A:D", header=1)
 accounts = accounts.dropna()
 
 options = Options()
-# options.add_argument('--headless')
+options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
@@ -81,16 +81,22 @@ def single_cancel(userid: str, password: str):
     logging.error(f"No existing reservation for no.{userid}")
     
   for el in reservation:
+    import time
     el.click()
+    time.sleep(3)
     
     cancel_button = driver.find_element(By.XPATH, "//input[contains(@value, '取消')]")
     cancel_button.click()
+    time.sleep(3)
 
     confirm_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
     confirm_button.click()
+    time.sleep(3)
 
     driver.execute_script("window.history.go(-1)")
+    time.sleep(3)
     driver.execute_script("window.history.go(-1)")
+    time.sleep(3)
 
   page_source = driver.page_source
   # Print all the text in the page
