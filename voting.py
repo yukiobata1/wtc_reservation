@@ -177,11 +177,13 @@ if __name__ == "__main__":
   vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
   used_votes = defaultdict(lambda: 0)
   # 再開用, すでに抽選した行のインデックス
-  used_row = set()
   try:
     used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
   except:
     print("No used_row found")
+    used_row = set()
+    to_save = pd.DataFrame(used_row, columns=["used_row"])
+    to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
     
   
   # 再開
