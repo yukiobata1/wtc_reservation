@@ -208,6 +208,8 @@ if __name__ == "__main__":
   def multi_vote(vote_dest):
     # for multiprocessing
     for i, row in tqdm(vote_dest.iterrows()):
+      import time as t
+      t.sleep(0.06)
       used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
       if i in used_row:
         # すでにした抽選は飛ばす。
@@ -235,6 +237,8 @@ if __name__ == "__main__":
           t.sleep(0.06)
           used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
           used_row.add(i)
+          import time as t
+          t.sleep(0.06)
           to_save = pd.DataFrame(used_row, columns=["used_row"])
           to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
           break
