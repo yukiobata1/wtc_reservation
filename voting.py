@@ -190,7 +190,9 @@ if __name__ == "__main__":
     password = user["パスワード"].iloc[0]
     print(f"{date, time, court, userid, password=}")
 
-    while 1:
+    n_try = 5
+    count = 0
+    while count < n_try:
       # 投票
       # 不安定なので、複数回
       try:
@@ -202,6 +204,8 @@ if __name__ == "__main__":
         break
       except Exception as e:
         print(e)
+        n_try += 1
+        
         driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
         
