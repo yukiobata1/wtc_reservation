@@ -210,7 +210,6 @@ if __name__ == "__main__":
     for i, row in tqdm(vote_dest.iterrows()):
       import time as t
       t.sleep(0.06)
-      used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
       if i in used_row:
         # すでにした抽選は飛ばす。
         continue
@@ -235,7 +234,7 @@ if __name__ == "__main__":
           # remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
           import time as t
           t.sleep(0.06)
-          used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
+          global used_row
           used_row.add(i)
           import time as t
           t.sleep(0.06)
