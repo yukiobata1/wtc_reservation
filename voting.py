@@ -248,14 +248,14 @@ if __name__ == "__main__":
   import numpy as np
   vote_dests = np.array_split(vote_dest, 16)
   # 共有された使用済み列
-  with Manager() as manager:
-    shared_used_row = manager.list(list(used_row))
-    lock = manager.Lock()
-    args = list(zip(vote_dests, [shared_used_row] * 16, [lock]*16))
-    p.starmap(multi_vote, args)
+  manager = Manager()
+  shared_used_row = manager.list(list(used_row))
+  lock = manager.Lock()
+  args = list(zip(vote_dests, [shared_used_row] * 16, [lock]*16))
+  p.starmap(multi_vote, args)
 
-    # Close the pool and wait for the processes to finish
-    p.close()
-    p.join()
+  # Close the pool and wait for the processes to finish
+  p.close()
+  p.join()
 
         
