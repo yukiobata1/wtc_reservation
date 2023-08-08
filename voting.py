@@ -208,7 +208,7 @@ if __name__ == "__main__":
   def multi_vote(vote_dest):
     # for multiprocessing
     global used_row
-    for i, row in tqdm(vote_dest.iterrows()):
+    for i, row in vote_dest.iterrows():
       
       import time as t
       t.sleep(0.06)
