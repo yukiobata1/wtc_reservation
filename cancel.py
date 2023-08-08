@@ -77,7 +77,7 @@ def single_cancel(userid: str, password: str):
 
   reservation = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO']")
   # select all the stuff
-  if len(reservation == 0):
+  if len(reservation) == 0:
     logging.error(f"No existing reservation for no.{userid}")
     
   for el in reservation:
