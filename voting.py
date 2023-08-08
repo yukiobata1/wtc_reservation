@@ -6,6 +6,8 @@ from tqdm import tqdm
 import datetime
 import utils
 from collections import defaultdict
+import logging
+logging.basicConfig(filename='voting.log', encoding='utf-8', level=logging.DEBUG)
 
 import glob
 from selenium import webdriver
@@ -131,6 +133,14 @@ def single_vote(date, time, court, userid, password):
   reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
   reservation_button.click()
 
+  driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
+
+  #todo
+  # try:
+    # driver.find_element(By.XPATH, "//form[contains(text(), '施設窓口までお問い合わせください。')]")
+  # except:
+    
+
   # 確認画面
   proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
   proceed_button.click()
@@ -205,9 +215,8 @@ if __name__ == "__main__":
       except Exception as e:
         print(e)
         n_try += 1
-        
         driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
+      logging.info(f'{date, time, court, userid, password=}')
+      logging.info(f'Had error on this account, skip this.')
         
-        
-    
