@@ -202,6 +202,8 @@ if __name__ == "__main__":
         break
       except Exception as e:
         print(e)
+        driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
+
         
         
     
