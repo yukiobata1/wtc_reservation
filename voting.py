@@ -7,8 +7,7 @@ import datetime
 import utils
 from collections import defaultdict
 import logging
-import multiprocessing 
-from multiprocessing import Pool
+from multiprocessing import Pool, Manager
 logging.basicConfig(filename='voting.log', encoding='utf-8', level=logging.ERROR)
 
 import glob
@@ -206,12 +205,9 @@ if __name__ == "__main__":
   
   # except FileNotFoundError:
   #   print("remain votes doesn't exist")
-  def multi_vote(vote_dest, shared_used_row):
+  def multi_vote(vote_dest, shared_used_row, lock):
     # for multiprocessing
     for i, row in vote_dest.iterrows():
-      
-      import time as t
-      t.sleep(0.06)
       if i in shared_used_row.value:
         # すでにした抽選は飛ばす。
         continue
@@ -235,10 +231,9 @@ if __name__ == "__main__":
           # remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
           # remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
 
-          with shared_used_row.get_lock():
-            shared_used_row.value.add(i)
-          import time as t
-          to_save = pd.DataFrame(used_row, columns=["used_row"])
+          with lock:
+            shared_used_row.append(i)
+          to_save = pd.DataFrame(shared_used_row, columns=["used_row"])
           to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
           break
         except Exception as e:
@@ -251,12 +246,17 @@ if __name__ == "__main__":
   p = Pool(16)
   import numpy as np
   vote_dests = np.array_split(vote_dest, 16)
-  shared_used_row = multiprocessing.Value('used_row', used_row)
-  args = [zip(vote_dests, [shared_used_row] * 16)]
-  p.starmap(multi_vote, args)
+  # 共有された使用済み列
+  with Manager() as manager:
+    shared_used_row = manager.list()
+    for value in used_row:
+      shared_used_row.append(value)
+    lock = manager.Lock()
+    args = [zip(vote_dests, [shared_used_row] * 16, [lock]*16)]
+    p.starmap(multi_vote, args)
 
-  # Close the pool and wait for the processes to finish
-  p.close()
-  p.join()
+    # Close the pool and wait for the processes to finish
+    p.close()
+    p.join()
 
         
