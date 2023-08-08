@@ -206,7 +206,7 @@ if __name__ == "__main__":
     password = user["パスワード"].iloc[0]
     print(f"{date, time, court, userid, password=}")
 
-    n_try = 5
+    n_try = 4
     count = 0
     while count < n_try:
       # 投票
