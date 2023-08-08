@@ -69,6 +69,7 @@ driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
 def single_vote(date, time, court, userid, password):
   # 与えられた予約を実行
+  driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
   reservation_button = driver.find_element(By.XPATH, "//*[text()='施設の予約']")
   reservation_button.click()
   
@@ -215,7 +216,6 @@ if __name__ == "__main__":
       except Exception as e:
         print(e)
         count += 1
-        driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
     logging.error(f'{date, time, court, userid, password=}')
     logging.error(f'Had error on this account, skip this.')
