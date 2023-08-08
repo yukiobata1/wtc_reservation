@@ -21,7 +21,7 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 
 # デバッグ用
-DEBUG = False
+DEBUG = True
 
 if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
@@ -59,7 +59,7 @@ time_conversion = {
 }
 
 options = Options()
-options.add_argument('--headless')
+# options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
