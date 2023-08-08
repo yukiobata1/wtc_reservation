@@ -7,6 +7,7 @@ import datetime
 import utils
 from collections import defaultdict
 import logging
+from multiprocessing import Pool
 logging.basicConfig(filename='voting.log', encoding='utf-8', level=logging.ERROR)
 
 import glob
