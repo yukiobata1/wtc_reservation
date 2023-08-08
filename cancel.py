@@ -34,9 +34,9 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
 
-def select_element(element):
-  if !element.isSelected():
-    element.click()
+# def select_element(element):
+#   if not element.isSelected():
+#     element.click()
 
 def single_cancel(userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す
