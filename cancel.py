@@ -21,25 +21,30 @@ if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
 
-DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-df = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
 
-# 個人で利用する目的などで利用不可能な通し番号
-unused = [31,]
+DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+file_path = glob.glob(os.path.join(DATA_BASE, "埼玉県営利用可名義*.xlsx"))[0]
+accounts = pd.read_excel(file_path,usecols="A:D", header=1)
+# 空の行を除去
+accounts = accounts.dropna()
 
 options = Options()
-options.add_argument('--headless')
+# options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
 
-def check_available(userid: str, password: str, driver) -> int:
+def select_element(element):
+  if !element.isSelected():
+    element.click()
+
+def single_cancel(userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す
   
   # 予約ボタンクリック
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
-  reservation_button = driver.find_element(By.XPATH, "//*[text()='施設の予約']")
-  reservation_button.click()
+  for_cancel = driver.find_element(By.XPATH, "//a[contains(text(), '予約の確認／取消')]")
+  for_cancel.click()
   
   user_to_fill = driver.find_element(By.XPATH, "//input[@name='txtUserCD']")
   user_to_fill.send_keys(userid)
@@ -50,90 +55,38 @@ def check_available(userid: str, password: str, driver) -> int:
   ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
   ok_button.click()
 
-  try:
-    ID_password_unmatch = driver.find_element(By.XPATH, "//form[contains(text(),'ＩＤ又はパスワードに誤りがあります')]")
-    return 0
-  except NoSuchElementException:
-    pass
+  proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
+  proceed_button.click()
 
-  # 所在地
-  select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
-  select_by_place.click()
-  
-  western_area = driver.find_element(By.XPATH, "//a[contains(text(),'西部エリア')]")
-  western_area.click()
+  # 未確定の抽選のみ確認ボタン
+  # 4, 5は抽選
+  exclude_list = [0, 1, 2, 3, 6, 7, 8]
+  for exclude_n in exclude_list:
+    el = driver.find_element(By.XPATH, f"//input[@name='chk_tSta{exclude_n}']")
+    el.click()
+
+  pref_park = driver.find_element(By.XPATH, f"//input[@name='chkKubun'][following-sibling::text()[1][contains(., '県営公園')]]")
+  pref_park.click()
   
   proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
   proceed_button.click()
-  
-  tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
-  tokorozawa_park.click()
-  # ここから確認用
-  any_court = driver.find_element(By.XPATH, "//input[contains(@name,'rdo_SHISETU')]")
-  any_court.click()
-  
-  ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
-  ok_button.click()
-  
-  # 有効期限切れ
-  try:
-    driver.find_element(By.XPATH, "//form[contains(text(),  '利用者の有効期限が切れています')]")
-    return 0
-  except NoSuchElementException:
-    pass
-  
-  while 1:
-    try: 
-      available_court = driver.find_element(By.XPATH, "//input[contains(@name, 'chkComa')]")
-      available_court.click()
-      
-      #実際に予約するわけではなく、登録停止の確認のため
-      reservation_button = driver.find_element(By.XPATH, "//input[contains(@value,  '予約する')]")
-      reservation_button.click()
-      break
-    
-    except NoSuchElementException:
-      # 次の日に遷移
-      next_day = driver.find_element(By.XPATH, "//input[contains(@value,  '次日')]")
-      next_day.click()
-  
-  # 利用停止の確認
-  try:
-    driver.find_element(By.XPATH, "//form[contains(text(),  '利用停止のため、予約することができません。')]")
-    # print("この番号は利用停止中です。")
-    return 0
-  except NoSuchElementException:
-    # print("この番号は使用可能です。")
-    return 1
-    
-# 空の行を除去
-df = df.dropna()
-availability = []
 
-for index, row in tqdm(df.iterrows()):
-  # 各番号についての利用可否確認
+  reservation = driver.find_element(By.XPATH, "//input[@name='rdoYoyakuNO']")
+  # # select all the stuff
+  # [select_element(el) for el in all_reservation] 
 
-  # デバッグ時はdebug_list内の番号のみ
-  if DEBUG == True:
-    if row["通し番号"] not in debug_list:
-      availability.append(0)
-      continue
-  # 利用不可能な番号はスキップ
-  if row["通し番号"] in unused:
-    availability.append(0)
-  # 番号が利用できるかチェック
-  else:
-    userid = row["ID"]
-    password = row["パスワード"]
-    availability.append(check_available(userid, password, driver))
-  
-  print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
+  cancel_button = driver.find_element(By.XPATH, "//input[contains(@value, '取消')]")
+  cancel_button.click()
 
-df["利用可否(1:可, 0:不可)"] = availability
-available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
+  page_source = driver.page_source
+  # Print all the text in the page
+  print(page_source)
 
-# 作成したdataframeの保存
-current_date = date.today().strftime("[m月%d日]")
+  confirm_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
+  confirm_button.click()
 
-file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
-utils.save_to_excel(available_df, file_path)
+id = "waseda1102"
+password = "1102"
+
+single_cancel(id, password)
+print("success")
