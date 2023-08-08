@@ -18,6 +18,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.common.exceptions import NoSuchElementException
+from multiprocessing import Pool
 
 
 if utils.check_schedule_within_30_minutes() == 1:
@@ -98,13 +99,20 @@ def single_cancel(userid: str, password: str):
     driver.execute_script("window.history.go(-1)")
     time.sleep(3)
 
-  page_source = driver.page_source
+  # page_source = driver.page_source
   # Print all the text in the page
-  print(page_source)
+  # print(page_source)
+print(f"{userid= }")
+print(f"{password=}")
 
+def multi_cancel(df):
+  for i, row in df.iterrows():
+    id = row["ID"]
+    password = row["パスワード"]
+    single_cancel(id, password)
 
-id = "waseda1102"
-password = "1102"
-
-single_cancel(id, password)
-print("success")
+if __name__ == "__main__":
+  p = Pool(16)
+  import numpy as np
+  ac_list = np.array_split(accounts, 16)
+  p.map(multi_cancel, ac_list)
