@@ -182,7 +182,7 @@ if __name__ == "__main__":
   except FileNotFoundError:
     print("No used_row found")
     used_row = set()
-    to_save = pd.DataFrame(used_row, columns=["used_row"])
+    to_save = pd.DataFrame({"used_row": used_row})
     to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
     
   
@@ -233,7 +233,7 @@ if __name__ == "__main__":
 
           with lock:
             shared_used_row.append(i)
-          to_save = pd.DataFrame(str(shared_used_row), columns=["used_row"])
+          to_save = pd.DataFrame({"used_row": shared_used_row})
           to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
           break
         except Exception as e:
@@ -248,9 +248,7 @@ if __name__ == "__main__":
   vote_dests = np.array_split(vote_dest, 16)
   # 共有された使用済み列
   with Manager() as manager:
-    shared_used_row = manager.list()
-    for value in used_row:
-      shared_used_row.append(value)
+    shared_used_row = manager.list(list(used_row))
     lock = manager.Lock()
     args = list(zip(vote_dests, [shared_used_row] * 16, [lock]*16))
     p.starmap(multi_vote, args)
