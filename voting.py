@@ -119,7 +119,7 @@ def single_vote(date, time, court, userid, password):
   day_input.send_keys(str(date.day))  # Set the day value
 
   # コートを指定
-  target_text = court_list[court]
+  target_text = court_list[court-1]
   xpath_expression = f"//input[@type='RADIO'][following-sibling::text()[1][contains(., '{target_text}')]]"
   radio_button = driver.find_element(By.XPATH, xpath_expression)
   radio_button.click()
