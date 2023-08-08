@@ -220,6 +220,6 @@ if __name__ == "__main__":
         print(e)
         count += 1
 
-    logging.error(f'{date, time, court, userid, password=}')
-    logging.error(f'Had error on this account, skip this.')
+      logging.error(f'{date, time, court, userid, password=}')
+      logging.error(f'Had error on this account, skip this.')
         
