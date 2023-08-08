@@ -233,8 +233,8 @@ if __name__ == "__main__":
 
           with lock:
             shared_used_row.append(i)
-          to_save = pd.DataFrame({"used_row": shared_used_row}, index=False)
-          to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
+          to_save = pd.DataFrame({"used_row": shared_used_row})
+          to_save.to_csv(os.path.join(DATA_BASE, "row.csv"), index=False)
           break
         except Exception as e:
           print(e)
