@@ -229,7 +229,7 @@ if __name__ == "__main__":
           # 使用された票を記録
           # remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
           # remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
-          to_save = pd.DataFrame(done_row, columns=["used_row"])
+          to_save = pd.DataFrame(used_row, columns=["used_row"])
           to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
           break
         except Exception as e:
