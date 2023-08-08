@@ -206,6 +206,7 @@ if __name__ == "__main__":
   def multi_vote(vote_dest):
     # for multiprocessing
     for i, row in tqdm(vote_dest.iterrows()):
+      used_row = set(pd.read_csv(os.path.join(DATA_BASE, "row.csv"))["used_row"])
       if i in used_row:
         # すでにした抽選は飛ばす。
         continue
