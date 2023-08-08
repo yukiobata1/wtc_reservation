@@ -217,7 +217,7 @@ if __name__ == "__main__":
         # 投票
         # 不安定なので、複数回
         try:
-          single_vote(date=date, time=time, court=court, userid=userid, password=password)
+          # single_vote(date=date, time=time, court=court, userid=userid, password=password)
           used_row.add(i)
           # used_votes[row.account] += 1
           # 使用された票を記録
