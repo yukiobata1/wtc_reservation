@@ -199,6 +199,7 @@ if __name__ == "__main__":
     userid = user["ID"].iloc[0]
     password = user["パスワード"].iloc[0]
     print(f"{date, time, court, userid, password=}")
+    logging.info(f'{date, time, court, userid, password=}')
 
     n_try = 5
     count = 0
@@ -214,7 +215,7 @@ if __name__ == "__main__":
         break
       except Exception as e:
         print(e)
-        n_try += 1
+        count += 1
         driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 
       logging.info(f'{date, time, court, userid, password=}')
