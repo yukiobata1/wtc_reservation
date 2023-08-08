@@ -233,6 +233,7 @@ if __name__ == "__main__":
 
           with lock:
             shared_used_row.append(i)
+          print(shared_used_row)
           to_save = pd.DataFrame({"used_row": shared_used_row})
           to_save.to_csv(os.path.join(DATA_BASE, "row.csv"), index=False)
           break
