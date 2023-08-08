@@ -102,8 +102,8 @@ def single_cancel(userid: str, password: str):
   # page_source = driver.page_source
   # Print all the text in the page
   # print(page_source)
-print(f"{userid= }")
-print(f"{password=}")
+  print(f"{userid= }")
+  print(f"{password=}")
 
 def multi_cancel(df):
   for i, row in df.iterrows():
