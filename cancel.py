@@ -6,6 +6,8 @@ import glob
 from tqdm import tqdm
 from datetime import date
 import utils
+import logging
+logging.basicConfig(filename='cancel.log', encoding='utf-8', level=logging.ERROR)
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -38,6 +40,7 @@ driver = webdriver.Chrome(service=Service(), options=options)
 # def select_element(element):
 #   if not element.isSelected():
 #     element.click()
+
 
 def single_cancel(userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す
@@ -72,19 +75,27 @@ def single_cancel(userid: str, password: str):
   proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
   proceed_button.click()
 
-  # reservation = driver.find_element(By.XPATH, "//input[@name='rdoYoyakuNO']")
-  # # select all the stuff
-  # [select_element(el) for el in all_reservation] 
+  reservation = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO']")
+  # select all the stuff
+  if len(reservation == 0):
+    logging.error(f"No existing reservation for no.{userid}")
+    
+  for el in reservation:
+    el.click()
+    
+    cancel_button = driver.find_element(By.XPATH, "//input[contains(@value, '取消')]")
+    cancel_button.click()
 
-  cancel_button = driver.find_element(By.XPATH, "//input[contains(@value, '取消')]")
-  cancel_button.click()
+    confirm_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
+    confirm_button.click()
+
+    driver.execute_script("window.history.go(-1)")
+    driver.execute_script("window.history.go(-1)")
 
   page_source = driver.page_source
   # Print all the text in the page
   print(page_source)
 
-  confirm_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
-  confirm_button.click()
 
 id = "waseda1102"
 password = "1102"
