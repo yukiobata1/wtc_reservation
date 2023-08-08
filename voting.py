@@ -205,14 +205,13 @@ if __name__ == "__main__":
   
   # except FileNotFoundError:
   #   print("remain votes doesn't exist")
-  def multi_vote(vote_dest):
+  def multi_vote(vote_dest, shared_used_row):
     # for multiprocessing
-    global used_row
     for i, row in vote_dest.iterrows():
       
       import time as t
       t.sleep(0.06)
-      if i in used_row:
+      if i in shared_used_row.value:
         # すでにした抽選は飛ばす。
         continue
       date = row.date
@@ -235,7 +234,8 @@ if __name__ == "__main__":
           # remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
           # remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
 
-          used_row.add(i)
+          with shared_used_row.get_lock():
+            shared_used_row.value.add(i)
           import time as t
           to_save = pd.DataFrame(used_row, columns=["used_row"])
           to_save.to_csv(os.path.join(DATA_BASE, "row.csv"))
@@ -250,5 +250,12 @@ if __name__ == "__main__":
   p = Pool(16)
   import numpy as np
   vote_dests = np.array_split(vote_dest, 16)
-  p.map(multi_vote, vote_dests)
+  shared_used_row = multiprocessing.Value('used_row', used_row)
+  args = [zip(vote_dests, [shared_used_row] * 16)]
+  p.starmap(multi_vote, args)
+
+  # Close the pool and wait for the processes to finish
+  p.close()
+  p.join()
+
         
