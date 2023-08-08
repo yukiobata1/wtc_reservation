@@ -190,10 +190,18 @@ if __name__ == "__main__":
     password = user["パスワード"].iloc[0]
     print(f"{date, time, court, userid, password=}")
 
-    # 投票
-    single_vote(date=date, time=time, court=court, userid=userid, password=password)
-
-    used_votes[row.account] += 1
-    # 使用された票を記録
-    remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
-    remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+    while 1:
+      # 投票
+      # 不安定なので、複数回
+      try:
+        single_vote(date=date, time=time, court=court, userid=userid, password=password)
+        used_votes[row.account] += 1
+        # 使用された票を記録
+        remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
+        remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+        break
+      except Exception as e:
+        print(e)
+        
+        
+    
