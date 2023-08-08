@@ -208,7 +208,7 @@ if __name__ == "__main__":
   def multi_vote(vote_dest, shared_used_row, lock):
     # for multiprocessing
     for i, row in vote_dest.iterrows():
-      if i in shared_used_row.value:
+      if i in shared_used_row:
         # すでにした抽選は飛ばす。
         continue
       date = row.date
