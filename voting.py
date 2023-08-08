@@ -203,7 +203,7 @@ if __name__ == "__main__":
   
   # except FileNotFoundError:
   #   print("remain votes doesn't exist")
-  def multi_check(vote_dest):
+  def multi_vote(vote_dest):
     # for multiprocessing
     for i, row in tqdm(vote_dest.iterrows()):
       if i in used_row:
