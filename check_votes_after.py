@@ -84,7 +84,7 @@ def single_check_vote(num, userid: str, password: str, exact_dest):
     print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}")
     print(exact_dest)
 
-    to_add = pd.DataFrame([date, court, time_range, num, userid, password], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
+    to_add = pd.DataFrame({"date":date, "court": court, "time_range": time_range, "通し番号":num, "userid": userid, "password", password})
     exact_dest = pd.concat([exact_dest, to_add])
     exact_dest.to_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
     
