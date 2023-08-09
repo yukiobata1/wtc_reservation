@@ -107,7 +107,7 @@ if __name__ == "__main__":
     exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
     exact_used_row = []
     with open(os.path.join(DATA_BASE, "exact_used_row"), "wb+") as f:
-      pickle.dump(exact_used_row, os.path.join(DATA_BASE, "exact_used_row"))
+      pickle.dump(exact_used_row, f)
     
   for i, row in accounts.iterrows():
     if i in exact_used_row:
