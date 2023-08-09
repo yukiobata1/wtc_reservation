@@ -100,11 +100,14 @@ if __name__ == "__main__":
 
   try:
     exact_dest = pd.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
-    with open(os.path.join(DATA_BASE, "exact_used_row"), "rb") as f:
-      exact_used_row = pickle.load(f)
   except FileNotFoundError:
     print("create a new exact_dest")
     exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
+    
+  try:
+    with open(os.path.join(DATA_BASE, "exact_used_row"), "rb") as f:
+      exact_used_row = pickle.load(f)
+  except:
     exact_used_row = []
     with open(os.path.join(DATA_BASE, "exact_used_row"), "wb+") as f:
       pickle.dump(exact_used_row, f)
