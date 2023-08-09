@@ -115,7 +115,7 @@ if __name__ == "__main__":
       pickle.dump(exact_used_row, f)
     
   for i, row in accounts.iterrows():
-    exact_used?row
+
     if i in exact_used_row:
       continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"], exact_dest)
