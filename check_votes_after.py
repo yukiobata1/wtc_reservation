@@ -114,4 +114,3 @@ if __name__ == "__main__":
     exact_used_row.append(i)
     with open(os.path.join(DATA_BASE, "exact_used_row"), "r") as f:
       pickle.dump(exact_used_row, os.path.join(DATA_BASE, "exact_used_row")
-    
