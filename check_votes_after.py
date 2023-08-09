@@ -104,7 +104,8 @@ if __name__ == "__main__":
   except FileNotFoundError:
     print("create a new exact_dest")
     exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
-    
+
+  print(f"{exact_dest=}")
   try:
     exact_used_row = pd.read_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
   except:
