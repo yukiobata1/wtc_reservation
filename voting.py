@@ -243,6 +243,8 @@ if __name__ == "__main__":
  ('09-26', '10:30', '9', 'rico817nnn', '7817'),
  ('09-26', '10:30', '9', 'koku073096', '6245')]
 
+  remain_copy = remain.copy()
+
   for row in remain:
     date, time, court, id, password = row
   # 再開
@@ -290,6 +292,7 @@ if __name__ == "__main__":
         # 使用された票を記録
         remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
         remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+        remain_copy.remove(row)
         break
       except Exception as e:
         print(e)
@@ -297,6 +300,10 @@ if __name__ == "__main__":
       unused_row.add(i)
       unused_df = pd.DataFrame({"通し番号":  unused_row})
       unused_df.to_csv(os.path.join(DATA_BASE, "unused_df.csv"))
+
+      import pickle
+      with open(os.path.join(DATA_BASE, "remain_path_copy"), "wb") as fp:   #Pickling
+        pickle.dump(remain_copy, fp)
     # Todo: あとで、unused_dfから復元するように変更
 
       logging.error(f'{date, time, court, userid, password=}')        
