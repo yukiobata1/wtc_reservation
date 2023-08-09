@@ -245,7 +245,7 @@ if __name__ == "__main__":
 
   for row in remain:
     date, time, court, id, password = row
-  再開
+  # 再開
   try:
     remain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
     s = 0
