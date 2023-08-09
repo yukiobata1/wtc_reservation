@@ -84,7 +84,7 @@ def single_check_vote(num, userid: str, password: str, exact_dest):
     print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}")
     print(exact_dest)
 
-    exact_dest.iloc[len(exact_dest)] = (date, court, time_range, num, userid, password)
+    exact_dest.loc[len(exact_dest), :] = (date, court, time_range, num, userid, password)
     exact_dest.to_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
     
     driver.execute_script("window.history.go(-1)")
@@ -101,25 +101,23 @@ if __name__ == "__main__":
 
   try:
     exact_dest = pd.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
+    exact_dest = exact_dest(["date", "court", "time_range", "通し番号", "userid", "password"])
   except FileNotFoundError:
     print("create a new exact_dest")
-    exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
+    exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password])
     exact_dest = exact_dest(["date", "court", "time_range", "通し番号", "userid", "password"])
     
   try:
-    with open(os.path.join(DATA_BASE, "exact_used_row"), "rb") as f:
-      exact_used_row = pickle.load(f)
+    exact_used_row = pd.read_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
   except:
     print("create new exact_used_row")
-    exact_used_row = []
-    with open(os.path.join(DATA_BASE, "exact_used_row"), "wb+") as f:
-      pickle.dump(exact_used_row, f)
+    exact_used_row = pd.Series({"used_row": []})
+    exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
     
   for i, row in accounts.iterrows():
-
-    if i in exact_used_row:
+    if i in exact_used_row["used_row"]:
       continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"], exact_dest)
-    exact_used_row.append(i)
-    with open(os.path.join(DATA_BASE, "exact_used_row"), "wb") as f:
-      pickle.dump(exact_used_row, f)
+    exact_used_row.loc[i] = i
+    print(exact_used_row)
+    exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
