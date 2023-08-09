@@ -100,7 +100,7 @@ if __name__ == "__main__":
   import pickle
 
   try:
-    exact_dest = pd.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"), index=False)
+    exact_dest = pd.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
   except FileNotFoundError:
     print("create a new exact_dest")
     exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"], index=False)
