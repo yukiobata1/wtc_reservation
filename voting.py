@@ -287,6 +287,7 @@ if __name__ == "__main__":
       # 投票
       # 不安定なので、複数回
       try:
+        print(f"attempt {count+1} {date, time, court, userid=}")
         single_vote(date=date, time=time, court=court, userid=userid, password=password)
         used_votes[row.account] += 1
         # 使用された票を記録
