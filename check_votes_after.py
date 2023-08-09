@@ -82,8 +82,9 @@ def single_check_vote(num, userid: str, password: str, exact_dest):
     date = text[text.index("◇予約日")+1]
     time_range = text[text.index("◇使用時間")+1]
     print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}")
+    print(exact_dest)
 
-    exact_dest.loc[len(exact_dest.index)] = (date, court, time_range, num, userid, password)
+    exact_dest.iloc[len(exact_dest)] = (date, court, time_range, num, userid, password)
     exact_dest.to_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
     
     driver.execute_script("window.history.go(-1)")
@@ -108,11 +109,13 @@ if __name__ == "__main__":
     with open(os.path.join(DATA_BASE, "exact_used_row"), "rb") as f:
       exact_used_row = pickle.load(f)
   except:
+    print("create new exact_used_row")
     exact_used_row = []
     with open(os.path.join(DATA_BASE, "exact_used_row"), "wb+") as f:
       pickle.dump(exact_used_row, f)
     
   for i, row in accounts.iterrows():
+    exact_used?row
     if i in exact_used_row:
       continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"], exact_dest)
