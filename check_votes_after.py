@@ -104,7 +104,7 @@ if __name__ == "__main__":
     exact_dest = exact_dest(["date", "court", "time_range", "通し番号", "userid", "password"])
   except FileNotFoundError:
     print("create a new exact_dest")
-    exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password])
+    exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
     exact_dest = exact_dest(["date", "court", "time_range", "通し番号", "userid", "password"])
     
   try:
