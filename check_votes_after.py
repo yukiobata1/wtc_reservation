@@ -106,11 +106,13 @@ if __name__ == "__main__":
     print("create a new exact_dest")
     exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
     exact_used_row = []
+    with open(os.path.join(DATA_BASE, "exact_used_row"), "wb") as f:
+      pickle.dump(exact_used_row, os.path.join(DATA_BASE, "exact_used_row"))
     
   for i, row in accounts.iterrows():
     if i in exact_used_row:
       continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"], exact_dest)
     exact_used_row.append(i)
-    with open(os.path.join(DATA_BASE, "exact_used_row"), "r") as f:
+    with open(os.path.join(DATA_BASE, "exact_used_row"), "wb") as f:
       pickle.dump(exact_used_row, os.path.join(DATA_BASE, "exact_used_row"))
