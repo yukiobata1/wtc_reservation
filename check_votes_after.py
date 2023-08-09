@@ -68,11 +68,9 @@ def single_check_vote(num, userid: str, password: str):
     logging.error(f"No existing reservation for no.{userid}")
     
   for i, el in enumerate(reservation):
-    import time
     driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '抽選前')]]")[i].click()
-    time.sleep(3)
 
-    exact_dest = exact_dest.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
+    exact_dest = pd.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
 
     confirmation_button = driver.find_element(By.XPATH, "//input[contains(@value, '確認')]")
     confirmation_button.click()
