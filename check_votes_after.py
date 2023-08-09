@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
   try:
     exact_dest = pd.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
-    with open(os.path.join(DATA_BASE, "exact_used_row"), "r") as f:
+    with open(os.path.join(DATA_BASE, "exact_used_row"), "rb") as f:
       exact_used_row = pickle.load(f)
   except FileNotFoundError:
     print("create a new exact_dest")
