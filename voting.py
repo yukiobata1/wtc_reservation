@@ -297,9 +297,9 @@ if __name__ == "__main__":
       except Exception as e:
         print(e)
         count += 1
-      unused_row.add(i)
-      unused_df = pd.DataFrame({"通し番号":  unused_row})
-      unused_df.to_csv(os.path.join(DATA_BASE, "unused_df.csv"))
+      # unused_row.add(i)
+      # unused_df = pd.DataFrame({"通し番号":  unused_row})
+      # unused_df.to_csv(os.path.join(DATA_BASE, "unused_df.csv"))
 
       import pickle
       with open(os.path.join(DATA_BASE, "remain_path_copy"), "wb") as fp:   #Pickling
