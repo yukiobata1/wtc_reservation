@@ -82,7 +82,7 @@ def single_check_vote(num, userid: str, password: str, exact_dest):
     date = text[text.index("◇予約日")+1]
     time_range = text[text.index("◇使用時間")+1]
     print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}")
-    print(exact_dest)
+    # print(exact_dest)
 
     to_add = pd.DataFrame({"date":[date], "court":[court], "time_range": [time_range], "通し番号": [num], "userid": [userid], "password": [password]})
     exact_dest = pd.concat([exact_dest, to_add])
