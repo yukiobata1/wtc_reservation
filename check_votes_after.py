@@ -25,7 +25,7 @@ if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
 
-def single_check_vote(num, userid: str, password: str, exact_dest):
+def single_check_vote(num, userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す
   options = Options()
   options.add_argument('--headless')
@@ -72,6 +72,8 @@ def single_check_vote(num, userid: str, password: str, exact_dest):
     driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '抽選前')]]")[i].click()
     time.sleep(3)
 
+    exact_dest = exact_dest.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
+
     confirmation_button = driver.find_element(By.XPATH, "//input[contains(@value, '確認')]")
     confirmation_button.click()
     
@@ -104,7 +106,8 @@ if __name__ == "__main__":
   except FileNotFoundError:
     print("create a new exact_dest")
     exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
-
+    exact_dest.to_csv(os.path.join(DATA_BASE, "exact_dest.csv")
+  
   print(f"{exact_dest=}")
   try:
     exact_used_row = pd.read_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
@@ -116,7 +119,7 @@ if __name__ == "__main__":
   for i, row in accounts.iterrows():
     if i in exact_used_row["used_row"]:
       continue
-    single_check_vote(row["通し番号"], row["ID"], row["パスワード"], exact_dest)
+    single_check_vote(row["通し番号"], row["ID"], row["パスワード"])
     exact_used_row.loc[i] = i
     print(exact_used_row)
     exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
