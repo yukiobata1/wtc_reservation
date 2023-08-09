@@ -81,8 +81,8 @@ def single_check_vote(num, userid: str, password: str, exact_dest):
     court = text[text.index("◇施設名")+1]
     date = text[text.index("◇予約日")+1]
     time_range = text[text.index("◇使用時間")+1]
+    print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}")
 
-    pd.read_csv()
     exact_dest.loc[len(exact_dest.index)] = (date, court, time_range, num, userid, password)
     exact_dest.to_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
     
@@ -96,11 +96,22 @@ if __name__ == "__main__":
   # 空の行を除去
   accounts = accounts.dropna()
 
+  import pickle
+
   try:
     exact_dest = pd.read_csv(os.path.join(DATA_BASE, "exact_dest.csv"))
+    with open(os.path.join(DATA_BASE, "exact_used_row"), "r") as f:
+      exact_used_row = pickle.load(f)
   except FileNotFoundError:
     print("create a new exact_dest")
     exact_dest = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password"])
+    exact_used_row = []
     
   for i, row in accounts.iterrows():
+    if i in exact_used_row:
+      continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"], exact_dest)
+    exact_used_row.append(i)
+    with open(os.path.join(DATA_BASE, "exact_used_row"), "r") as f:
+      pickle.dump(exact_used_row, os.path.join(DATA_BASE, "exact_used_row")
+    
