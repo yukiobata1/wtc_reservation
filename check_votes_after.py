@@ -115,4 +115,4 @@ if __name__ == "__main__":
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"], exact_dest)
     exact_used_row.append(i)
     with open(os.path.join(DATA_BASE, "exact_used_row"), "wb") as f:
-      pickle.dump(exact_used_row, f))
+      pickle.dump(exact_used_row, f)
