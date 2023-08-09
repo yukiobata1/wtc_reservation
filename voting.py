@@ -271,6 +271,7 @@ if __name__ == "__main__":
   # 8月分のみ
   for row in remain:
     date, time, court, userid, password = row
+    court = int(court)
 
   # for i, row in tqdm(vote_dest.iterrows()):
   #   date = row.date
