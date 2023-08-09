@@ -109,7 +109,7 @@ if __name__ == "__main__":
     exact_used_row = pd.read_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
   except:
     print("create new exact_used_row")
-    exact_used_row = pd.Series({"used_row": []})
+    exact_used_row = pd.DataFrame({"used_row": []})
     exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
     
   for i, row in accounts.iterrows():
