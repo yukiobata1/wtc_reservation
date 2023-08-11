@@ -25,13 +25,15 @@ if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
 
+options = Options()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Chrome(service=Service(), options=options)
+
 def single_check_vote(num, userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す
-  options = Options()
-  options.add_argument('--headless')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-dev-shm-usage')
-  driver = webdriver.Chrome(service=Service(), options=options)
+
   # 予約ボタンクリック
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
   for_cancel = driver.find_element(By.XPATH, "//a[contains(text(), '予約の確認／取消')]")
