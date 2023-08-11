@@ -116,10 +116,9 @@ if __name__ == "__main__":
     
   for i, row in accounts.iterrows():
     print(f"{row=}")
+    print(f"{i=}")
     if i in exact_used_row["used_row"]:
       continue
-    import time as t
-    t.sleep(5)
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"])
     exact_used_row.loc[i] = i
     print(f"{exact_used_row=}")
