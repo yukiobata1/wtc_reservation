@@ -117,7 +117,8 @@ if __name__ == "__main__":
   for i, row in accounts.iterrows():
     print(f"{row=}")
     print(f"{i=}")
-    if i in exact_used_row["used_row"]:
+    print(f"{exact_used_row=}")
+    if i in exact_used_row["used_row"].values:
       print(f"{exact_used_row=}")
       print("skipped")
       continue
