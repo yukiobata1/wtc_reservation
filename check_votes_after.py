@@ -117,13 +117,13 @@ if __name__ == "__main__":
     exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
     
   for i, row in accounts.iterrows():
-    print(f"{row=}")
-    print(f"{i=}")
-    print(f"{exact_used_row=}")
-    if i in exact_used_row["used_row"].values:
-      print(f"{exact_used_row=}")
-      print("skipped")
-      continue
+    # print(f"{row=}")
+    # print(f"{i=}")
+    # print(f"{exact_used_row=}")
+    # if i in exact_used_row["used_row"].values:
+    #   print(f"{exact_used_row=}")
+    #   print("skipped")
+    #   continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"])
     exact_used_row.loc[len(exact_used_row)] = [i]
     exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"), index=False)
