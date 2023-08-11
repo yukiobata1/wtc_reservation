@@ -7,7 +7,7 @@ from tqdm import tqdm
 from datetime import date
 import utils
 import logging
-# logging.basicConfig(filename='check_votes.log', encoding='utf-8', level=logging.ERROR)
+logging.basicConfig(filename='check_votes.log', encoding='utf-8', level=logging.ERROR)
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -33,7 +33,7 @@ driver = webdriver.Chrome(service=Service(), options=options)
 
 def single_check_vote(num, userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す
-  print("{num=}, {userid=},{password=}")
+  print("f{num=}, {userid=},{password=}")
   # 予約ボタンクリック
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
   for_cancel = driver.find_element(By.XPATH, "//a[contains(text(), '予約の確認／取消')]")
