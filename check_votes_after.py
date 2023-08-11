@@ -117,7 +117,7 @@ if __name__ == "__main__":
   #   exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
     
   for i, row in accounts.iterrows():
-    # print(f"{row=}")
+    print(f"{row=}")
     # print(f"{i=}")
     # print(f"{exact_used_row=}")
     # if i in exact_used_row["used_row"].values:
