@@ -116,7 +116,7 @@ if __name__ == "__main__":
     exact_used_row = pd.DataFrame({"used_row": []})
     exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
     
-   for i, row in accounts.iterrows():
+  for i, row in accounts.iterrows():
     print(f"{row=}")
     print(f"{i=}")
     print(f"{exact_used_row=}")
