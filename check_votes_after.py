@@ -108,7 +108,7 @@ if __name__ == "__main__":
   
   print(f"{exact_dest=}")
   try:
-    exact_used_row = pd.read_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
+    exact_used_row = pd.read_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))[["used_row"]]
   except:
     print("create new exact_used_row")
     exact_used_row = pd.DataFrame({"used_row": []})
@@ -119,5 +119,5 @@ if __name__ == "__main__":
       continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"])
     exact_used_row.loc[i] = i
-    print(exact_used_row)
+    print(f"{exact_used_row=}")
     exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
