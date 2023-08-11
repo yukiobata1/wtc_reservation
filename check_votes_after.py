@@ -124,6 +124,7 @@ if __name__ == "__main__":
     #   print(f"{exact_used_row=}")
     #   print("skipped")
     #   continue
+    print(row["通し番号"], row["ID"], row["パスワード"])
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"])
     # exact_used_row.loc[len(exact_used_row)] = [i]
     # exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"), index=False)
