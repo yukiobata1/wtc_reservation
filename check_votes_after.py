@@ -122,5 +122,5 @@ if __name__ == "__main__":
       print("skipped")
       continue
     single_check_vote(row["通し番号"], row["ID"], row["パスワード"])
-    exact_used_row.loc[i] = i
+    exact_used_row["used_row"].loc[i] = i
     exact_used_row.to_csv(os.path.join(DATA_BASE, "exact_used_row.csv"))
