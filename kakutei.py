@@ -123,11 +123,12 @@ def single_kakutei(num, userid: str, password: str):
       yes_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
       yes_button.click()
   
-      # form = driver.find_element(By.XPATH, "//form")
-      # text = form.text
-      # print("{text=}")
-      # text = text.split("確定後の予約申請番号は以下のとおりです。")
-      # reservation_number = text[1].replace("\n", "")
+      form = driver.find_element(By.XPATH, "//form")
+      text = form.text
+      print("{text=}")
+      text = text.split("確定後の予約申請番号は以下のとおりです。")
+      reservation_number = text[1].replace("\n", "")
+      print(f"{reservation_number=}")
   
       # print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}, {reservation_number=}")
       
