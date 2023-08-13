@@ -5,6 +5,53 @@ from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, Border, Side
+import re
+
+def extract_after_kakutei(string):
+    string = "\n当選\n◇会館名\n所沢航空記念公園\n◇施設名\n第１テニスコート第５人工芝コート\n◇予約日\n2023/09/12\n◇使用時間\n10:30～12:30\n◇抽選日\n2023/08/11\n◇予約番号\n2023014265\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    
+    facility_pattern = r"施設名\n(.*?)\n"
+    reservation_date_pattern = r"予約日\n(.*?)\n"
+    usage_time_pattern = r"使用時間\n(.*?)\n"
+    lottery_date_pattern = r"抽選日\n(.*?)\n"
+    reservation_number_pattern = r"予約番号\n(.*?)\n"
+    
+    facility_match = re.search(facility_pattern, string)
+    reservation_date_match = re.search(reservation_date_pattern, string)
+    usage_time_match = re.search(usage_time_pattern, string)
+    lottery_date_match = re.search(lottery_date_pattern, string)
+    reservation_number_match = re.search(reservation_number_pattern, string)
+    
+    if facility_match:
+        facility_name = facility_match.group(1)
+    else:
+        facility_name = None
+    
+    if reservation_date_match:
+        reservation_date = reservation_date_match.group(1)
+    else:
+        reservation_date = None
+    
+    if usage_time_match:
+        usage_time = usage_time_match.group(1)
+    else:
+        usage_time = None
+    
+    if lottery_date_match:
+        lottery_date = lottery_date_match.group(1)
+    else:
+        lottery_date = None
+    
+    if reservation_number_match:
+        reservation_number = reservation_number_match.group(1)
+    else:
+        reservation_number = None
+    
+    print(f"施設名: {facility_name}")
+    print(f"予約日: {reservation_date}")
+    print(f"使用時間: {usage_time}")
+    print(f"抽選日: {lottery_date}")
+    print(f"予約番号: {reservation_number}")
 
 def save_to_excel(df, file_name):
     # Create a workbook and worksheet
