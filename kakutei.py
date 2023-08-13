@@ -80,13 +80,11 @@ def single_kakutei(num, userid: str, password: str):
       yes_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
       yes_button.click()
 
-      body = driver.find_element(By.XPATH, "//body"))
+      body = driver.find_element(By.XPATH, "//body")
       print(f"{body.text=}")
 
       driver.execute_script("window.history.go(-1)")
       driver.execute_script("window.history.go(-1)")
-      
-  
     
 
 
