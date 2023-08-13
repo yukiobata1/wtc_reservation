@@ -156,7 +156,7 @@ if __name__ == "__main__":
     votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
     
   for i, row in tqdm(accounts.iterrows()):
-    if i<17:
+    if i<30:
       continue
     print(row["通し番号"], row["ID"], row["パスワード"])
     single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
