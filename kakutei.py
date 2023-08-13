@@ -115,9 +115,6 @@ def single_kakutei(num, userid: str, password: str):
       time_range = text[text.index("◇使用時間")+1]
       
       driver.execute_script("window.history.go(-1)")
-      import time as t
-      t.sleep(10)
-  
       # 確定
       kakutei_button = driver.find_element(By.XPATH, "//input[contains(@value, '利用確定')]")
       kakutei_button.click()
@@ -127,8 +124,8 @@ def single_kakutei(num, userid: str, password: str):
   
       form = driver.find_element(By.XPATH, "//form")
       text = form.text
-      string = string.split("確定後の予約申請番号は以下のとおりです。")
-      reservation_number = string[1].replace("\n", "")
+      text = text.split("確定後の予約申請番号は以下のとおりです。")
+      reservation_number = text[1].replace("\n", "")
   
       print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}, {reservation_number=}")
       
