@@ -124,6 +124,7 @@ def single_kakutei(num, userid: str, password: str):
   
       form = driver.find_element(By.XPATH, "//form")
       text = form.text
+      print("{text=}")
       text = text.split("確定後の予約申請番号は以下のとおりです。")
       reservation_number = text[1].replace("\n", "")
   
