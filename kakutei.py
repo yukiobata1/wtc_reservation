@@ -87,7 +87,7 @@ def single_kakutei(num, userid: str, password: str):
     confirmation_button.click()
     
     text = driver.find_element(By.XPATH, "//form").text
-    data = extract_kakutei(text)
+    data = utils.extract_kakutei(text)
 
     driver.execute_script("window.history.go(-1)")
 
