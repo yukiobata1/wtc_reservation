@@ -124,15 +124,15 @@ def single_kakutei(num, userid: str, password: str):
       yes_button.click()
 
 
-      print(f'{driver.find_element(By.XPATH, "//body").text=}')
+      # print(f'{driver.find_element(By.XPATH, "//body").text=}')
       
-      form = driver.find_element(By.XPATH, "//form")
-      text = form.text
-      print("{text=}")
-      text = text.split("確定後の予約申請番号は以下のとおりです。")
-      # 確定後の予約申請番号は\n以下のとおりです。というテキストになることもあり、２つのケースを同時にキャッチするのが難しい
-      reservation_number = text[1].replace("\n", "")
-      print(f"{reservation_number=}")
+      # form = driver.find_element(By.XPATH, "//form")
+      # text = form.text
+      # print("{text=}")
+      # text = text.split("確定後の予約申請番号は以下のとおりです。")
+      # # 確定後の予約申請番号は\n以下のとおりです。というテキストになることもあり、２つのケースを同時にキャッチするのが難しい
+      # reservation_number = text[1].replace("\n", "")
+      # print(f"{reservation_number=}")
   
       # print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}, {reservation_number=}")
       
