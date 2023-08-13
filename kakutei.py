@@ -122,7 +122,10 @@ def single_kakutei(num, userid: str, password: str):
   
       yes_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
       yes_button.click()
-  
+
+
+      print(f'{driver.find_element(By.XPATH, "//body").text=}')
+      
       form = driver.find_element(By.XPATH, "//form")
       text = form.text
       print("{text=}")
