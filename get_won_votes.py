@@ -84,6 +84,7 @@ def get_single_won_votes(num, userid: str, password: str):
 
       
       text = driver.find_element(By.XPATH, "//form").text
+      print("{text=}")
       data = utils.extract_kakutei(text)
   
       driver.execute_script("window.history.go(-1)")
