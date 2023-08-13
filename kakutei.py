@@ -76,6 +76,7 @@ def single_kakutei(num, userid: str, password: str):
   if len(after_confirm) == 0:
     print(f"No entries after confirmation")
 
+  # 確定後の当選票
   for i, el in enumerate(after_confirm):
     # すでにcsv内に入ってなければ保存
     driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選確定済')]]")[i].click()
@@ -85,32 +86,15 @@ def single_kakutei(num, userid: str, password: str):
     confirmation_button = driver.find_element(By.XPATH, "//input[contains(@value, '確認')]")
     confirmation_button.click()
     
-    form = driver.find_element(By.XPATH, "//form")
-    text = form.text
-    text = text.split("\n")
-    court = text[text.index("◇施設名")+1]
-    date = text[text.index("◇予約日")+1]
-    time_range = text[text.index("◇使用時間")+1]
-    
+    text = driver.find_element(By.XPATH, "//form").text
+    data = extract_kakutei(text)
+
     driver.execute_script("window.history.go(-1)")
-    import time as t
-    t.sleep(10)
 
-    # 確定
-    kakutei_button = driver.find_element(By.XPATH, "//input[contains(@value, '利用確定')]")
-    kakutei_button.click()
-
-    yes_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
-    yes_button.click()
-
-    form = driver.find_element(By.XPATH, "//form")
-    text = form.text
-    string = string.split("確定後の予約申請番号は以下のとおりです。")
-    reservation_number = string[1].replace("\n", "")
-
-    print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}, {reservation_number=}")
+    print(data)
+    print(f"{num=}, {userid=}, {password=}")
     
-    to_add = pd.DataFrame({"date":[date], "court":[court], "time_range": [time_range], "通し番号": [num], "userid": [userid], "password": [password], "予約申請番号":[reservation_number]})
+    to_add = pd.DataFrame({"date":[data["date"]], "court":[data["court"]], "time_range": [data["time_range"]], "通し番号": [num], "userid": [userid], "password": [password], "予約申請番号":[data["reservation_number"]]})
     votes_won = pd.concat([votes_won, to_add])
     votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
 
