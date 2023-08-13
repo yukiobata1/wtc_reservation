@@ -63,9 +63,6 @@ def single_kakutei(num, userid: str, password: str):
   proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
   proceed_button.click()
 
-  import time as t
-  t.sleep(1000)
-
   before_confirm = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選未確定')]]")
   # need to be modified
   after_confirm = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '抽選前')]]")
@@ -137,8 +134,6 @@ def single_kakutei(num, userid: str, password: str):
     to_add = pd.DataFrame({"date":[date], "court":[court], "time_range": [time_range], "通し番号": [num], "userid": [userid], "password": [password], "予約申請番号":[reservation_number]})
     votes_won = pd.concat([votes_won, to_add])
     votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
-
-
     
 
 
@@ -156,7 +151,7 @@ if __name__ == "__main__":
     votes_won = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password", "予約申請番号"])
     votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
     
-  for i, row in accounts.iterrows():
-    print(f"{row=}")
-    print(row["通し番号"], row["ID"], row["パスワード"])
+  for i, row in tqdm(accounts.iterrows()):
+    # print(f"{row=}")
+    # print(row["通し番号"], row["ID"], row["パスワード"])
     single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
