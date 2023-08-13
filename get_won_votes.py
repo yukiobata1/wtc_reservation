@@ -76,7 +76,6 @@ def get_single_won_votes(num, userid: str, password: str):
     for i, el in enumerate(after_confirm):
       # すでにcsv内に入ってなければ保存
       driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選確定済')]]")[i].click()
-      tmp_text = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選確定済')]]")[i].text
       
       votes_won = pd.read_csv(os.path.join(DATA_BASE, "votes_won.csv"))[["date", "court", "time_range", "通し番号", "userid", "password", "予約申請番号"]]
   
