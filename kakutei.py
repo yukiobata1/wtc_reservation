@@ -80,8 +80,13 @@ def single_kakutei(num, userid: str, password: str):
       yes_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
       yes_button.click()
 
+      # 予約完了画面に遷移したことの確認
       body = driver.find_element(By.XPATH, "//body")
       print(f"{body.text=}")
+      assert "予約" in body.text
+      assert "確定" in body.text
+      assert "仮予約" in body.text
+      
 
       driver.execute_script("window.history.go(-1)")
       driver.execute_script("window.history.go(-1)")
@@ -97,7 +102,7 @@ if __name__ == "__main__":
 
     
   for i, row in tqdm(accounts.iterrows()):
-    if i< 120:
+    if i< 130:
       continue
     print(row["通し番号"], row["ID"], row["パスワード"])
     single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
