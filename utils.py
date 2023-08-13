@@ -13,7 +13,7 @@ def extract_kakutei(string):
     reservation_date_pattern = r"予約日\n(.*?)\n"
     usage_time_pattern = r"使用時間\n(.*?)\n"
     lottery_date_pattern = r"抽選日\n(.*?)\n"
-    reservation_number_pattern = r"予約番号\n([0-9]){10}"
+    reservation_number_pattern = r"予約番号\n([0-9]*)$"
     
     facility_match = re.search(facility_pattern, string)
     reservation_date_match = re.search(reservation_date_pattern, string)
