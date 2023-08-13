@@ -89,10 +89,9 @@ def get_single_won_votes(num, userid: str, password: str):
       data = utils.extract_kakutei(text)
   
       driver.execute_script("window.history.go(-1)")
-  
-      print(f"{data=}")
-      
+        
       to_add = pd.DataFrame({"date":[data["date"]], "court":[data["court"]], "time_range": [data["time_range"]], "通し番号": [num], "userid": [userid], "password": [password], "予約申請番号":[data["reservation_number"]]})
+      print(f"{to_add=}")
       votes_won = pd.concat([votes_won, to_add])
       votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
 
@@ -111,7 +110,5 @@ if __name__ == "__main__":
     votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
     
   for i, row in tqdm(accounts.iterrows()):
-    if i<30:
-      continue
     print(row["通し番号"], row["ID"], row["パスワード"])
-    single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
+    get_single_won_votes(row["通し番号"], row["ID"], row["パスワード"])
