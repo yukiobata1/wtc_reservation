@@ -46,12 +46,7 @@ def extract_kakutei(string):
         reservation_number = reservation_number_match.group(1)
     else:
         reservation_number = None
-    print(f"施設名: {facility_name}")
-    print(f"予約日: {reservation_date}")
-    print(f"使用時間: {usage_time}")
-    print(f"抽選日: {lottery_date}")
-    print(f"予約番号: {reservation_number}")
-    
+        
     return {"court":facility_name,
             "date": reservation_date,
             "time_range": usage_time, 
