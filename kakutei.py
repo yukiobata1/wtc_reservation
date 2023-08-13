@@ -64,37 +64,7 @@ def single_kakutei(num, userid: str, password: str):
   proceed_button.click()
 
   before_confirm = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選未確定')]]")
-  # need to be modified
-  # after_confirm = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選確定済')]]")
-  
-  # if len(after_confirm) == 0:
-  #   print(f"No entries after confirmation")
-  # else:
-  #   # 確定後の当選票
-  #   for i, el in enumerate(after_confirm):
-  #     # すでにcsv内に入ってなければ保存
-  #     driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選確定済')]]")[i].click()
-  #     tmp_text = driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選確定済')]]")[i].text
-  #     print(f"{tmp_text=}")
-      
-  #     votes_won = pd.read_csv(os.path.join(DATA_BASE, "votes_won.csv"))[["date", "court", "time_range", "通し番号", "userid", "password", "予約申請番号"]]
-  
-  #     confirmation_button = driver.find_element(By.XPATH, "//input[contains(@value, '確認')]")
-  #     confirmation_button.click()
 
-      
-  #     text = driver.find_element(By.XPATH, "//form").text
-  #     data = utils.extract_kakutei(text)
-  
-  #     driver.execute_script("window.history.go(-1)")
-  
-  #     print(f"{data=}")
-      
-  #     to_add = pd.DataFrame({"date":[data["date"]], "court":[data["court"]], "time_range": [data["time_range"]], "通し番号": [num], "userid": [userid], "password": [password], "予約申請番号":[data["reservation_number"]]})
-  #     votes_won = pd.concat([votes_won, to_add])
-  #     votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
-
-  # select all the stuff
   if len(before_confirm) == 0:
     print(f"No entries before confirmation")
   else:
@@ -102,46 +72,21 @@ def single_kakutei(num, userid: str, password: str):
     for i, el in enumerate(before_confirm):
       # 確定し、エントリーに保存
       driver.find_elements(By.XPATH, "//input[@name='rdoYoyakuNO'][following-sibling::text()[1][contains(., '当選未確定')]]")[i].click()
-  
-      # votes_won = pd.read_csv(os.path.join(DATA_BASE, "votes_won.csv"))[["date", "court", "time_range", "通し番号", "userid", "password", "予約申請番号"]]
-  
-      # confirmation_button = driver.find_element(By.XPATH, "//input[contains(@value, '確認')]")
-      # confirmation_button.click()
       
-      # form = driver.find_element(By.XPATH, "//form")
-      # text = form.text
-      # text = text.split("\n")
-      # court = text[text.index("◇施設名")+1]
-      # date = text[text.index("◇予約日")+1]
-      # time_range = text[text.index("◇使用時間")+1]
-      
-      # driver.execute_script("window.history.go(-1)")
-      # # 確定
+      # 確定
       kakutei_button = driver.find_element(By.XPATH, "//input[contains(@value, '利用確定')]")
       kakutei_button.click()
   
       yes_button = driver.find_element(By.XPATH, "//input[contains(@value, 'はい')]")
       yes_button.click()
 
+      body = driver.find_element(By.XPATH, "//body"))
+      print(f"{body.text=}")
 
-      # print(f'{driver.find_element(By.XPATH, "//body").text=}')
+      driver.execute_script("window.history.go(-1)")
+      driver.execute_script("window.history.go(-1)")
       
-      # form = driver.find_element(By.XPATH, "//form")
-      # text = form.text
-      # print("{text=}")
-      # text = text.split("確定後の予約申請番号は以下のとおりです。")
-      # # 確定後の予約申請番号は\n以下のとおりです。というテキストになることもあり、２つのケースを同時にキャッチするのが難しい
-      # reservation_number = text[1].replace("\n", "")
-      # print(f"{reservation_number=}")
   
-      # print(f"{date=}, {court=}, {time_range=}, {num=}, {userid=}, {password=}, {reservation_number=}")
-      
-      # to_add = pd.DataFrame({"date":[date], "court":[court], "time_range": [time_range], "通し番号": [num], "userid": [userid], "password": [password], "予約申請番号":[reservation_number]})
-      # votes_won = pd.concat([votes_won, to_add])
-      # votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
-
-      driver.execute_script("window.history.go(-1)")
-      driver.execute_script("window.history.go(-1)")
     
 
 
@@ -152,15 +97,9 @@ if __name__ == "__main__":
   # 空の行を除去
   accounts = accounts.dropna()
 
-  try:
-    votes_won = pd.read_csv(os.path.join(DATA_BASE, "votes_won.csv"))[["date", "court", "time_range", "通し番号", "userid", "password", "予約申請番号"]]
-  except FileNotFoundError:
-    print("create a new votes_won")
-    votes_won = pd.DataFrame([], columns = ["date", "court", "time_range", "通し番号", "userid", "password", "予約申請番号"])
-    votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
     
   for i, row in tqdm(accounts.iterrows()):
-    if i<30:
+    if i< 120:
       continue
     print(row["通し番号"], row["ID"], row["パスワード"])
     single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
