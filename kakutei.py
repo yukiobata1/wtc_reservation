@@ -130,6 +130,7 @@ def single_kakutei(num, userid: str, password: str):
       text = form.text
       print("{text=}")
       text = text.split("確定後の予約申請番号は以下のとおりです。")
+      # 確定後の予約申請番号は\n以下のとおりです。というテキストになることもあり、２つのケースを同時にキャッチするのが難しい
       reservation_number = text[1].replace("\n", "")
       print(f"{reservation_number=}")
   
