@@ -7,7 +7,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, Border, Side
 import re
 
-def extract_after_kakutei(string):
+def extract_kakutei(string):
     string = "\n当選\n◇会館名\n所沢航空記念公園\n◇施設名\n第１テニスコート第５人工芝コート\n◇予約日\n2023/09/12\n◇使用時間\n10:30～12:30\n◇抽選日\n2023/08/11\n◇予約番号\n2023014265\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     
     facility_pattern = r"施設名\n(.*?)\n"
@@ -46,12 +46,18 @@ def extract_after_kakutei(string):
         reservation_number = reservation_number_match.group(1)
     else:
         reservation_number = None
-    
     print(f"施設名: {facility_name}")
     print(f"予約日: {reservation_date}")
     print(f"使用時間: {usage_time}")
     print(f"抽選日: {lottery_date}")
     print(f"予約番号: {reservation_number}")
+    
+    return {"court":facility_name,
+            "date": reservation_date,
+            "time_range": usage_time, 
+            "reservation_number": reservation_number
+           }
+    
 
 def save_to_excel(df, file_name):
     # Create a workbook and worksheet
