@@ -26,7 +26,7 @@ if utils.check_schedule_within_30_minutes() == 1:
   exit(0)
 
 options = Options()
-# options.add_argument('--headless')
+options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
