@@ -134,6 +134,9 @@ def single_kakutei(num, userid: str, password: str):
       # to_add = pd.DataFrame({"date":[date], "court":[court], "time_range": [time_range], "通し番号": [num], "userid": [userid], "password": [password], "予約申請番号":[reservation_number]})
       # votes_won = pd.concat([votes_won, to_add])
       # votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
+
+      driver.execute_script("window.history.go(-1)")
+      driver.execute_script("window.history.go(-1)")
     
 
 
