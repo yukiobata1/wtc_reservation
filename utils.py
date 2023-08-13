@@ -56,7 +56,7 @@ def extract_kakutei(string):
     return {"court":facility_name,
             "date": reservation_date,
             "time_range": usage_time, 
-            "reservation_number": reservation_number
+            "reservation_number": int(reservation_number)
            }
     
 
