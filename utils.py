@@ -7,7 +7,8 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, Border, Side
 import re
 
-def extract_kakutei(string):    
+def extract_kakutei(string):
+    print(f"{string=}")
     facility_pattern = r"施設名\n(.*?)\n"
     reservation_date_pattern = r"予約日\n(.*?)\n"
     usage_time_pattern = r"使用時間\n(.*?)\n"
