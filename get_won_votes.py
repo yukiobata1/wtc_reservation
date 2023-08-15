@@ -113,3 +113,8 @@ if __name__ == "__main__":
       continue
     print(row["通し番号"], row["ID"], row["パスワード"])
     get_single_won_votes(row["通し番号"], row["ID"], row["パスワード"])
+  votes_won = pd.read_csv(os.path.join(DATA_BASE, "votes_won.csv"))[["date", "court", "time_range", "通し番号", "userid", "password", "予約申請番号"]]
+  
+  votes_won = votes_won.drop_duplicates()
+  votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
+  
