@@ -109,5 +109,7 @@ if __name__ == "__main__":
     votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
     
   for i, row in tqdm(accounts.iterrows()):
+    if row["通し番号"] <= votes_won["通し番号"].max()-1:
+      continue
     print(row["通し番号"], row["ID"], row["パスワード"])
     get_single_won_votes(row["通し番号"], row["ID"], row["パスワード"])
