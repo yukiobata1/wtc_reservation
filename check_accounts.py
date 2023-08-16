@@ -149,7 +149,7 @@ for p in glob.glob(os.path.join(DATA_BASE, '埼玉県営利用可名義*.xlsx'))
         os.remove(p)
 
 # 作成したdataframeの保存
-current_date = date.today().strftime("[%m月%d日]")
+current_date = date.today().strftime("%m月%d日")
 file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
 utils.save_to_excel(available_df, file_path)
 
