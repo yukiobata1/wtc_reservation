@@ -17,7 +17,7 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 
 # デバッグ用
-DEBUG = False
+DEBUG = True
 debug_list = [259, 260, 261]
 
 if utils.check_schedule_within_30_minutes() == 1:
@@ -106,9 +106,15 @@ def check_available(userid: str, password: str, driver) -> int:
     # print("この番号は利用停止中です。")
     return 0
   except NoSuchElementException:
-    # print("この番号は使用可能です。")
-    return 1
-    
+    pass
+  # 「会館の利用を許可されていない」エラーのキャッチ
+  try: 
+    driver.find_element(By.XPATH, "//form[contains(text(),  '施設窓口までお問い合わせください')]")
+  except NoSuchElementException:
+    pass
+  # 使用可能
+  return 1
+  
 # 空の行を除去
 df = df.dropna()
 availability = []
@@ -133,7 +139,7 @@ for index, row in tqdm(df.iterrows()):
   print(f"  userid: {userid}, password: {password}, 利用可否: {availability[-1]}")
 
 df["利用可否(1:可, 0:不可)"] = availability
-available_df = df[df["利用可否(1:可, 0:不可)"] == 1]
+available_df = df[df["利用可否(1:可, 0:不可)"] == 1][["通し番号", "名前", "ID", "パスワード"]]
 
 # 作成したdataframeの保存
 current_date = date.today().strftime("[m月%d日]")
