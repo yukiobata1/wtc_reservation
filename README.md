@@ -1,4 +1,2 @@
-# wtc_reservation
-Codes for automatically reserving courts in Tokorozawa.
-Especially for cloud run, it returns the the available list of members.
-*confirmation*
+# 概要
+所沢のコートの抽選、確定作業を自動化するための一連のコード群
