@@ -77,7 +77,7 @@ def save_to_excel(df, file_name):
 
     # Write the DataFrame to the worksheet
     for row in dataframe_to_rows(df, index=False, header=True):
-        ws.append(row[:-1])
+        ws.append(row)
 
     # Set column width for better readability
     column_widths = [15, 20, 20, 15]
@@ -85,7 +85,7 @@ def save_to_excel(df, file_name):
         col_letter = get_column_letter(i)
         ws.column_dimensions[col_letter].width = width
       
-    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=2, max_col=4):
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=4):
         for cell in row:
             cell.alignment = Alignment(horizontal='left')
 
