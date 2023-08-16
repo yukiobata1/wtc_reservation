@@ -26,6 +26,7 @@ if utils.check_schedule_within_30_minutes() == 1:
   exit(0)
 
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+GS_URL = "gs://" + "wtc_save/"
 df = pd.read_excel(os.path.join(DATA_BASE, "埼玉県営テニスコート名義.xlsx"), usecols="A:D", header=1)
 
 # 個人で利用する目的などで利用不可能な通し番号
@@ -152,3 +153,4 @@ current_date = date.today().strftime("[%m月%d日]")
 file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
 utils.save_to_excel(available_df, file_path)
 
+os.system(f"gcloud storage cp {file_path} {GS_URL})
