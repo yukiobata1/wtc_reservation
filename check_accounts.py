@@ -142,7 +142,7 @@ df["利用可否(1:可, 0:不可)"] = availability
 available_df = df[df["利用可否(1:可, 0:不可)"] == 1][["通し番号", "名前", "ID", "パスワード"]]
 
 # 既存のファイルの削除
-for p in glob.glob(os.path.join(DATA_BASE, '埼玉県営利用可名義*.xlsx)):
+for p in glob.glob(os.path.join(DATA_BASE, '埼玉県営利用可名義*.xlsx')):
     if os.path.isfile(p):
         os.remove(p)
 
