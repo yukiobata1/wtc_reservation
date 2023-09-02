@@ -167,6 +167,7 @@ for i, court in enumerate(court_list):
   to_menu.click()
 
 DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+GS_URL = "gs://" + "wtc_save/"
 from datetime import timedelta, timezone
 tz = timezone(timedelta(hours=+9), 'Asia/Tokyo')
 current_date = datetime.datetime.now(tz).strftime("_%m月%d日%H時")
@@ -186,3 +187,5 @@ for court, value in data_copy.items():
 
 file_path = os.path.join(DATA_BASE, f'たたき台{current_date}.xlsx')
 utils.save_votes(data_copy, file_path)
+
+os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
