@@ -8,6 +8,7 @@ from openpyxl.styles import Font, Alignment, Border, Side
 import re
 
 def extract_kakutei(string):
+    # 予約番号を抽出
     print(f"{string=}")
     facility_pattern = r"施設名\n(.*?)\n"
     reservation_date_pattern = r"予約日\n(.*?)\n"
@@ -148,7 +149,7 @@ import pandas as pd
 
 def create_date_dict(data):
     rows_dict = dict()
-    columns = ['08:30', '10:30', '12:30', '14:30']
+    columns = ['08:30', '10:30', '12:30', '14:30', '16:30', '18:30']
     
     for court, value in data.items():
         for date, times in value.items():
