@@ -308,4 +308,8 @@ if __name__ == "__main__":
         pickle.dump(remain_copy, fp)
     # Todo: あとで、unused_dfから復元するように変更
 
-      logging.error(f'{date, time, court, userid, password=}')        
+      logging.error(f'{date, time, court, userid, password=}') 
+  DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+  GS_URL = "gs://" + "wtc_save/"
+  os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
+
