@@ -127,7 +127,8 @@ for i, court in enumerate(court_list):
     result[i][str_date] = dict()
     target_time_ranges = [
     "06:30-08:30", "08:30-10:30", "10:30-12:30",
-    "12:30-14:30", "14:30-16:30", "16:30-18:30"
+    "12:30-14:30", "14:30-16:30", "16:30-18:30",
+    "18:30-20:30", 
     ]
 
     for target_time_range in target_time_ranges:
@@ -145,10 +146,15 @@ for i, court in enumerate(court_list):
         result[i][str_date][start_time] = lottery_count
       
       except NoSuchElementException:
-        # 抽選数が見当たらないとき、その時間帯は使用不可
-        xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
-        next_element = driver.find_element(By.XPATH, xpath_expression)
-        result[i][str_date][start_time] = "unavailable"
+        try:
+          # 抽選数が見当たらないとき、その時間帯は使用不可
+          xpath_expression = f'//font[@color="Red"][following::text()[1][contains(., "{target_time_range}")]]'
+          next_element = driver.find_element(By.XPATH, xpath_expression)
+          result[i][str_date][start_time] = "unavailable"
+        except NoSuchElementException:
+          # 18:30-20:30, court No.1~10は使用不可
+          result[i][str_date][start_time] = "unavailable"
+
     
     # 次の日に
     next_day_button = driver.find_element(By.XPATH, '//input[contains(@value,"次日")]')

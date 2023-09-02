@@ -102,7 +102,5 @@ if __name__ == "__main__":
 
     
   for i, row in tqdm(accounts.iterrows()):
-    if i< 130:
-      continue
     print(row["通し番号"], row["ID"], row["パスワード"])
     single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
