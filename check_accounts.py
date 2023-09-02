@@ -153,4 +153,4 @@ current_date = date.today().strftime("%m月%d日")
 file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
 utils.save_to_excel(available_df, file_path)
 
-os.system(f"gcloud storage cp '{file_path}' {GS_URL}")
+os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
