@@ -181,12 +181,12 @@ def save_votes(data, file_path):
     count = 0
     for i, (date, courts) in enumerate(date_dict.items()):
         # set border to each cell
-        for row in ws[f'B{1+i*16}:G{1+i*16+12}']:
+        for row in ws[f'B{1+i*16}:I{1+i*16+12}']:
             for cell in row:
                 cell.border = thin_border
         ws.cell(row=1+i*16, column=2, value= f"{date}")
         # create header
-        start_times = ['08:30', '10:30', '12:30', '14:30'] 
+        start_times = ['08:30', '10:30', '12:30', '14:30', '16:30', '18:30'] 
         for j, value in enumerate(start_times):
             ws.cell(row=1+i*16, column=2+j+1, value= f"{value}")
 
