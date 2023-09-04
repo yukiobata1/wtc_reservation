@@ -173,7 +173,7 @@ def save_votes(data, file_path):
     ws = wb.active
 
     # Set the title and apply formatting
-    title = "埼玉県営コート: 票数"
+    title = "票数"
     ws['A1'] = title
     title_font = Font(size=14, bold=True)
     ws['A1'].font = title_font
