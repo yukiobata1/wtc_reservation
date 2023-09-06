@@ -15,7 +15,6 @@ import pdb
 def cp_from_gs():
     GS_PATH = "gs://wtc_save/data/*"
     BASE_DATA = os.path.join(os.getcwd(), "data/")
-    pdb.set_trace()
     os.system(f"gcloud storage cp -r '{GS_PATH}' '{BASE_DATA}'")
 
 def cp_to_gs():
