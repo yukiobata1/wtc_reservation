@@ -219,9 +219,9 @@ def save_votes(data, file_path):
 
 
 def get_vote_dest():
+    # gs://wtc_saveにアップロードしたものをコピー
+    cp_from_gs()
     # ファイルを検索するディレクトリのパスを指定
-    import os
-
     BASE_DIR = os.path.join(os.getcwd(), "data")
     
     # ファイルを検索
