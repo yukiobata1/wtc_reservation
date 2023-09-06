@@ -11,16 +11,14 @@
 利用停止になっていない名義を取得
 2. check_votes.py
 今各コートに入っている票数を取得、入れる票のたたき台を作成
-3. voting.py
-
-与えられたxlsxシートを読み取り、投票する
-5. check_votes_after(未完成)
+3. voting.py 与えられたxlsxシートを読み取り、投票する
+4. check_votes_after(未完成)
 票が適切に入っているかどうか確認
-6. kakutei.py
+5. kakutei.py
 各アカウントで、当選した票に対して確定作業をする
-7. votes_won.py
+6. votes_won.py
 確定作業された票を保存する。
-8. cancel.py
+7. cancel.py
 入れた抽選票をすべてキャンセルする。合計10時間程度かかり、不安定
-10. utils.py
+8. utils.py
 xlsxを作成するなど、ヘルパー関数が入っている
