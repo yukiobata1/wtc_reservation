@@ -21,7 +21,7 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 
 # デバッグ用
-DEBUG = False
+DEBUG = True
 
 if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
@@ -56,6 +56,7 @@ time_conversion = {
   "12:30": "12:30-14:30", 
   "14:30": "14:30-16:30",
   "16:30": "16:30-18:30",
+  "18:30": "18:30-20:30",
 }
 
 options = Options()
