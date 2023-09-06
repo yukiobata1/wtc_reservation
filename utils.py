@@ -239,6 +239,11 @@ def get_vote_dest():
     wb = openpyxl.load_workbook(df_path)
     ws = wb.worksheets[0]
 
+    valid_row_count = 0
+    for row in ws.iter_rows():  # This will loop through all rows in the worksheet
+      valid_row_count += 1
+    print(f"{valid_row_count=}")
+
     vote_dest = pd.DataFrame(columns= ["date","time","court"])
     row_idx = 1
     n =0
