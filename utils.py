@@ -6,6 +6,10 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, Border, Side
 import re
+import os
+import glob
+import openpyxl
+import pandas as pd
 
 def extract_kakutei(string):
     # 予約番号を抽出
@@ -201,3 +205,51 @@ def save_votes(data, file_path):
 
     # Save the Excel file
     wb.save(file_path)
+
+
+def get_vote_dest():
+    # ファイルを検索するディレクトリのパスを指定
+    import os
+
+    BASE_DIR = os.path.join(os.getcwd(), "data")
+    
+    # ファイルを検索
+    files = glob.glob(os.path.join(BASE_DIR, '*最終形態*'))
+    
+    # ファイルが見つからなかった場合の処理
+    if not files:
+        print("最終形態と書かれたファイルが見つかりませんでした")
+    else:
+        # ファイルの更新日時でソートし、最新のファイルを取得
+        latest_file = max(files, key=os.path.getmtime)
+        print("最新の最終形態ファイルのパス:", latest_file)
+    df_path = latest_file
+
+    wb = openpyxl.load_workbook(df_path)
+    ws = wb.worksheets[0]
+
+    vote_dest = pd.DataFrame(columns= ["date","time","court"])
+    row_idx = 1
+    n =0
+    while 1+(row_idx-1)*16 < valid_row_count:
+      date = ws[f"A{1+(row_idx-1)*16}"].value
+      print(date)
+      if date == None:
+        row_idx += 1
+        continue
+      # 時間帯を取得
+      times = [time.value for time in ws[f'B{1+(row_idx-1)*16}:F{1+(row_idx-1)*16}'][0]]
+      # 1-12番コートの票数
+      for i, row in enumerate(ws[f'B{2+(row_idx-1)*16}:F{1+(row_idx-1)*16+12}']):
+        court = i+1
+        for time, cell in zip(times, row):
+          if cell.value == "休" or (rep := int(cell.value)) == 0:
+            continue
+          to_add = pd.DataFrame({"date": [date]*rep,"time": [time]*rep,"court": [court]*rep})
+          vote_dest = pd.concat([vote_dest, to_add])
+          n += rep
+      row_idx+=1
+    vote_dest = vote_dest.reset_index()
+    vote_dest = vote_dest.drop("index", axis=1)
+
+    return vote_dest
