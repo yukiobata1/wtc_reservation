@@ -11,6 +11,16 @@ import glob
 import openpyxl
 import pandas as pd
 
+def cp_from_gs():
+    GS_PATH = "gs://wtc_save/data"
+    BASE_DATA = os.path.join(os.getcwd(), "data/")
+    os.system(f"gcloud storage cp -r '{BASE_DATA}' '{GS_PATH}'")
+
+def cp_to_gs():
+    GS_PATH = "gs://wtc_save/data"
+    BASE_DATA = os.path.join(os.getcwd(), "data/")
+    os.system(f"gcloud storage cp -r '{GS_PATH}' '{BASE_DATA}'")
+    
 def extract_kakutei(string):
     # 予約番号を抽出
     print(f"{string=}")
