@@ -17,9 +17,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 from selenium.common.exceptions import NoSuchElementException
 
+import utils
+import time
 # デバッグ用
 DEBUG = True
 
@@ -174,143 +175,75 @@ def single_vote(date, time, court, userid, password):
   to_menu.click()
 
 if __name__ == "__main__":
-  vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+  vote_dest = get_vote_dest()
+  vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
   used_votes = defaultdict(lambda: 0)
   unused_row = set()
 
-#   remain = [('09-26', '14:30', '10', '0000108441', '1399'),
-#  ('09-28', '12:30', '8', '0000075870', '6972'),
-#  ('09-28', '10:30', '8', '0000098524', '0819'),
-#  ('09-26', '10:30', '9', '1227272727', '1227'),
-#  ('09-26', '10:30', '9', 'seiraaoki8', '0804'),
-#  ('09-08', '10:30', '8', '0000026349', '7817'),
-#  ('09-26', '10:30', '9', 'waseda917t', '0917'),
-#  ('09-26', '10:30', '9', 'waseda1022', '8080'),
-#  ('09-28', '12:30', '8', '0000088256', '2317'),
-#  ('09-28', '12:30', '8', '0000076214', '0529'),
-#  ('09-28', '10:30', '8', '0000084876', '3689'),
-#  ('09-20', '10:30', '6', '0000088256', '2317'),
-#  ('09-26', '10:30', '10', '4555555555', '1222'),
-#  ('09-28', '12:30', '8', '0000095738', '0929'),
-#  ('09-26', '10:30', '10', '9081977555', '0415'),
-#  ('09-28', '10:30', '8', '0000095745', '0829'),
-#  ('09-26', '10:30', '9', 'kai1998030', '3988'),
-#  ('09-20', '10:30', '6', '0000070759', '0229'),
-#  ('09-26', '10:30', '9', '0019980320', '4869'),
-#  ('09-26', '10:30', '9', 'sunsunsun3', '1993'),
-#  ('09-26', '10:30', '9', '14161217ri', '1416'),
-#  ('09-26', '10:30', '9', '1996081200', '6480'),
-#  ('09-26', '14:30', '9', 'ad19390901', '3991'),
-#  ('09-26', '10:30', '10', '0000114380', '0421'),
-#  ('09-20', '10:30', '6', '0000084651', '2118'),
-#  ('09-26', '12:30', '5', '0000026349', '7817'),
-#  ('09-20', '10:30', '6', '0000087299', '1212'),
-#  ('09-28', '10:30', '8', '0000094072', '0331'),
-#  ('09-28', '10:30', '8', '0000087296', '1367'),
-#  ('09-26', '10:30', '10', 'wonhyunkan', '0209'),
-#  ('09-28', '12:30', '8', '0000084651', '2118'),
-#  ('09-26', '10:30', '9', '9616ichiro', '1rou'),
-#  ('09-26', '10:30', '10', '07290809ks', 'S0TA'),
-#  ('09-26', '12:30', '8', 'MinamiFj03', 'rf07'),
-#  ('09-20', '10:30', '6', '0000066725', '0614'),
-#  ('09-28', '10:30', '10', '0000026349', '7817'),
-#  ('09-26', '10:30', '10', 'mame190827', '0827'),
-#  ('09-26', '10:30', '9', 'inatennism', '1127'),
-#  ('09-26', '10:30', '10', '1019981015', '1015'),
-#  ('09-28', '10:30', '8', '0000094712', '2315'),
-#  ('09-26', '10:30', '10', 'narumi0117', '0117'),
-#  ('09-28', '14:30', '8', '0000085424', '0520'),
-#  ('09-20', '10:30', '6', '0000074264', '7311'),
-#  ('09-22', '12:30', '5', 'MinamiFj03', 'rf07'),
-#  ('09-26', '10:30', '10', '0012042000', '1204'),
-#  ('09-26', '10:30', '10', '216to6au21', '2106'),
-#  ('09-26', '10:30', '9', '0915537429', '1129'),
-#  ('09-28', '10:30', '9', '0000025307', '0920'),
-#  ('09-28', '10:30', '9', '0000068756', '1219'),
-#  ('09-26', '10:30', '9', '50913yumie', '0913'),
-#  ('09-26', '10:30', '9', '2412584657', '4545'),
-#  ('09-28', '12:30', '8', '0000100100', '0525'),
-#  ('09-26', '10:30', '9', '3141592933', '0525'),
-#  ('09-26', '10:30', '10', '9092609157', '0629'),
-#  ('09-28', '12:30', '8', '0000085423', '1224'),
-#  ('09-28', '10:30', '8', '0000105819', '4705'),
-#  ('09-28', '12:30', '8', '0000095737', '1029'),
-#  ('09-28', '10:30', '8', '0000085604', '2580'),
-#  ('09-26', '10:30', '9', 'andrew1341', '1341'),
-#  ('09-28', '10:30', '8', '0000095742', '3603'),
-#  ('09-28', '10:30', '9', '0000085596', '1022'),
-#  ('09-20', '10:30', '6', '0000066724', '1155'),
-#  ('09-22', '10:30', '3', '0000026349', '7817'),
-#  ('09-26', '10:30', '9', 'rico817nnn', '7817'),
-#  ('09-26', '10:30', '9', 'koku073096', '6245')]
-
-  remain_copy = remain.copy()
-
   for row in remain:
-    date, time, court, id, password = row
-  # 再開
-  try:
-    remain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
-    s = 0
-    voted = 4 - remain_votes["残り票数"]
-    while any(list(voted > 0)):
-      s += len(voted[voted > 0])
-      voted[voted > 0] -= 1
-    
-    vote_dest = vote_dest.iloc[s:, :]
-
-    for number in remain_votes["通し番号"]:
-      used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"].iloc[0])
-    print(f"{used_votes=}")
-    print(f"{vote_dest=}")
-    import time as ti
-    ti.sleep(10)
+    # 再開
+    try:
+      remain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+      s = 0
+      voted = 4 - remain_votes["残り票数"]
+      while any(list(voted > 0)):
+        s += len(voted[voted > 0])
+        voted[voted > 0] -= 1
+      
+      vote_dest = vote_dest.iloc[s:, :]
   
-  except FileNotFoundError:
-    print("remain votes doesn't exist")
-
-  # 8月分のみ
-  for row in remain:
-    date, time, court, userid, password = row
-    court = int(court)
-
-  # for i, row in tqdm(vote_dest.iterrows()):
-  #   date = row.date
-  #   time = row.time
-  #   court = row.court
-  #   user = accounts[accounts["通し番号"] == row.account]
-  #   userid = user["ID"].iloc[0]
-  #   password = user["パスワード"].iloc[0]
-  #   print(f"{date, time, court, userid, password=}")
-
-    n_try = 4
-    count = 0
-    while count < n_try:
-      # 投票
-      # 不安定なので、複数回
-      try:
-        print(f"attempt {count+1} {date, time, court, userid=}")
-        single_vote(date=date, time=time, court=court, userid=userid, password=password)
-        used_votes[row.account] += 1
-        # 使用された票を記録
-        remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
-        remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
-        remain_copy.remove(row)
-        break
-      except Exception as e:
-        print(e)
-        count += 1
-      # unused_row.add(i)
-      # unused_df = pd.DataFrame({"通し番号":  unused_row})
-      # unused_df.to_csv(os.path.join(DATA_BASE, "unused_df.csv"))
-
-      import pickle
-      with open(os.path.join(DATA_BASE, "remain_path_copy"), "wb") as fp:   #Pickling
-        pickle.dump(remain_copy, fp)
-    # Todo: あとで、unused_dfから復元するように変更
-
-      logging.error(f'{date, time, court, userid, password=}') 
-  DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-  GS_URL = "gs://" + "wtc_save/"
-  os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
-
+      for number in remain_votes["通し番号"]:
+        used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"].iloc[0])
+      print(f"{used_votes=}")
+      print(f"{vote_dest=}")
+      import time as ti
+      ti.sleep(10)
+    
+    except FileNotFoundError:
+      print("remain votes doesn't exist")
+  
+    # 8月分のみ
+    for row in remain:
+      date, time, court, userid, password = row
+      court = int(court)
+  
+    # for i, row in tqdm(vote_dest.iterrows()):
+    #   date = row.date
+    #   time = row.time
+    #   court = row.court
+    #   user = accounts[accounts["通し番号"] == row.account]
+    #   userid = user["ID"].iloc[0]
+    #   password = user["パスワード"].iloc[0]
+    #   print(f"{date, time, court, userid, password=}")
+  
+      n_try = 4
+      count = 0
+      while count < n_try:
+        # 投票
+        # 不安定なので、複数回
+        try:
+          print(f"attempt {count+1} {date, time, court, userid=}")
+          single_vote(date=date, time=time, court=court, userid=userid, password=password)
+          used_votes[row.account] += 1
+          # 使用された票を記録
+          remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
+          remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
+          remain_copy.remove(row)
+          break
+        except Exception as e:
+          print(e)
+          count += 1
+        # unused_row.add(i)
+        # unused_df = pd.DataFrame({"通し番号":  unused_row})
+        # unused_df.to_csv(os.path.join(DATA_BASE, "unused_df.csv"))
+  
+        import pickle
+        with open(os.path.join(DATA_BASE, "remain_path_copy"), "wb") as fp:   #Pickling
+          pickle.dump(remain_copy, fp)
+      # Todo: あとで、unused_dfから復元するように変更
+  
+        logging.error(f'{date, time, court, userid, password=}') 
+    DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    GS_URL = "gs://" + "wtc_save/"
+    os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
+  
