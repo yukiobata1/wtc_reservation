@@ -61,8 +61,8 @@ time_conversion = {
 }
 
 options = Options()
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
+#options.add_argument('--headless')
+#options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(service=Service(), options=options)
 
@@ -205,5 +205,7 @@ if __name__ == "__main__":
     except NoSuchElementException as e:
       import traceback
       traceback.print_exc()
+    import time as t
+    t.sleep(5)
 
   utils.cp_to_gs()
