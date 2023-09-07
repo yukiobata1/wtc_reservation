@@ -197,21 +197,10 @@ if __name__ == "__main__":
     password = user["パスワード"].iloc[0]
     print(f"{date, time, court, userid, password=}")
 
-    n_try = 4
-    count = 0
-    while count < n_try:
-      # 投票
-      # 不安定なので、複数回トライする
-      try:
-        print(f"attempt {count+1} {date, time, court, userid=}")
-        if DEBUG == False:
-          single_vote(date=date, time=time, court=court, userid=userid, password=password)
-        pdb.set_trace()
-        vote_dest.at[i, "voted"] = 1
-        vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
-        break
-      except Exception as e:
-        print(e)
-        count += 1
+    if DEBUG == False:
+      single_vote(date=date, time=time, court=court, userid=userid, password=password)
+    pdb.set_trace()
+    vote_dest.at[i, "voted"] = 1
+    vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
 
   utils.cp_to_gs()
