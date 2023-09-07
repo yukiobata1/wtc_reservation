@@ -76,8 +76,6 @@ def single_vote(date, time, court, userid, password):
   driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
   reservation_button = driver.find_element(By.XPATH, "//*[text()='施設の予約']")
   reservation_button.click()
-
-  t.sleep(0.2)
   
   user_to_fill = driver.find_element(By.XPATH, "//input[@name='txtUserCD']")
   user_to_fill.clear()
@@ -90,13 +88,9 @@ def single_vote(date, time, court, userid, password):
   ok_button = driver.find_element(By.XPATH, "//input[contains(@value,'ＯＫ')]")
   ok_button.click()
   
-  t.sleep(0.2)
-
   # 所在地
   select_by_place = driver.find_element(By.XPATH, "//a[text()='所在地から検索／予約']")
   select_by_place.click()
-
-  t.sleep(0.2)
   
   western_area = driver.find_element(By.XPATH, "//a[contains(text(),'西部エリア')]")
   western_area.click()
@@ -104,8 +98,6 @@ def single_vote(date, time, court, userid, password):
   proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
   proceed_button.click()
 
-  t.sleep(0.2)
-  
   tokorozawa_park = driver.find_element(By.XPATH, "//a[contains(text(),'所沢航空記念公園')]")
   tokorozawa_park.click()
 
@@ -113,8 +105,6 @@ def single_vote(date, time, court, userid, password):
   current_date = datetime.date.today()
   next_month_date = current_date.replace(day=1) + datetime.timedelta(days=32)
   next_month_date = next_month_date.replace(day=1)
-
-  t.sleep(0.2)
 
   # 日時指定
   date = datetime.datetime.strptime(date, "%m-%d")
@@ -141,13 +131,9 @@ def single_vote(date, time, court, userid, password):
   submit_button = driver.find_element(By.XPATH, "//input[contains(@value, 'ＯＫ')]")
   submit_button.click()
 
-  t.sleep(0.2)
-
   xpath_expression = f"//input[@name='chkComa'][following-sibling::text()[1][contains(., '{time_conversion[time]}')]][following-sibling::font[@color='Blue']]"
   time_check = driver.find_element(By.XPATH, xpath_expression)
   time_check.click()
-
-  t.sleep(0.2)
 
   WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, "//input[contains(@value,  '予約する')]"))
@@ -164,9 +150,7 @@ def single_vote(date, time, court, userid, password):
   # 確認画面
   proceed_button = driver.find_element(By.XPATH, "//input[contains(@value,'次へ')]")
   proceed_button.click()
-
-  t.sleep(0.2)
-
+  
   # 正しく遷移できているか確認
   # 日付
   date_exp = date.strftime("%m/%d")
@@ -176,15 +160,11 @@ def single_vote(date, time, court, userid, password):
 
   confirm_button = driver.find_element(By.XPATH, f"//input[contains(@value, '予約確認')]")
   confirm_button.click()
-
-  t.sleep(0.2)
   
   # 予約実行
   if DEBUG==False:
     reserve_button = driver.find_element(By.XPATH, f"//input[contains(@value, '予約実行')]")
     reserve_button.click()
-
-    t.sleep(0.2)
 
   page_source = driver.page_source
   # Print all the text in the page
