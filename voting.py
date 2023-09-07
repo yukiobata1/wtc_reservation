@@ -209,7 +209,4 @@ if __name__ == "__main__":
         print(e)
         count += 1
 
-    DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-    GS_URL = "gs://" + "wtc_save/"
-    os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
-  
+    cp_to_gs()
