@@ -222,10 +222,10 @@ def get_vote_dest():
     # gs://wtc_saveにアップロードしたものをコピー
     cp_from_gs()
     # ファイルを検索するディレクトリのパスを指定
-    BASE_DIR = os.path.join(os.getcwd(), "data")
+    DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     
     # ファイルを検索
-    files = glob.glob(os.path.join(BASE_DIR, '*最終形態*'))
+    files = glob.glob(os.path.join(DATA_BASE, '*最終形態*'))
     
     # ファイルが見つからなかった場合の処理
     if not files:
@@ -268,4 +268,46 @@ def get_vote_dest():
     vote_dest = vote_dest.reset_index()
     vote_dest = vote_dest.drop("index", axis=1)
 
+    return vote_dest
+
+def flatten_accounts(accounts):
+  use_accounts = []
+  for _, account in accounts.iterrows():
+    use_accounts.extend([account["通し番号"] for _ in range(int(account["n_votes"]))])
+  return use_accounts
+
+def append_account_to_vote_dest(vote_dest):
+    """vote_destに、どのアカウントを用いて投票するかの情報を付け加える"""
+    
+    DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    
+    # ファイルを検索
+    files = glob.glob(os.path.join(DATA_BASE, '埼玉県営利用可名義*.xlsx*'))
+
+    # ファイルが見つからなかった場合の処理
+    if not files:
+        print("最終形態と書かれたファイルが見つかりませんでした")
+    else:
+        # ファイルの更新日時でソートし、最新のファイルを取得
+        latest_file = max(files, key=os.path.getmtime)
+        print("最新の利用可能名義ファイルのパス:", latest_file)
+
+    # dfの処理
+    df = pd.read_excel(latest_file, header=1)
+    df = df[df["通し番号"] != "利用可名義数:"]
+    df = df[df["通し番号"] != "総票数:"]
+
+    # accountsの処理
+    accounts = df
+    accounts["n_votes"] = 4
+    
+    d = flatten_accounts(accounts)
+    c = []
+    while len(d) > 0:
+      b = set(d)
+      for i in b:
+        d.remove(i)
+        c.append(i)
+
+    vote_dest["account"] = pd.Series(c)
     return vote_dest
