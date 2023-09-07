@@ -204,7 +204,7 @@ if __name__ == "__main__":
     except NoSuchElementException as e:
       import traceback
       traceback.print_exc()
-    import time as t
-    t.sleep(5)
+    # import time as t
+    # t.sleep(5)
 
   utils.cp_to_gs()
