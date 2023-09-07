@@ -175,7 +175,6 @@ def single_vote(date, time, court, userid, password):
   to_menu.click()
 
 if __name__ == "__main__":
-  utils.cp_from_gs()
   vote_dest = utils.get_vote_dest()
   vote_dest = utils.append_accounts_to_vote_dest(vote_dest)
   if "voted" not in vote_dest:
