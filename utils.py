@@ -276,7 +276,7 @@ def flatten_accounts(accounts):
     use_accounts.extend([account["通し番号"] for _ in range(int(account["n_votes"]))])
   return use_accounts
 
-def append_account_to_vote_dest(vote_dest):
+def append_accounts_to_vote_dest(vote_dest):
     """vote_destに、どのアカウントを用いて投票するかの情報を付け加える"""
     
     DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
