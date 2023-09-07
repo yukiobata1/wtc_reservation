@@ -197,9 +197,12 @@ if __name__ == "__main__":
     password = user["パスワード"].iloc[0]
     print(f"{date, time, court, userid, password=}")
 
-    if DEBUG == False:
-      single_vote(date=date, time=time, court=court, userid=userid, password=password)
-    vote_dest.at[i, "voted"] = 1
-    vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+    try:
+      if DEBUG == False:
+        single_vote(date=date, time=time, court=court, userid=userid, password=password)
+      vote_dest.at[i, "voted"] = 1
+      vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+    except NoSuchElementException as e:
+      print(f"{e=}")
 
   utils.cp_to_gs()
