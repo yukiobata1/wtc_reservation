@@ -143,11 +143,6 @@ for index, row in tqdm(df.iterrows()):
 df["利用可否(1:可, 0:不可)"] = availability
 available_df = df[df["利用可否(1:可, 0:不可)"] == 1][["通し番号", "名前", "ID", "パスワード"]]
 
-# 既存のファイルの削除
-for p in glob.glob(os.path.join(DATA_BASE, '埼玉県営利用可名義*.xlsx')):
-    if os.path.isfile(p):
-        os.remove(p)
-
 # 作成したdataframeの保存
 current_date = date.today().strftime("%m月%d日")
 file_path = os.path.join(DATA_BASE, f'埼玉県営利用可名義{current_date}.xlsx')
