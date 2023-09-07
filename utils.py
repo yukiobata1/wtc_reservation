@@ -242,14 +242,14 @@ def get_vote_dest():
     valid_row_count = 0
     for row in ws.iter_rows():  # This will loop through all rows in the worksheet
       valid_row_count += 1
-    print(f"{valid_row_count=}")
+    # print(f"{valid_row_count=}")
 
     vote_dest = pd.DataFrame(columns= ["date","time","court"])
     row_idx = 1
     n =0
     while 1+(row_idx-1)*16 < valid_row_count:
       date = ws[f"A{1+(row_idx-1)*16}"].value
-      print(date)
+      # print(date)
       if date == None:
         row_idx += 1
         continue
