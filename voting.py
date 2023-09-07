@@ -22,7 +22,7 @@ from selenium.common.exceptions import NoSuchElementException
 import utils
 
 # デバッグ用
-DEBUG = True
+DEBUG = False
 
 if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
