@@ -203,6 +203,7 @@ if __name__ == "__main__":
       vote_dest.at[i, "voted"] = 1
       vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
     except NoSuchElementException as e:
-      print(f"{e=}")
+      import traceback
+      traceback.print_exc()
 
   utils.cp_to_gs()
