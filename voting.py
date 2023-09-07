@@ -176,7 +176,7 @@ def single_vote(date, time, court, userid, password):
 
 if __name__ == "__main__":
   if len(glob.glob(os.path.join(DATA_BASE, "vote_dest.csv"))) == 0:
-    print("vote_dest.csvが存在しません。新しいものを作成します。"):
+    print("vote_dest.csvが存在しません。新しいものを作成します。")
     vote_dest = utils.get_vote_dest()
     vote_dest = utils.append_accounts_to_vote_dest(vote_dest)
     if "voted" not in vote_dest:
