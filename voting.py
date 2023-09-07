@@ -207,7 +207,7 @@ if __name__ == "__main__":
         if DEBUG == False:
           single_vote(date=date, time=time, court=court, userid=userid, password=password)
         pdb.set_trace()
-        vote_dest["voted"].at(i, "date") = 1
+        vote_dest.at(i, "voted") = 1
         vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
         break
       except Exception as e:
