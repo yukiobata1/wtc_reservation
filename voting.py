@@ -182,7 +182,7 @@ if __name__ == "__main__":
   vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
   
   for i, row in tqdm(vote_dest.iterrows()):
-    if vote_dest["voted"] == 1:
+    if row["voted"] == 1:
       continue
     date = row.date
     time = row.time
