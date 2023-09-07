@@ -175,74 +175,39 @@ def single_vote(date, time, court, userid, password):
   to_menu.click()
 
 if __name__ == "__main__":
-  vote_dest = get_vote_dest()
+  vote_dest = utils.get_vote_dest()
+  vote_dest = utils.append_accounts_to_vote_dest(vote_dest)
+  if "voted" not in vote_dest:
+    vote_dest["voted"] = 0
   vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
-  used_votes = defaultdict(lambda: 0)
-  unused_row = set()
+  
+  for i, row in tqdm(vote_dest.iterrows()):
+    if vote_dest["voted"] == 1:
+      continue
+    date = row.date
+    time = row.time
+    court = row.court
+    user = accounts[accounts["通し番号"] == row.account]
+    userid = user["ID"].iloc[0]
+    password = user["パスワード"].iloc[0]
+    print(f"{date, time, court, userid, password=}")
 
-  for row in remain:
-    # 再開
-    try:
-      remain_votes = pd.read_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
-      s = 0
-      voted = 4 - remain_votes["残り票数"]
-      while any(list(voted > 0)):
-        s += len(voted[voted > 0])
-        voted[voted > 0] -= 1
-      
-      vote_dest = vote_dest.iloc[s:, :]
-  
-      for number in remain_votes["通し番号"]:
-        used_votes[number] = 4-int(remain_votes[remain_votes["通し番号"]==number]["残り票数"].iloc[0])
-      print(f"{used_votes=}")
-      print(f"{vote_dest=}")
-      import time as ti
-      ti.sleep(10)
-    
-    except FileNotFoundError:
-      print("remain votes doesn't exist")
-  
-    # 8月分のみ
-    for row in remain:
-      date, time, court, userid, password = row
-      court = int(court)
-  
-    # for i, row in tqdm(vote_dest.iterrows()):
-    #   date = row.date
-    #   time = row.time
-    #   court = row.court
-    #   user = accounts[accounts["通し番号"] == row.account]
-    #   userid = user["ID"].iloc[0]
-    #   password = user["パスワード"].iloc[0]
-    #   print(f"{date, time, court, userid, password=}")
-  
-      n_try = 4
-      count = 0
-      while count < n_try:
-        # 投票
-        # 不安定なので、複数回
-        try:
-          print(f"attempt {count+1} {date, time, court, userid=}")
+    n_try = 4
+    count = 0
+    while count < n_try:
+      # 投票
+      # 不安定なので、複数回トライする
+      try:
+        print(f"attempt {count+1} {date, time, court, userid=}")
+        if DEBUG == False:
           single_vote(date=date, time=time, court=court, userid=userid, password=password)
-          used_votes[row.account] += 1
-          # 使用された票を記録
-          remain_votes = pd.DataFrame({"通し番号":  list(accounts["通し番号"]), "残り票数": [4-used_votes[idx] for idx in list(accounts["通し番号"])]})
-          remain_votes.to_csv(os.path.join(DATA_BASE, "remain_votes.csv"))
-          remain_copy.remove(row)
-          break
-        except Exception as e:
-          print(e)
-          count += 1
-        # unused_row.add(i)
-        # unused_df = pd.DataFrame({"通し番号":  unused_row})
-        # unused_df.to_csv(os.path.join(DATA_BASE, "unused_df.csv"))
-  
-        import pickle
-        with open(os.path.join(DATA_BASE, "remain_path_copy"), "wb") as fp:   #Pickling
-          pickle.dump(remain_copy, fp)
-      # Todo: あとで、unused_dfから復元するように変更
-  
-        logging.error(f'{date, time, court, userid, password=}') 
+        vote_dest["voted"] = 1
+        vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+        break
+      except Exception as e:
+        print(e)
+        count += 1
+
     DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     GS_URL = "gs://" + "wtc_save/"
     os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
