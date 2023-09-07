@@ -175,11 +175,16 @@ def single_vote(date, time, court, userid, password):
   to_menu.click()
 
 if __name__ == "__main__":
-  vote_dest = utils.get_vote_dest()
-  vote_dest = utils.append_accounts_to_vote_dest(vote_dest)
-  if "voted" not in vote_dest:
-    vote_dest["voted"] = 0
-  vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+  if len(glob.glob(os.path.join(DATA_BASE, "vote_dest.csv"))) == 0:
+    print("vote_dest.csvが存在しません。新しいものを作成します。"):
+    vote_dest = utils.get_vote_dest()
+    vote_dest = utils.append_accounts_to_vote_dest(vote_dest)
+    if "voted" not in vote_dest:
+      vote_dest["voted"] = 0
+    vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+  else:
+    vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+    print(vote_dest)
   
   for i, row in tqdm(vote_dest.iterrows()):
     if row["voted"] == 1:
