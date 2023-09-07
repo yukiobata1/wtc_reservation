@@ -4,10 +4,10 @@ import os
 import sys
 from tqdm import tqdm
 import datetime
-import utils
 from collections import defaultdict
 import logging
-logging.basicConfig(filename='voting.log', encoding='utf-8', level=logging.ERROR)
+import pdb
+import time
 
 import glob
 from selenium import webdriver
@@ -20,7 +20,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
 import utils
-import time
+
 # デバッグ用
 DEBUG = True
 
@@ -201,7 +201,8 @@ if __name__ == "__main__":
         print(f"attempt {count+1} {date, time, court, userid=}")
         if DEBUG == False:
           single_vote(date=date, time=time, court=court, userid=userid, password=password)
-        vote_dest["voted"] = 1
+        pdb.set_trace()
+        vote_dest["voted"].iloc[i] = 1
         vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
         break
       except Exception as e:
