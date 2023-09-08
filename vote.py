@@ -184,7 +184,7 @@ if __name__ == "__main__":
       vote_dest["voted"] = 0
     vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
   else:
-    vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+    vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"), index=False)
     print(vote_dest)
   
   for i, row in tqdm(vote_dest.iterrows()):
