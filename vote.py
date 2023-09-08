@@ -10,6 +10,7 @@ import pdb
 import time as t
 
 import glob
+from selenium.common.exceptions import WebDriverException
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -204,6 +205,8 @@ if __name__ == "__main__":
     except NoSuchElementException as e:
       import traceback
       traceback.print_exc()
+    except WebDriverException as e:
+      driver = webdriver.Chrome(service=Service(), options=options)
     # import time as t
     # t.sleep(5)
 
