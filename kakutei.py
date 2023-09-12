@@ -82,7 +82,7 @@ def single_kakutei(num, userid: str, password: str):
 
       # 予約完了画面に遷移したことの確認
       body = driver.find_element(By.XPATH, "//body")
-      # print(f"{body.text=}")
+      print(f"{body.text=}")
       assert "予約" in body.text
       assert "確定" in body.text
       assert "仮予約" in body.text
