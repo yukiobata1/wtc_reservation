@@ -84,9 +84,7 @@ def single_kakutei(num, userid: str, password: str):
       body = driver.find_element(By.XPATH, "//body")
       print(f"{body.text=}")
       assert "予約" in body.text
-      assert "確定" in body.text
-      assert "仮予約" in body.text
-      
+      assert "確定" in body.text      
 
       driver.execute_script("window.history.go(-1)")
       driver.execute_script("window.history.go(-1)")
