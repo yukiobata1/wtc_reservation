@@ -98,7 +98,12 @@ if __name__ == "__main__":
   # 空の行を除去
   accounts = accounts.dropna()
 
-    
   for i, row in tqdm(accounts.iterrows()):
-    print(row["通し番号"], row["ID"], row["パスワード"])
-    single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
+    trycount = 0
+    while trycount < 4:
+      try:
+        print(row["通し番号"], row["ID"], row["パスワード"])
+        single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
+      except:
+        print(f"attempt{trycount+1} failed")
+      
