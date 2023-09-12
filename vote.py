@@ -8,6 +8,7 @@ from collections import defaultdict
 import logging
 import pdb
 import time as t
+import re
 
 import glob
 from selenium.common.exceptions import WebDriverException
@@ -169,7 +170,8 @@ def single_vote(date, time, court, userid, password):
 
   page_source = driver.page_source
   # Print all the text in the page
-  print(page_source)
+  if re.match("抽選予約を受付しました。", page_source):
+    print("ok")
   
   # メニューに戻って、別のコートの票数を取得
   to_menu = driver.find_element(By.XPATH, "//input[contains(@value,'メニュー')]")
