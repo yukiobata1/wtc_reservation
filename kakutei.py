@@ -104,6 +104,8 @@ if __name__ == "__main__":
       try:
         print(row["通し番号"], row["ID"], row["パスワード"])
         single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
+        break
       except:
         print(f"attempt{trycount+1} failed")
+        trycount += 1
       
