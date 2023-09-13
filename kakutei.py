@@ -97,12 +97,12 @@ if __name__ == "__main__":
 
   # 確定の記録ファイルが存在するとき
   if glob.glob(file_path2):
-    accounts = pd.read_csv(file_path, header=1, index=False)
+    accounts = pd.read_csv(file_path, header=1)
   # 新しく作成
   else:
-    accounts = pd.read_excel(file_path,usecols="A:D", header=1, index_col=None)
+    accounts = pd.read_excel(file_path,usecols="A:D", header=1)
     accounts["checked"] = 0
-    accounts.to_csv(file_path2)
+    accounts.to_csv(file_path2, index=False)
     
   # 空の行を除去
   accounts = accounts.dropna()
