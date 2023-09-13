@@ -7,7 +7,6 @@ from tqdm import tqdm
 from datetime import date
 import utils
 import logging
-logging.basicConfig(filename='check_votes.log', encoding='utf-8', level=logging.ERROR)
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -108,4 +107,6 @@ if __name__ == "__main__":
       except:
         print(f"attempt{trycount+1} failed")
         trycount += 1
+        import time as t
+        t.sleep(100)
       
