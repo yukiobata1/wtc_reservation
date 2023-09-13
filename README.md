@@ -6,25 +6,29 @@
 クラウドストレージのwtc_save内埼玉県営テニスコート名義.xlsx**以外**のすべてのファイルを消すこと！
 
 ### 使用可能アカウント、投票数を調べる
-まず、
+まず、実行する際には
 ```python
-python check_accounts.py
+> nohup.out | nohup python {file_name}.py &
 ```
+を用いる。以下がファイル名の一覧
+### file_name 一覧
 1. check_accounts.py
 利用停止になっていない名義を取得
 2. check_votes.py
 今各コートに入っている票数を取得、入れる票のたたき台を作成
-3. voting.py 与えられたxlsxシートを読み取り、投票する
-4. check_votes_after(未完成)
-票が適切に入っているかどうか確認
+3. voting.py
+与えられたxlsxシートを読み取り、投票する
 5. kakutei.py
 各アカウントで、当選した票に対して確定作業をする
-6. votes_won.py
+6. get_won_votes.py
 確定作業された票を保存する。
-7. cancel.py
+=====以上は使う=======
+7. check_votes_after(未完成)
+票が適切に入っているかどうか確認
+8. cancel.py
 入れた抽選票をすべてキャンセルする。合計10時間程度かかり、不安定
-8. utils.py
-xlsxを作成するなど、ヘルパー関数が入っている
+9. utils.py
+xlsxを作成するなど、ヘルパー関数が入っている(直接は使わない。)
 
 # エラー
 500 errorの場合、時間をおいて(1時間くらい)やってみるとうまくいくかも
