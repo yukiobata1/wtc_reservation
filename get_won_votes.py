@@ -7,6 +7,7 @@ from tqdm import tqdm
 from datetime import date
 import utils
 import logging
+import utils
 logging.basicConfig(filename='check_votes.log', encoding='utf-8', level=logging.ERROR)
 
 from selenium import webdriver
@@ -118,6 +119,4 @@ if __name__ == "__main__":
   votes_won = votes_won.drop_duplicates()
   votes_won.to_csv(os.path.join(DATA_BASE, "votes_won.csv"))
 
-  DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-  GS_URL = "gs://" + "wtc_save/"
-  os.system(f"gcloud storage cp '{DATA_BASE}' {GS_URL}")
+  utils.save_won_votes(votes_won)
