@@ -365,13 +365,13 @@ def save_won_votes(votes_won):
     
     for i, date in enumerate(date_list):
       # set border to each cell
-      for row in ws[f'A{1+i*16+1}:F{1+i*16+12+1}']:
+      for row in ws[f'A{1+i*16+1}:H{1+i*16+12+1}']:
         for cell in row:
           cell.border = thin_border
           cell.alignment = Alignment(horizontal="left")
       ws.cell(row=1+i*16+1, column=1, value= f"{date}")
       # create header
-      start_times = ['08:30', '10:30', '12:30', '14:30']
+      start_times = ['08:30', '10:30', '12:30', '14:30', '16:30', '18:30']
       for j, value in enumerate(start_times):
         ws.cell(row=1+i*16+1, column=1+j+1, value= f"{value}")
     
@@ -387,6 +387,6 @@ def save_won_votes(votes_won):
             pass
 
     DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-    wb.save(os.path.join(DATA_BASE, "won_votes.xlsx"))
+    wb.save(os.path.join(DATA_BASE, "votes_won.xlsx"))
     cp_to_gs()
     
