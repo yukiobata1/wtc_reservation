@@ -186,7 +186,7 @@ if __name__ == "__main__":
       vote_dest["voted"] = 0
     vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
   else:
-    vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"), index=False)
+    vote_dest = pd.read_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
     print(vote_dest)
   
   for i, row in tqdm(vote_dest.iterrows()):
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     try:
       single_vote(date=date, time=time, court=court, userid=userid, password=password)
       vote_dest.at[i, "voted"] = 1
-      vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"))
+      vote_dest.to_csv(os.path.join(DATA_BASE, "vote_dest.csv"), index=False)
     except NoSuchElementException as e:
       import traceback
       traceback.print_exc()
