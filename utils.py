@@ -5,6 +5,7 @@ from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, Border, Side
+
 import re
 import os
 import glob
@@ -311,3 +312,81 @@ def append_accounts_to_vote_dest(vote_dest):
 
     vote_dest["account"] = pd.Series(c)
     return vote_dest
+
+def save_won_votes(votes_won):
+    votes_won = votes_won.drop_duplicates()
+    data =  votes_won
+
+    # コート名を変換する辞書
+    court_dict = {
+        '第１テニスコート第１クレーコート': 1,
+        '第１テニスコート第２クレーコート': 2,
+        '第１テニスコート第５人工芝コート': 5,
+        '第１テニスコート第８人工芝コート': 8,
+        '第１テニスコート第３人工芝コート': 3,
+        '第１テニスコート第４人工芝コート': 4,
+        '第１テニスコート第７人工芝コート': 7,
+        '第１テニスコート第６人工芝コート': 6,
+        '第１テニスコート第９人工芝コート': 9,
+        '第２テニスコート第１１人工芝コート': 11,
+        '第１テニスコート第１０人工芝コート': 10,
+        '第２テニスコート第１２人工芝コート': 12,
+    }
+    
+    # 日付の形式変換（'2023/09/12' → '09-12'）
+    data['date'] = pd.to_datetime(data['date']).dt.strftime('%m-%d')
+    
+    # time_rangeの形式変換（'10:30～12:30' → '10:30'）
+    data['time_range'] = data['time_range'].str.split('～').str[0]
+    
+    # コート名の変換
+    data['court'] = data['court'].map(court_dict)
+    votes_won = data
+
+    date_list = []
+    for r in votes_won["date"].unique():
+      date_list.append(r)
+    date_list.sort()
+
+    thin_border = Border(left=Side(style='thin'),
+                    right=Side(style='thin'),
+                    top=Side(style='thin'),
+                    bottom=Side(style='thin'))
+    
+    # Create a workbook and worksheet
+    wb = Workbook()
+    ws = wb.active
+    
+    # Set the title and apply formatting
+    title = "埼玉県営コート　当選票の通し番号"
+    ws['A1'] = title
+    title_font = Font(size=14, bold=True)
+    ws['A1'].font = title_font
+    
+    for i, date in enumerate(date_list):
+      # set border to each cell
+      for row in ws[f'A{1+i*16+1}:F{1+i*16+12+1}']:
+        for cell in row:
+          cell.border = thin_border
+          cell.alignment = Alignment(horizontal="left")
+      ws.cell(row=1+i*16+1, column=1, value= f"{date}")
+      # create header
+      start_times = ['08:30', '10:30', '12:30', '14:30']
+      for j, value in enumerate(start_times):
+        ws.cell(row=1+i*16+1, column=1+j+1, value= f"{value}")
+    
+      # write number of votes for each day\
+      for j in range(1, 13):
+        ws.cell(row=1+i*16+j+1, column=1, value= f"{j}番")
+        ws.cell(row=1+i*16+j+1, column=1+len(start_times)+1, value= f"{j}番")
+        for k, time in enumerate(start_times):
+          try:
+            num = list(votes_won[(votes_won["time_range"] == time) & (votes_won["date"] == date) & (votes_won["court"] == j)]["通し番号"])[0]
+            ws.cell(row=1+i*16+j+1, column=1+(k+1), value= f"{num}")
+          except IndexError:
+            pass
+
+    DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    wb.save(os.path.join(DATA_BASE, "won_votes.xlsx"))
+    cp_to_gs()
+    
