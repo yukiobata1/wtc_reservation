@@ -96,7 +96,7 @@ if __name__ == "__main__":
   file_path2 = os.path.join(DATA_BASE, "confirm_or_not.csv")
 
   # 確定の記録ファイルが存在するとき
-  if glob.glob(flie_path2):
+  if glob.glob(file_path2):
     accounts = pd.read_csv(file_path, header=1, index=False)
   # 新しく作成
   else:
