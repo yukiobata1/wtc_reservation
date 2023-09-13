@@ -93,16 +93,31 @@ def single_kakutei(num, userid: str, password: str):
 if __name__ == "__main__":
   DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
   file_path = glob.glob(os.path.join(DATA_BASE, "埼玉県営利用可名義*.xlsx"))[0]
-  accounts = pd.read_excel(file_path,usecols="A:D", header=1)
+  file_path2 = os.path.join(DATA_BASE, "confirm_or_not.csv")
+
+  # 確定の記録ファイルが存在するとき
+  if glob.glob(flie_path2):
+    accounts = pd.read_csv(file_path, header=1, index=False)
+  # 新しく作成
+  else:
+    accounts = pd.read_excel(file_path,usecols="A:D", header=1, index_col=None)
+    accounts["checked"] = 0
+    accounts.to_csv(file_path2)
+    
   # 空の行を除去
   accounts = accounts.dropna()
 
   for i, row in tqdm(accounts.iterrows()):
+    # すでにチェックしたならば、スキップ
+    if accounts.at[i, "checked"] == 1:
+      continue
+    # チェックしていないとき再開
     trycount = 0
     while trycount < 4:
       try:
         print(row["通し番号"], row["ID"], row["パスワード"])
         single_kakutei(row["通し番号"], row["ID"], row["パスワード"])
+        accounts.at[i, "checked"] = 1
         break
       except:
         print(f"attempt{trycount+1} failed")
