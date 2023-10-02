@@ -6,10 +6,19 @@
 クラウドストレージのwtc_save内埼玉県営テニスコート名義.xlsx**以外**のすべてのファイルを消すこと！
 
 ### セットアップ
-```git clone git@github.com:yukiobata1/wtc_reservation.git```
+```bash
+git clone git@github.com:yukiobata1/wtc_reservation.git
+```
 https://github.com/SeleniumHQ/docker-selenium#execution-modesからselenium chromeのdocker imageをダウンロード
-```docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926```
+```bash
+docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926`
+```
 
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 ### 手順
 実行する際にはバックグラウンドで実行するために
 ```bash
