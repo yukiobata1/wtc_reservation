@@ -9,27 +9,23 @@
 
 ### セットアップ
 Linux上で作成したので、windowsではwslを起動して作業するのがわかりやすい。
+以下のコードを実行してください。
 ```bash
 git clone git@github.com:yukiobata1/wtc_reservation.git
-```
-```bash
 docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926`
-```
-```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 ### 手順
-実行する前には毎回venvを起動し、wtc_reservationフォルダ内で作業する。
+実行する前に以下のコードを実行
 ```bash
 source venv/bin/activate
 cd wtc_reservation
 ```
-を用いる。
 
 ログは```nohup.out```に出力されるため、```cat nohup.out```を用いて適宜確認する。
-動作が不安定であるため、一回の実行では投票しきれていない、ということが頻発する。
+動作が不安定で、一回の作業では投票しきれていない、ということが頻発するため確認は必須。
 
 1. 使用可能アカウント、投票数を調べる
 ```bash
@@ -42,7 +38,12 @@ cd wtc_reservation
 > nohup.out | nohup python voting.py &
 ```
 
-3. 確定後に投票する。
+3. 抽選後に確定する。
+```bash
+> nohup.out | nohup python kakutei.py &
+> nohup.out | nohup python get_won_votes.py &
+
+```
 
 ### file_name 一覧
 1. check_accounts.py
