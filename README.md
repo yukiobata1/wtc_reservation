@@ -7,7 +7,7 @@
 クラウドストレージのwtc_save内埼玉県営テニスコート名義.xlsx**以外**のすべてのファイルを消すこと！
 
 ### セットアップ
-windowsの場合、wslを
+Linux上で作成したので、windowsではwslを起動して作業するのがわかりやすい。
 ```bash
 git clone git@github.com:yukiobata1/wtc_reservation.git
 ```
@@ -20,7 +20,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 ### 手順
-実行する前には毎回venvを起動し、wtc_reservationフォルダないで作業する。
+実行する前には毎回venvを起動し、wtc_reservationフォルダ内で作業する。
 ```bash
 source venv/bin/activate
 cd wtc_reservation
