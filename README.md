@@ -1,28 +1,29 @@
 # 概要
 所沢のコートの抽選、確定作業を自動化するコード
+最低限のことしか書いていないので、問題があったら気兼ねなくyukiobata1<at>gmail.comまで連絡をお願いします。
 
 ## 使い方の説明
 作業を始める前に、
 クラウドストレージのwtc_save内埼玉県営テニスコート名義.xlsx**以外**のすべてのファイルを消すこと！
 
 ### セットアップ
+windowsの場合、wslを
 ```bash
 git clone git@github.com:yukiobata1/wtc_reservation.git
 ```
-https://github.com/SeleniumHQ/docker-selenium#execution-modesからselenium chromeのdocker imageをダウンロード
 ```bash
 docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926`
 ```
-
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 ### 手順
-実行する際にはバックグラウンドで実行するために
+実行する前には毎回venvを起動し、wtc_reservationフォルダないで作業する。
 ```bash
-> nohup.out | nohup python {file_name}.py &
+source venv/bin/activate
+cd wtc_reservation
 ```
 を用いる。
 
