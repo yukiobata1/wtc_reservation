@@ -62,14 +62,7 @@ time_conversion = {
   "18:30": "18:30-20:30",
 }
 
-options = Options()
-options.add_argument('--headless')
-
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
-
-driver = webdriver.Chrome(service=Service(), options=options)
-
+driver = utils.get_driver()
 # 予約ボタンクリック
 driver.get("https://www.pa-reserve.jp/eap-ri/rsv_ri/i/im-0.asp?KLCD=119999")
 

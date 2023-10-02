@@ -6,6 +6,8 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, Alignment, Border, Side
 
+from selenium import webdriver
+
 import re
 import os
 import glob
@@ -390,3 +392,12 @@ def save_won_votes(votes_won):
     wb.save(os.path.join(DATA_BASE, "votes_won.xlsx"))
     cp_to_gs()
     
+def get_driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+
+    driver = webdriver.Remote(
+     command_executor='http://localhost:4444/wd/hub',
+     options = options,
+   )
+    return driver

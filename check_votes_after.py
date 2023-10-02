@@ -25,11 +25,7 @@ if utils.check_schedule_within_30_minutes() == 1:
   print("毎月第2水曜22:30～翌8:00,毎週金曜3:00～3:30は利用できません。")
   exit(0)
 
-options = Options()
-# options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome(service=Service(), options=options)
+driver = utils.get_driver()
 
 def single_check_vote(num, userid: str, password: str):
   # 使用不可→0を返す、使用可→1を返す

@@ -27,12 +27,7 @@ if utils.check_schedule_within_30_minutes() == 1:
 # 個人で利用する目的などで利用不可能な通し番号
 unused = [31,]
 
-service = Service()
-options = Options()
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome(service=service, options=options)
+driver = utils.get_driver()
 
 # 各コートの抽選数を検索
 
