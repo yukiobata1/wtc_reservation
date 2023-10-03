@@ -11,7 +11,7 @@
 Linux上で作成したので、windowsではwslを起動して作業するのがわかりやすい。
 以下のコードを実行してください。
 ```bash
-git clone https://github.com/yukiobata1/wtc_reservation.git
+git clone https://github.com/yukiobata1/wtc_reservation
 docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926`
 python -m venv venv
 source venv/bin/activate
