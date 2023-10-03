@@ -22,6 +22,9 @@ python -m venv venv
 source venv/bin/activate
 ```
 ```bash
+cd wtc_reservation
+```
+```bash
 pip install -r requirements.txt
 ```
 ### 手順
