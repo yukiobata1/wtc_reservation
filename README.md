@@ -14,7 +14,7 @@ Linux上で作成したので、windowsではwslを起動して作業するの�
 git clone https://github.com/yukiobata1/wtc_reservation
 ```
 ```bash
-docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926`
+docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926
 ```
 ```bash
 python -m venv venv
@@ -29,6 +29,8 @@ pip install -r requirements.txt
 実行する前に以下のコードを実行
 ```bash
 source venv/bin/activate
+```
+```bash
 cd wtc_reservation
 ```
 
