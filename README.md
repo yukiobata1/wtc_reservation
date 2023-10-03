@@ -8,8 +8,7 @@
 クラウドストレージのwtc_save内埼玉県営テニスコート名義.xlsx**以外**のすべてのファイルを消すこと！
 
 ### セットアップ
-Linux上で作成したので、windowsではwslを起動して作業するのがわかりやすい。
-以下のコードを実行してください。
+Linux上で、以下のコードを実行してください。
 ```bash
 git clone https://github.com/yukiobata1/wtc_reservation
 ```
