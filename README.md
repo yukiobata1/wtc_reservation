@@ -12,9 +12,17 @@ Linux上で作成したので、windowsではwslを起動して作業するの�
 以下のコードを実行してください。
 ```bash
 git clone https://github.com/yukiobata1/wtc_reservation
+```
+```bash
 docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926`
+```
+```bash
 python -m venv venv
+```
+```bash
 source venv/bin/activate
+```
+```bash
 pip install -r requirements.txt
 ```
 ### 手順
