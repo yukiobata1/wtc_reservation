@@ -201,8 +201,4 @@ if __name__ == "__main__":
       import traceback
       traceback.print_exc()
     except WebDriverException as e:
-      driver = webdriver.Chrome(service=Service(), options=options)
-    # import time as t
-    # t.sleep(5)
-
-  utils.cp_to_gs()
+      driver = utils.get_driver()

@@ -223,7 +223,7 @@ def save_votes(data, file_path):
 
 def get_vote_dest():
     # gs://wtc_saveにアップロードしたものをコピー
-    cp_from_gs()
+    # cp_from_gs()
     # ファイルを検索するディレクトリのパスを指定
     DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     
@@ -390,7 +390,7 @@ def save_won_votes(votes_won):
 
     DATA_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     wb.save(os.path.join(DATA_BASE, "votes_won.xlsx"))
-    cp_to_gs()
+    # cp_to_gs()
     
 def get_driver():
     options = webdriver.ChromeOptions()

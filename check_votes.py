@@ -183,4 +183,4 @@ for court, value in data_copy.items():
 file_path = os.path.join(DATA_BASE, f'たたき台{current_date}.xlsx')
 utils.save_votes(data_copy, file_path)
 
-os.system(f"gcloud storage cp -r '{DATA_BASE}' {GS_URL}")
+# os.system(f"gcloud storage cp -r '{DATA_BASE}' {GS_URL}")
