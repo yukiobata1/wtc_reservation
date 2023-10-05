@@ -47,7 +47,7 @@ cd wtc_reservation
 
 2. (会計から投票数のxlsxファイルを受け取ったら)投票する
 ```bash
-> nohup.out | nohup python voting.py &
+> nohup.out | nohup python vote.py &
 ```
 
 3. 抽選後に確定する。
@@ -62,7 +62,7 @@ cd wtc_reservation
 利用停止になっていない名義を取得
 2. check_votes.py
 今各コートに入っている票数を取得、入れる票のたたき台を作成
-3. voting.py
+3. vote.py
 与えられたxlsxシートを読み取り、投票する
 5. kakutei.py
 各アカウントで、当選した票に対して確定作業をする
