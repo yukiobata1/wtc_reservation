@@ -103,7 +103,7 @@ def single_vote(date, time, court, userid, password):
   next_month_date = next_month_date.replace(day=1)
 
   # 日時指定
-  date = utils.excel_serial_date_to_date(date)
+  date = utils.excel_serial_date_to_date(int(date))
 
   year_input = driver.find_element(By.NAME, 'selYear')
   month_input = driver.find_element(By.NAME, 'selMonth')
