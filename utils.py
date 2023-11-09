@@ -262,6 +262,8 @@ def get_vote_dest():
       for i, row in enumerate(ws[f'B{2+(row_idx-1)*16}:F{1+(row_idx-1)*16+12}']):
         court = i+1
         for time, cell in zip(times, row):
+          if cell.value is None:
+              cell.value = 0
           if cell.value == "休" or (rep := int(cell.value)) == 0:
             continue
           to_add = pd.DataFrame({"date": [date]*rep,"time": [time]*rep,"court": [court]*rep})
