@@ -403,3 +403,13 @@ def get_driver():
      options = options,
    )
     return driver
+def excel_serial_date_to_date(serial_date):
+    # Excelの基準日
+    excel_start_date = datetime.date(1899, 12, 30)
+    
+    # Excelのバグ（1900年をうるう年と誤認）のための補正
+    if serial_date > 59:
+        serial_date -= 1
+
+    # 実際の日付を計算
+    return excel_start_date + datetime.timedelta(days=serial_date)
