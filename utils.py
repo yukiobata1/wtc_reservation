@@ -251,15 +251,15 @@ def get_vote_dest():
     row_idx = 1
     n =0
     while 1+(row_idx-1)*16 < valid_row_count:
-      date = ws[f"A{1+(row_idx-1)*16}"].value
+      date = ws[f"B{1+(row_idx-1)*16}"].value
       # print(date)
       if date == None:
         row_idx += 1
         continue
       # 時間帯を取得
-      times = [time.value for time in ws[f'B{1+(row_idx-1)*16}:F{1+(row_idx-1)*16}'][0]]
+      times = [time.value for time in ws[f'C{1+(row_idx-1)*16}:I{1+(row_idx-1)*16}'][0]]
       # 1-12番コートの票数
-      for i, row in enumerate(ws[f'B{2+(row_idx-1)*16}:F{1+(row_idx-1)*16+12}']):
+      for i, row in enumerate(ws[f'B{2+(row_idx-1)*16}:I{1+(row_idx-1)*16+12}']):
         court = i+1
         for time, cell in zip(times, row):
           if cell.value is None:
