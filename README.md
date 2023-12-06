@@ -15,12 +15,15 @@ git clone https://github.com/yukiobata1/wtc_reservation
 ```bash
 docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.13.0-20230926
 ```
+仮想環境使わないならいらないゾーン↓
 ```bash
 python -m venv venv
 ```
 ```bash
 source venv/bin/activate
 ```
+↑
+
 ```bash
 cd wtc_reservation
 ```
@@ -41,8 +44,8 @@ cd wtc_reservation
 
 1. 使用可能アカウント、投票数を調べる
 ```bash
-> nohup.out | nohup python check_accounts.py &
-> nohup.out | nohup python check_votes.py &
+> python check_accounts.py
+> python check_votes.py
 ```
 
 2. (会計から投票数のxlsxファイルを受け取ったら)投票する
