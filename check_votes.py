@@ -111,8 +111,17 @@ for i, court in enumerate(court_list):
   submit_button.click()
 
   # 申請数表示
-  show_votes = driver.find_element(By.XPATH, "//input[@value='申請数表示']")
-  show_votes.click()
+  try: 
+    show_votes = driver.find_element(By.XPATH, "//input[@value='申請数表示']")
+    show_votes.click()
+  except NoSuchElementException:
+    next_day_button = driver.find_element(By.XPATH, '//input[contains(@value,"次日")]')
+    next_day_button.click()
+    show_votes = driver.find_element(By.XPATH, "//input[@value='申請数表示']")
+    show_votes.click()
+    yesterday_button = driver.find_element(By.XPATH, '//input[contains(@value,"前日")]')
+    yesterday_button.click()
+    
   
   # 1日-月末の各日についてループ
   next_month = next_month_date.month
