@@ -257,9 +257,9 @@ def get_vote_dest():
         row_idx += 1
         continue
       # 時間帯を取得
-      times = [time.value for time in ws[f'C{1+(row_idx-1)*16}:I{1+(row_idx-1)*16}'][0]]
+      times = [time.value for time in ws[f'C{1+(row_idx-1)*16}:H{1+(row_idx-1)*16}'][0]]
       # 1-12番コートの票数
-      for i, row in enumerate(ws[f'C{2+(row_idx-1)*16}:I{1+(row_idx-1)*16+12}']):
+      for i, row in enumerate(ws[f'C{2+(row_idx-1)*16}:H{1+(row_idx-1)*16+12}']):
         court = i+1
         for time, cell in zip(times, row):
           if cell.value is None:
