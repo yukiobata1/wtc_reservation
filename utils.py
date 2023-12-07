@@ -199,7 +199,7 @@ def save_votes(data, file_path):
     count = 0
     for i, (date, courts) in enumerate(date_dict.items()):
         # set border to each cell
-        for row in ws[f'B{1+i*16}:I{1+i*16+12}']:
+        for row in ws[f'C{1+i*16}:I{1+i*16+12}']:
             for cell in row:
                 cell.border = thin_border
         ws.cell(row=1+i*16, column=2, value= f"{date}")
