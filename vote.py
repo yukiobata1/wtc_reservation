@@ -103,7 +103,11 @@ def single_vote(date, time, court, userid, password):
   next_month_date = next_month_date.replace(day=1)
 
   # 日時指定
-  date = datetime.datetime.strptime(date, "%m-%d")
+  # Specifying a leap year for the date string
+  full_date_string = f"2024-{date}"
+  
+  # Converting string to date object
+  date = datetime.strptime(full_date_string, '%Y-%m-%d')
 
   year_input = driver.find_element(By.NAME, 'selYear')
   month_input = driver.find_element(By.NAME, 'selMonth')
